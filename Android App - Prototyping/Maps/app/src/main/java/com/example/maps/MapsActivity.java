@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         googleMap.setMyLocationEnabled(true);
+
 //
 //        LatLng cardiff = new LatLng(location.getLatitude(), location.getLongitude());
 //        mMap.addCircle(new CircleOptions()

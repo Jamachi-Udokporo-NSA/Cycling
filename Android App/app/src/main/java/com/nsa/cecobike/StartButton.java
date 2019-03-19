@@ -21,6 +21,8 @@ public class StartButton extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         View v = inflater.inflate(R.layout.fragment_start_button, container, false);
         AppCompatButton button = v.findViewById(R.id.start_button);
         button.setOnClickListener(new View.OnClickListener() {
