@@ -4,22 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StartButton"
-    android:background="@color/colorAccent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Start Fragment"
-        android:textSize="30sp" />
-
+    android:background="#01383f">
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_the_journey"
-        android:layout_marginTop="80dp"/>
+        android:textSize="30dp"
+        android:background="#015b66"
+        android:textColor="@android:color/background_light"
+        android:padding="10dp"
+        android:layout_centerInParent="true"
+        />
 
 
 </RelativeLayout>
