@@ -1,7 +1,6 @@
 package com.nsa.cecobike;
 
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.start_fragment, new StartButton()).commit();
+                    .replace(R.id.start_fragment, new Maps()).commit();
             navigationView.setCheckedItem(R.id.nav_track_my_journey);
         }
     }
