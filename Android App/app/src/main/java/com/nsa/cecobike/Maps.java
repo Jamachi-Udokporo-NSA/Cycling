@@ -97,14 +97,23 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
+        getCameraUpdates(location);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                100000,
+                5, locationListenerGPS);
+    }
+
+    private void getCameraUpdates(Location location)
+    {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
                 .zoom(17)// Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
 
+    }
     private void requestStoragePermission() {
 //        ActivityCompat.requestPermissions(this.getActivity(),
 //                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -149,4 +158,29 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         Toast.makeText(this.getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
         getCurrentLocation();
     }
+
+
+    LocationListener locationListenerGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
+            getCameraUpdates(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
 }
