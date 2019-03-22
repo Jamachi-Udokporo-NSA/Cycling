@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,14 +72,14 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (ActivityCompat.checkSelfPermission(this.getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this.getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
-            return;
-        }
+//
+//        if (ActivityCompat.checkSelfPermission(this.getContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ActivityCompat.checkSelfPermission(this.getContext(),
+//                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            requestStoragePermission();
+//            return;
+//        }
     }
 
     public void getCurrentLocation() {
@@ -92,7 +93,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         }
         mMap.setMyLocationEnabled(true);
 
-        LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
@@ -124,6 +125,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
                     // permission was granted, yay!
                 } else {
                     Toast.makeText(this.getActivity(), "Access has been declined by user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.getActivity(), "Permission must be accepted to start", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -131,7 +133,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         }
     }
 
-    public void addPolyLinesToMap(final Location location){
+    public void addPolyLinesToMap(final Location location) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -142,14 +144,8 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
-
-
-    @Override
     public void onClick(View v) {
+        //remove the Toast below when finished testing
         Toast.makeText(this.getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
         getCurrentLocation();
     }
