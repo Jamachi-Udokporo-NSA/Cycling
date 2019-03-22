@@ -3,6 +3,7 @@ package com.nsa.cecobike;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -97,6 +100,12 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
+        MarkerOptions place1 = new MarkerOptions().position(new LatLng(51.5898432, -2.9981189));
+
+        mMap.addMarker(place1);
+        mMap.addMarker(place2);
+
+
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
 
@@ -146,8 +155,10 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Polyline polyline = mMap.addPolyline(new PolylineOptions().add(new LatLng(location.getLatitude(), location.getLongitude())));
-                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
+                PolylineOptions polyline = new PolylineOptions().add(new LatLng(51.5898432, -2.9981189)
+                ).add(new LatLng(location.getLatitude(), location.getLongitude())).width(5).color(Color.BLUE).geodesic(true);
+//                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
+                mMap.addPolyline(polyline);
             }
         });
     }
@@ -165,6 +176,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         public void onLocationChanged(Location location) {
             Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
+            addPolyLinesToMap(location);
         }
 
         @Override
