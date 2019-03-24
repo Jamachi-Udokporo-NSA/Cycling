@@ -100,16 +100,12 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
-        MarkerOptions place1 = new MarkerOptions().position(new LatLng(51.5898432, -2.9981189));
-
-        mMap.addMarker(place1);
-
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                100000,
-                5, locationListenerGPS);
+                30000,
+                10, locationListenerGPS);
     }
 
     private void getCameraUpdates(Location location)
@@ -151,6 +147,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
 
     public void addPolyLinesToMap(final Location location) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
+
             @Override
             public void run() {
                 PolylineOptions polyline = new PolylineOptions().add(new LatLng(51.5898432, -2.9981189)
