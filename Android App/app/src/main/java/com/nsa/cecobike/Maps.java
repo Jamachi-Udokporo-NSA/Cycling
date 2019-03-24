@@ -103,8 +103,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         MarkerOptions place1 = new MarkerOptions().position(new LatLng(51.5898432, -2.9981189));
 
         mMap.addMarker(place1);
-        mMap.addMarker(place2);
-
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
