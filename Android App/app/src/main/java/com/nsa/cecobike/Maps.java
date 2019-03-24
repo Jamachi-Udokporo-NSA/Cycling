@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickListener {
     private GoogleMap mMap;
     private final int STORAGE_PERMISSION_CODE = 1;
+    LatLng previousLocation;
 
     public Maps() {
         // Required empty public constructor
@@ -102,10 +104,13 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
+        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 30000,
                 10, locationListenerGPS);
+
+//        locationManager.removeUpdates(locationListenerGPS); use this code to stop the tracking system
     }
 
     private void getCameraUpdates(Location location)
@@ -119,7 +124,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
     }
     private void requestStoragePermission() {
 //        ActivityCompat.requestPermissions(this.getActivity(),
-//                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                   new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
 //                STORAGE_PERMISSION_CODE);
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 STORAGE_PERMISSION_CODE);
@@ -150,10 +155,13 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
 
             @Override
             public void run() {
-                PolylineOptions polyline = new PolylineOptions().add(new LatLng(51.5898432, -2.9981189)
-                ).add(new LatLng(location.getLatitude(), location.getLongitude())).width(5).color(Color.BLUE).geodesic(true);
+                PolylineOptions polyline = new PolylineOptions().add(previousLocation)
+                .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
+                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                 mMap.addPolyline(polyline);
+                previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
         });
     }
@@ -171,6 +179,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         public void onLocationChanged(Location location) {
             Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
+//            previousLocation = location;
             addPolyLinesToMap(location);
         }
 
