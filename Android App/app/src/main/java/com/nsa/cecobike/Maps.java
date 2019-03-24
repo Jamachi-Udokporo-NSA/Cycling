@@ -35,10 +35,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class Maps extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
+    Button start_journey, finish_journey;
 
     public Maps() {
         // Required empty public constructor
@@ -67,10 +68,34 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
             fm.beginTransaction().replace(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
-
         //button to start the journey
-        Button button = (Button) view.findViewById(R.id.start_journey_button);
-        button.setOnClickListener(this);
+
+         start_journey = (Button) view.findViewById(R.id.start_journey_button);
+         finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
+         start_journey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Start journey actions start here
+
+                //remove the Toast below when finished testing
+                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+                getCurrentLocation();
+                start_journey.setVisibility(View.GONE);
+                finish_journey.setVisibility(View.VISIBLE);
+            }
+        });
+         finish_journey.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 //finish journey actions start here 
+
+                 //remove the Toast below when finished testing
+                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+             }
+         });
+
+
+
 
     }
 
@@ -110,7 +135,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
                 30000,
                 10, locationListenerGPS);
 
-//        locationManager.removeUpdates(locationListenerGPS); use this code to stop the tracking system
     }
 
     private void getCameraUpdates(Location location)
@@ -165,14 +189,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
             }
         });
     }
-
-    @Override
-    public void onClick(View v) {
-        //remove the Toast below when finished testing
-        Toast.makeText(this.getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
-        getCurrentLocation();
-    }
-
 
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
