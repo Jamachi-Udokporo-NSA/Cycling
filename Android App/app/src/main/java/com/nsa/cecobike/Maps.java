@@ -104,7 +104,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
         getCameraUpdates(location);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                10000,
+                30000,
                 10, locationListenerGPS);
     }
 
@@ -147,6 +147,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, View.OnClickLi
 
     public void addPolyLinesToMap(final Location location) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
+
             @Override
             public void run() {
                 PolylineOptions polyline = new PolylineOptions().add(new LatLng(51.5898432, -2.9981189)
