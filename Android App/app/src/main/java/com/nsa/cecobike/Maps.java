@@ -16,23 +16,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -45,6 +41,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
+    Double TotalDistance;
 
     public Maps() {
         // Required empty public constructor
@@ -82,6 +79,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 //Start journey actions start here
 
+
                 //remove the Toast below when finished testing
                 Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
@@ -93,6 +91,11 @@ public class Maps extends Fragment implements OnMapReadyCallback {
              @Override
              public void onClick(View v) {
                  //finish journey actions start here 
+
+                 //Calculates Distance
+                 getlatlon();
+
+                 Journey journey = new Journey(TotalDistance, null, coordinates);
 
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
@@ -135,13 +138,14 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
-//        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 30000,
                 10, locationListenerGPS);
 
     }
+
 
     private void getCameraUpdates(Location location)
     {
@@ -194,6 +198,36 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
         });
+    }
+
+    public void getlatlon(){
+        //Calculating the distance in meters
+        double latitude = 0;
+        double longitude = 0;
+
+        for (int i = 0; i < coordinates.size(); i++){
+            if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
+                latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
+            }
+            else if(coordinates.get(i).getpLat() > coordinates.get(i+1).getpLat()) {
+                latitude = coordinates.get(i).getpLat() - coordinates.get(i+1).getpLat();
+            }
+            if (coordinates.get(i).getpLon() < coordinates.get(i+1).getpLon()){
+                longitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
+            }
+            else if(coordinates.get(i).getpLon() > coordinates.get(i+1).getpLon()) {
+                longitude = coordinates.get(i).getpLon() - coordinates.get(i+1).getpLon();
+            }
+            getcaldistance(latitude, longitude);
+        }
+    }
+
+    public void getcaldistance(Double Latitude, Double Longitude){
+        Latitude = Latitude * Latitude;
+        Longitude = Longitude * Longitude;
+
+        Double Distance = Math.sqrt(Latitude + Longitude);
+        TotalDistance = TotalDistance + Distance;
     }
 
     LocationListener locationListenerGPS = new LocationListener() {
