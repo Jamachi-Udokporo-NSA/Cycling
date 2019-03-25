@@ -98,6 +98,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
                  stopTimer(Timer);
+
              }
          });
     }
@@ -150,7 +151,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                30000,
+                1000,
                 10, locationListenerGPS);
 
     }
@@ -200,8 +201,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
-                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                 mMap.addPolyline(polyline);
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
@@ -211,9 +210,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
-//            previousLocation = location;
             addPolyLinesToMap(location);
         }
 
