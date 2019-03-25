@@ -44,6 +44,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     Button start_journey, finish_journey;
     private Chronometer Timer;
     private boolean running;
+    LocationManager locationManager;
 
     public Maps() {
         // Required empty public constructor
@@ -143,7 +144,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
