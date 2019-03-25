@@ -12,7 +12,7 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginVertical="60dp"/>
+        android:layout_marginVertical="55dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

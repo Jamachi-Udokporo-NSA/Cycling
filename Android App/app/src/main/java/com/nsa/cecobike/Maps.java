@@ -83,7 +83,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 //Start journey actions start here
 
                 //remove the Toast below when finished testing
-                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
                 start_journey.setVisibility(View.GONE);
                 finish_journey.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  //finish journey actions start here 
 
                  //remove the Toast below when finished testing
-                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+//                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
                  if (ActivityCompat.checkSelfPermission(getContext(),
                          Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                          ActivityCompat.checkSelfPermission(getContext(),
@@ -213,7 +213,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
             addPolyLinesToMap(location);
         }
