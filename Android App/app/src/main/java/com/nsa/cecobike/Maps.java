@@ -41,7 +41,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
-    Double TotalDistance;
+    Double TotalDistance = 0.0;
 
     public Maps() {
         // Required empty public constructor
@@ -141,7 +141,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                30000,
+                5000,
                 10, locationListenerGPS);
 
     }
@@ -206,7 +206,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         double longitude = 0;
 
         for (int i = 0; i+1 < coordinates.size(); i++){
-            Log.d(String.format("coordinates size is ", coordinates.size()), "size");
             if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
                 latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
             }
@@ -223,12 +222,14 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void getcaldistance(Double Latitude, Double Longitude){
-        Latitude = Latitude * Latitude;
-        Longitude = Longitude * Longitude;
+    public void getcaldistance(Double latitude, Double longitude){
+        latitude = latitude * latitude;
+        longitude = longitude * longitude;
 
-        Double Distance = Math.sqrt(Latitude + Longitude);
+        Double Distance = Math.sqrt(latitude + longitude);
         TotalDistance = TotalDistance + Distance;
+        String t = String.valueOf(TotalDistance*100);
+        Log.d(t, "size");
     }
 
     LocationListener locationListenerGPS = new LocationListener() {
