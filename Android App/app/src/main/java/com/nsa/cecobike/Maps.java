@@ -99,8 +99,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                      requestStoragePermission();
                      return;
                  }
-//                 locationManager.removeUpdates(locationListenerGPS);
-//                 mMap.setMyLocationEnabled(false);
+                 locationManager.removeUpdates(locationListenerGPS);
+                 mMap.setMyLocationEnabled(false);
              }
          });
 
@@ -109,14 +109,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//
-//        if (ActivityCompat.checkSelfPermission(this.getContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(this.getContext(),
-//                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            requestStoragePermission();
-//            return;
-//        }
     }
 
     public void getCurrentLocation() {
@@ -138,8 +130,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                10000,
-                10, locationListenerGPS);
+                5000,
+                5, locationListenerGPS);
 
     }
 
@@ -187,7 +179,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
             public void run() {
                 PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
-//                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
 //                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                 mMap.addPolyline(polyline);
