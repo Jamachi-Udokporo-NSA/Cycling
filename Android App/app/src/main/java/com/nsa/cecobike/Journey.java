@@ -1,17 +1,38 @@
 package com.nsa.cecobike;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.os.AsyncTask;
+import android.support.v4.content.AsyncTaskLoader;
+
 import java.util.ArrayList;
 
+@Entity
 public class Journey{
-    private Double distance;
-    private Double duration;
-    private ArrayList<Point> points;
 
-    public Journey(Double distance, Double duration, ArrayList<Point> points) {
+    @PrimaryKey
+    private int jid;
+
+    @ColumnInfo(name = "distance_miles")
+    private Double distance;
+
+    @ColumnInfo(name = "duration")
+    private Double duration;
+
+
+    public Journey(Double distance, Double duration) {
         this.distance = distance;
         this.duration = duration;
-        this.points = points;
+    }
+
+    public void setJid(int jid) {
+        this.jid = jid;
+    }
+
+    public int getJid() {
+        return jid;
     }
 
     public Double getDistance() {
@@ -20,9 +41,5 @@ public class Journey{
 
     public Double getDuration() {
         return duration;
-    }
-
-    public ArrayList<Point> getPoints() {
-        return points;
     }
 }
