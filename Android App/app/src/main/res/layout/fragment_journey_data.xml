@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JourneyData"
     android:orientation="vertical"
-    android:padding="@dimen/row_padding">
+    android:padding="@dimen/row_padding"
+    tools:context=".JourneyData">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/row_top_text"
