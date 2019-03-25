@@ -1,5 +1,6 @@
 package com.nsa.cecobike;
 
+import android.arch.persistence.room.Room;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -79,6 +80,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        JourneyDatabase db = Room.databaseBuilder(
+                getApplicationContext(),
+                JourneyDatabase.class,
+                "JourneyDatabase"
+        ).build();
 
         if (id == R.id.nav_track_my_journey) {
             getSupportFragmentManager().beginTransaction()
