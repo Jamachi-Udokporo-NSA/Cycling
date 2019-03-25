@@ -91,7 +91,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  //finish journey actions start here
 
                  //remove the Toast below when finished testing
-//                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
                  if (ActivityCompat.checkSelfPermission(getContext(),
                          Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                          ActivityCompat.checkSelfPermission(getContext(),
@@ -188,6 +188,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
+//                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                 mMap.addPolyline(polyline);
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
