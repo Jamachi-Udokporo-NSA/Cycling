@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class VIewMyJourney extends Fragment {
+public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     public VIewMyJourney() {
         // Required empty public constructor
 
@@ -47,5 +49,10 @@ public class VIewMyJourney extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
         return v;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }
