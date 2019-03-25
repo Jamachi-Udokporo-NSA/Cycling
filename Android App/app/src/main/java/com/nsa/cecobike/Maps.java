@@ -35,11 +35,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+
 public class Maps extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
     Button start_journey, finish_journey;
+
+    //List of Points for Database:
+    ArrayList<Point> coordinates = new ArrayList<>();
 
     public Maps() {
         // Required empty public constructor
@@ -91,6 +96,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+
              }
          });
 
@@ -129,7 +135,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
-        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+//        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 30000,
@@ -181,9 +187,9 @@ public class Maps extends Fragment implements OnMapReadyCallback {
             public void run() {
                 PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
-//                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
-                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
+//                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
+                coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
                 mMap.addPolyline(polyline);
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
