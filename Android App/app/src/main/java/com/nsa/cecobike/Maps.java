@@ -44,6 +44,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     Button start_journey, finish_journey;
     private Chronometer Timer;
     private boolean running;
+    LocationManager locationManager;
 
     public Maps() {
         // Required empty public constructor
@@ -82,7 +83,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 //Start journey actions start here
 
                 //remove the Toast below when finished testing
-                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
                 start_journey.setVisibility(View.GONE);
                 finish_journey.setVisibility(View.VISIBLE);
@@ -93,11 +94,20 @@ public class Maps extends Fragment implements OnMapReadyCallback {
          finish_journey.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 //finish journey actions start here 
+                 //finish journey actions start here
 
                  //remove the Toast below when finished testing
-                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
                  stopTimer(Timer);
+//                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                 if (ActivityCompat.checkSelfPermission(getContext(),
+                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                         ActivityCompat.checkSelfPermission(getContext(),
+                                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                     requestStoragePermission();
+                     return;
+                 }
+                 locationManager.removeUpdates(locationListenerGPS);
+                 mMap.setMyLocationEnabled(false);
 
              }
          });
@@ -132,7 +142,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     }
 
     public void getCurrentLocation() {
-
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(),
@@ -142,7 +151,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
@@ -152,7 +161,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
-                10, locationListenerGPS);
+                5, locationListenerGPS);
 
     }
 
