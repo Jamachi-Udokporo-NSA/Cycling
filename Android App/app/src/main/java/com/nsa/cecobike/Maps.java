@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +42,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
     Button start_journey, finish_journey;
+    private Chronometer Timer;
+    private boolean running;
 
     public Maps() {
         // Required empty public constructor
@@ -59,7 +63,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
         FragmentManager fm = getChildFragmentManager();
@@ -82,6 +86,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 getCurrentLocation();
                 start_journey.setVisibility(View.GONE);
                 finish_journey.setVisibility(View.VISIBLE);
+                Timer = view.findViewById(R.id.timer);
+                startTimer(Timer);
             }
         });
          finish_journey.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +97,24 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                 stopTimer(Timer);
              }
          });
+    }
 
+    public void startTimer (View v){
+        if (!running) {
+            Timer.setBase(SystemClock.elapsedRealtime());
+            Timer.start();
+            running = true;
+        }
+    }
 
-
-
+    public void stopTimer (View v) {
+        if (running) {
+            Timer.stop();
+            running = false;
+        }
     }
 
     @Override
