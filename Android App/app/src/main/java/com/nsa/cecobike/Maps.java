@@ -99,9 +99,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                      requestStoragePermission();
                      return;
                  }
-                 locationManager.removeUpdates(locationListenerGPS);
-                 mMap.setMyLocationEnabled(false);
-
+//                 locationManager.removeUpdates(locationListenerGPS);
+//                 mMap.setMyLocationEnabled(false);
              }
          });
 
@@ -139,8 +138,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000,
-                5, locationListenerGPS);
+                10000,
+                10, locationListenerGPS);
 
     }
 
@@ -198,7 +197,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-//            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
 //            previousLocation = location;
             addPolyLinesToMap(location);
