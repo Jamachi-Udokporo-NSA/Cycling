@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,7 +42,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
     Button start_journey, finish_journey;
-    LocationManager locationManager;
+    private Chronometer Timer;
+    private boolean running;
 
     public Maps() {
         // Required empty public constructor
@@ -60,7 +63,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
         FragmentManager fm = getChildFragmentManager();
@@ -83,12 +86,14 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 getCurrentLocation();
                 start_journey.setVisibility(View.GONE);
                 finish_journey.setVisibility(View.VISIBLE);
+                Timer = view.findViewById(R.id.timer);
+                startTimer(Timer);
             }
         });
          finish_journey.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 //finish journey actions start here
+                 //finish journey actions start here 
 
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
@@ -101,9 +106,25 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  }
                  locationManager.removeUpdates(locationListenerGPS);
                  mMap.setMyLocationEnabled(false);
+                 stopTimer(Timer);
+
              }
          });
+    }
 
+    public void startTimer (View v){
+        if (!running) {
+            Timer.setBase(SystemClock.elapsedRealtime());
+            Timer.start();
+            running = true;
+        }
+    }
+
+    public void stopTimer (View v) {
+        if (running) {
+            Timer.stop();
+            running = false;
+        }
     }
 
     @Override
@@ -112,6 +133,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     }
 
     public void getCurrentLocation() {
+
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(),
@@ -121,7 +143,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
@@ -130,7 +152,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                5000,
+                1000,
                 5, locationListenerGPS);
 
     }
@@ -192,7 +214,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         public void onLocationChanged(Location location) {
             Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
-//            previousLocation = location;
             addPolyLinesToMap(location);
         }
 
