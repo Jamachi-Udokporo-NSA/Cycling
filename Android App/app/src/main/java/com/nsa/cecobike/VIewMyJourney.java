@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-//This will display the view my journey page fragment
 public class VIewMyJourney extends Fragment {
     public VIewMyJourney() {
         // Required empty public constructor
