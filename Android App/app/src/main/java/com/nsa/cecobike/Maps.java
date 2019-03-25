@@ -40,6 +40,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
     Button start_journey, finish_journey;
+    LocationManager locationManager;
 
     public Maps() {
         // Required empty public constructor
@@ -87,15 +88,22 @@ public class Maps extends Fragment implements OnMapReadyCallback {
          finish_journey.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 //finish journey actions start here 
+                 //finish journey actions start here
 
                  //remove the Toast below when finished testing
                  Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                 if (ActivityCompat.checkSelfPermission(getContext(),
+                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                         ActivityCompat.checkSelfPermission(getContext(),
+                                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                     requestStoragePermission();
+                     return;
+                 }
+                 locationManager.removeUpdates(locationListenerGPS);
+                 mMap.setMyLocationEnabled(false);
+
              }
          });
-
-
-
 
     }
 
@@ -113,7 +121,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     }
 
     public void getCurrentLocation() {
-
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(),
@@ -123,7 +130,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
@@ -132,7 +139,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                30000,
+                10000,
                 10, locationListenerGPS);
 
     }
@@ -182,8 +189,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                polyline.setColor(ContextCompat.getColor(getActivity(), R.color.design_default_color_primary_dark));
-                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
-                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
+//                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                 mMap.addPolyline(polyline);
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
