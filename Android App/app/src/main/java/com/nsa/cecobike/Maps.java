@@ -205,7 +205,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         double latitude = 0;
         double longitude = 0;
 
-        for (int i = 0; i < coordinates.size(); i++){
+        for (int i = 0; i+1 < coordinates.size(); i++){
+            Log.d(String.format("coordinates size is ", coordinates.size()), "size");
             if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
                 latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
             }
