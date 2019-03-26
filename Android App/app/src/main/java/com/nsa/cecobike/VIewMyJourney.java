@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Init
-        ArrayAdapter();
         View v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
         return v;
     }
@@ -33,6 +34,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ArrayAdapter();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public VIewMyJourney() {
@@ -48,8 +54,8 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     private void ArrayAdapter(){
         //Obtain the data
         int numberOfItems = 4;
-        ArrayList<String> listOfJourneys = new ArrayList<>();
-        listOfJourneys.add(getString(R.string.contents_of_list_row));
+        ArrayList<String> listOfJourneys = new ArrayList<>(numberOfItems);
+//        listOfJourneys.add(getString(R.string.contents_of_list_row));
         for(int i=0; i<numberOfItems; i++){
             //Make sure you have a string with the name "contents_of_list_row" in your strings.xml resource file
             listOfJourneys.add(getString(R.string.contents_of_list_row));
@@ -65,7 +71,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                List<Journey> journeys = db.journeyDao().getAllJourneys();
+                List journeys = db.journeyDao().getAllJourneys();
             }
         });
 
@@ -77,10 +83,13 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         );
 
         //Fetch the listview and connect to the adapter
-//        ListView lv_journeys = getView().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id
-//        lv_journeys.setAdapter(adapter);
+        ListView lv_journeys = getActivity().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id
+//        adapter.add("xcmkx");
+        Log.d(adapter.getItem(0), "Adapter");
+        Log.d(adapter.toString(), "Adapter2");
+        lv_journeys.setAdapter(adapter);
 
-        //Set this activity to be the event listener for when list items are pressed
+//        Set this activity to be the event listener for when list items are pressed
 //        lv_journeys.setOnItemClickListener(this);
 
     }
