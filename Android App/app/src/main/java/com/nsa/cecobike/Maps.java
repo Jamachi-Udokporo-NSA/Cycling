@@ -95,6 +95,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  //Calculates Distance
                  getlatlon();
 
+                 TotalDistance = TotalDistance * 100;
                  Journey journey = new Journey(TotalDistance, null);
 
                  //remove the Toast below when finished testing
