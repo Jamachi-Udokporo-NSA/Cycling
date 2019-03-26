@@ -1,6 +1,7 @@
 package com.nsa.cecobike;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Maps extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -74,6 +77,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
          start_journey = (Button) view.findViewById(R.id.start_journey_button);
          finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
+        final JourneyDatabase db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
          start_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,17 +100,28 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  getlatlon();
 
                  TotalDistance = TotalDistance * 100;
-                 Journey journey = new Journey(TotalDistance, null);
-
                  //remove the Toast below when finished testing
-                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+//                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                 AsyncTask.execute(new Runnable() {
+                     @Override
+                     public void run() {
+//                         db.journeyDao().clearJourneys();
+                         db.journeyDao().insertJourneys(
+                                 new Journey(TotalDistance, null)
+                         );
+                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
+                         getActivity().runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 Toast.makeText(getContext(), String.format("Number of Journeys: %d", journeys.size()), Toast.LENGTH_SHORT).show();
+                             }
+                         });
+                     }
+                 });
 
              }
          });
-
-
-
-
     }
 
     @Override

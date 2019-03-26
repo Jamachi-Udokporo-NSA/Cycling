@@ -12,17 +12,17 @@ import java.util.List;
 
 @Dao
 public interface JourneyDao { ;
-    @Query("SELECT * FROM journey")
+    @Query("SELECT * FROM Journey")
     List<Journey> getAllJourneys();
 
     @Insert
-    void insertAll(Journey... journeys);
+    void insertJourneys(Journey... journey);
 
     @Update
-    void updateAll(Journey... journeys);
+    void updateAll(Journey... journey);
 
-    @Delete
-    void delete(Journey journey);
+    @Query("DELETE FROM Journey")
+    void clearJourneys();
 
 
 }
