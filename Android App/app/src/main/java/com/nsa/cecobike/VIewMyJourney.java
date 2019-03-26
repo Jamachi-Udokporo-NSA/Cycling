@@ -21,19 +21,25 @@ import java.util.List;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
+
+    private View v;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Init
-        View v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
+
+        v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
+        ArrayAdapter();
+//        v.findViewById(R.id.lv_journeys);
         return v;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayAdapter();
+//        ArrayAdapter();
     }
 
     @Override
@@ -84,13 +90,14 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         //Fetch the listview and connect to the adapter
         ListView lv_journeys = getActivity().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id
-//        adapter.add("xcmkx");
         Log.d(adapter.getItem(0), "Adapter");
         Log.d(adapter.toString(), "Adapter2");
-//        lv_journeys.setAdapter(adapter);
+
+        ListView lv = v.findViewById(R.id.lv_journeys);
+        lv.setAdapter(adapter);
 
 //        Set this activity to be the event listener for when list items are pressed
-//        lv_journeys.setOnItemClickListener(this);
+//        lv_journeys.setOnItemClickListener(getActivity());
 
     }
 
