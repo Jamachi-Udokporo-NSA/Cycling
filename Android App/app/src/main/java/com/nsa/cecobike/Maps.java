@@ -102,15 +102,19 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  TotalDistance = TotalDistance * 100;
                  //remove the Toast below when finished testing
 //                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+
                  AsyncTask.execute(new Runnable() {
                      @Override
                      public void run() {
-//                         db.journeyDao().clearJourneys();
+                         db.journeyDao().clearJourneys();
+
                          db.journeyDao().insertJourneys(
                                  new Journey(TotalDistance, null)
+
                          );
                          final List<Journey> journeys = db.journeyDao().getAllJourneys();
                          Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
+
                          getActivity().runOnUiThread(new Runnable() {
                              @Override
                              public void run() {

@@ -18,9 +18,6 @@ public interface JourneyDao { ;
     @Insert
     void insertJourneys(Journey... journey);
 
-    @Update
-    void updateAll(Journey... journey);
-
     @Query("DELETE FROM Journey")
     void clearJourneys();
 

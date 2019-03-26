@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Entity
 public class Journey{
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int jid;
 
     @ColumnInfo(name = "distance_miles")
