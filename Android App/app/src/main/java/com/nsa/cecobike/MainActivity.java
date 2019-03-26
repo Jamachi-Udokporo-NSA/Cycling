@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.start_fragment, new Maps()).commit();
             navigationView.setCheckedItem(R.id.nav_track_my_journey);
         } else if (id == R.id.nav_view_my_journeys) {
-            Toast.makeText(this, "View_my_journey fragment has not been created yet", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "View_my_journey fragment has not been created yet", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.start_fragment, new VIewMyJourney()).commit();
                 navigationView.setCheckedItem(R.id.nav_view_my_journeys);

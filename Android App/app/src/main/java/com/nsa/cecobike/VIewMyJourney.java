@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,12 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         return v;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ArrayAdapter();
+    }
+
     public VIewMyJourney() {
         // Required empty public constructor
 
@@ -40,8 +47,14 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     //List Adapter
     private void ArrayAdapter(){
         //Obtain the data
+        int numberOfItems = 4;
         ArrayList<String> listOfJourneys = new ArrayList<>();
         listOfJourneys.add(getString(R.string.contents_of_list_row));
+        for(int i=0; i<numberOfItems; i++){
+            //Make sure you have a string with the name "contents_of_list_row" in your strings.xml resource file
+            listOfJourneys.add(getString(R.string.contents_of_list_row));
+        }
+
 
         final JourneyDatabase db = Room.databaseBuilder(
                 getActivity().getApplicationContext(),
@@ -57,11 +70,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         });
 
         //Create the adapter and connect to the data
-//        ArrayAdapter<Journey> adapter = new ArrayAdapter<Journey>(
-//                getActivity().getApplicationContext(),
-//                android.R.layout.simple_list_item_1,
-//                Adapter.
-//        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                getContext(),
+                android.R.layout.simple_list_item_1,
+                listOfJourneys
+        );
 
         //Fetch the listview and connect to the adapter
 //        ListView lv_journeys = getView().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id

@@ -85,7 +85,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
 
                 //remove the Toast below when finished testing
-                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
                 start_journey.setVisibility(View.GONE);
                 finish_journey.setVisibility(View.VISIBLE);
@@ -106,7 +106,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                  AsyncTask.execute(new Runnable() {
                      @Override
                      public void run() {
-                         db.journeyDao().clearJourneys();
+//                         db.journeyDao().clearJourneys();
 
                          db.journeyDao().insertJourneys(
                                  new Journey(TotalDistance, null)
@@ -255,7 +255,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Location update", Toast.LENGTH_SHORT).show();
             getCameraUpdates(location);
 //            previousLocation = location;
             addPolyLinesToMap(location);
