@@ -87,7 +87,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 //        adapter.add("xcmkx");
         Log.d(adapter.getItem(0), "Adapter");
         Log.d(adapter.toString(), "Adapter2");
-        lv_journeys.setAdapter(adapter);
+//        lv_journeys.setAdapter(adapter);
 
 //        Set this activity to be the event listener for when list items are pressed
 //        lv_journeys.setOnItemClickListener(this);

@@ -77,7 +77,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
          start_journey = (Button) view.findViewById(R.id.start_journey_button);
          finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
-        final JourneyDatabase db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+         final JourneyDatabase db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
          start_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
