@@ -59,13 +59,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     //List Adapter
     private void ArrayAdapter(){
         //Obtain the data
-        int numberOfItems = 4;
-        ArrayList<String> listOfJourneys = new ArrayList<>(numberOfItems);
-//        listOfJourneys.add(getString(R.string.contents_of_list_row));
-        for(int i=0; i<numberOfItems; i++){
-            //Make sure you have a string with the name "contents_of_list_row" in your strings.xml resource file
-            listOfJourneys.add(getString(R.string.contents_of_list_row));
-        }
 
 
         final JourneyDatabase db = Room.databaseBuilder(
@@ -81,6 +74,15 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             }
         });
 
+        int numberOfItems = 4;
+        ArrayList<String> listOfJourneys = new ArrayList<>(numberOfItems);
+//        listOfJourneys.add(getString(R.string.contents_of_list_row));
+
+        for(int i=0; i<numberOfItems; i++){
+            //Make sure you have a string with the name "contents_of_list_row" in your strings.xml resource file
+            listOfJourneys.add(getString(R.string.contents_of_list_row));
+        }
+
         //Create the adapter and connect to the data
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getContext(),
@@ -90,7 +92,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         //Fetch the listview and connect to the adapter
         ListView lv_journeys = getActivity().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id
-        Log.d(adapter.getItem(0), "Adapter");
         Log.d(adapter.toString(), "Adapter2");
 
         ListView lv = v.findViewById(R.id.lv_journeys);
