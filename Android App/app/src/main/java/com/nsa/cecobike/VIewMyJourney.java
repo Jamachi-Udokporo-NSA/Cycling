@@ -32,19 +32,14 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Init
-
         v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
         ArrayAdapter();
-//        v.findViewById(R.id.lv_journeys);
         return v;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ArrayAdapter();
     }
 
     @Override
@@ -58,7 +53,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     }
     //List Adapter
     private void ArrayAdapter(){
-//        //Obtain the data
+       //Obtain the data
 
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
 
@@ -86,19 +81,10 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                         ListView lv = v.findViewById(R.id.lv_journeys);
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(VIewMyJourney.this);
-//                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                Toast.makeText(VIewMyJourney.this,
-//                                        String.format("%s was chosen.", listOfJourneys),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
                     }
                 });
             }
         });
-//        lv_journeys.setOnItemClickListener(getActivity());
     }
 
     @Override
