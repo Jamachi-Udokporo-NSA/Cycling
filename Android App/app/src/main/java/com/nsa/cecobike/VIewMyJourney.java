@@ -70,41 +70,39 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String l = String.valueOf(journeys.size());
-                        Log.d(l, "test 2000");
+                        numberOfJourneys = journeys.size();
+                        for(int i=0; i-1!=numberOfJourneys; i++){
+                            String number = String.valueOf(numberOfJourneys);
+                            Log.d(number , "msg");
+                            listOfJourneys.add(String.format("Journey %d", i));
+                        }
+                        //Create the adapter and connect to the data
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                                getContext(),
+                                android.R.layout.simple_list_item_1,
+                                listOfJourneys
+                        );
+                        //Fetch the listview and connect to the adapter
+                        ListView lv = v.findViewById(R.id.lv_journeys);
+                        lv.setAdapter(adapter);
+                        lv.setOnItemClickListener(VIewMyJourney.this);
+//                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                Toast.makeText(VIewMyJourney.this,
+//                                        String.format("%s was chosen.", listOfJourneys),
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
                     }
                 });
             }
-
-
         });
-
-        numberOfJourneys = 8;
-        for(int i=0; i<numberOfJourneys; i++){
-            listOfJourneys.add(String.format("Journey %d", i));
-        }
-
-        //Create the adapter and connect to the data
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getContext(),
-                android.R.layout.simple_list_item_1,
-                listOfJourneys
-        );
-
-        //Fetch the listview and connect to the adapter
-         Log.d(adapter.toString(), "Adapter2");
-
-        ListView lv = v.findViewById(R.id.lv_journeys);
-        lv.setAdapter(adapter);
-
-//        Set this activity to be the event listener for when list items are pressed
 //        lv_journeys.setOnItemClickListener(getActivity());
     }
 
-
-
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Toast.makeText(getContext(), String.format("Item clicked on = %d", i), Toast.LENGTH_SHORT).show();
     }
 }
