@@ -6,6 +6,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
+import android.widget.Chronometer;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,10 @@ public class Journey{
     private Double distance;
 
     @ColumnInfo(name = "duration")
-    private Double duration;
+    private Chronometer duration;
 
 
-    public Journey(Double distance, Double duration) {
+    public Journey(Double distance, Chronometer duration) {
         this.distance = distance;
         this.duration = duration;
     }
@@ -39,7 +40,7 @@ public class Journey{
         return distance;
     }
 
-    public Double getDuration() {
+    public Chronometer getDuration() {
         return duration;
     }
 

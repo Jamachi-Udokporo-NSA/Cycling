@@ -115,7 +115,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 getlatlon();
 
                 TotalDistance = TotalDistance * 100;
-                //remove the Toast below when finished testing
 //                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
@@ -124,14 +123,11 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void run() {
                         // db.journeyDao().clearJourneys();
-
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, null)
-
+                                new Journey(TotalDistance, Timer)
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
-
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
