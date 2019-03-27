@@ -15,6 +15,8 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     //    View Creation
 
     private View v;
+    private ArrayList<String> listOfJourneys = new ArrayList<>();
+    private int numberOfJourneys;
+    private JourneyDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,36 +56,32 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         // Required empty public constructor
 
     }
-
-//    Database Implementation
-    Activity context;
-
-
     //List Adapter
     private void ArrayAdapter(){
-        //Obtain the data
+//        //Obtain the data
 
-
-        final JourneyDatabase db = Room.databaseBuilder(
-                getActivity().getApplicationContext(),
-                JourneyDatabase.class,
-                "Journey Database"
-        ).build();
+        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                List journeys = db.journeyDao().getAllJourneys();
+                final List<Journey> journeys = db.journeyDao().getAllJourneys();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String l = String.valueOf(journeys.size());
+                        Log.d(l, "test 2000");
+                    }
+                });
             }
+
+
         });
 
-        int numberOfItems = 4;
-        ArrayList<String> listOfJourneys = new ArrayList<>(numberOfItems);
-//        listOfJourneys.add(getString(R.string.contents_of_list_row));
-
-        for(int i=0; i<numberOfItems; i++){
-            //Make sure you have a string with the name "contents_of_list_row" in your strings.xml resource file
-            listOfJourneys.add(getString(R.string.contents_of_list_row));
+        numberOfJourneys = 8;
+        for(int i=0; i<numberOfJourneys; i++){
+            listOfJourneys.add(String.format("Journey %d", i));
         }
 
         //Create the adapter and connect to the data
@@ -91,15 +92,13 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         );
 
         //Fetch the listview and connect to the adapter
-        ListView lv_journeys = getActivity().findViewById(R.id.lv_journeys); //Make sure that your listview in your layout file has this id
-        Log.d(adapter.toString(), "Adapter2");
+         Log.d(adapter.toString(), "Adapter2");
 
         ListView lv = v.findViewById(R.id.lv_journeys);
         lv.setAdapter(adapter);
 
 //        Set this activity to be the event listener for when list items are pressed
 //        lv_journeys.setOnItemClickListener(getActivity());
-
     }
 
 

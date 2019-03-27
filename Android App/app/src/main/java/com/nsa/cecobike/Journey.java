@@ -42,4 +42,13 @@ public class Journey{
     public Double getDuration() {
         return duration;
     }
+
+    @Override
+    public String toString() {
+        return "Journey{" +
+                "jid=" + jid +
+                ", distance=" + distance +
+                ", duration=" + duration +
+                '}';
+    }
 }
