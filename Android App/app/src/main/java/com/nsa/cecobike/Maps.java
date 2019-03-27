@@ -1,6 +1,7 @@
 package com.nsa.cecobike;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,7 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +27,16 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Maps extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -45,6 +46,10 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     private Chronometer Timer;
     private boolean running;
     LocationManager locationManager;
+
+    //List of Points for Database:
+    ArrayList<Point> coordinates = new ArrayList<>();
+    Double TotalDistance = 0.0;
 
     public Maps() {
         // Required empty public constructor
@@ -75,12 +80,15 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         //button to start the journey
 
-         start_journey = (Button) view.findViewById(R.id.start_journey_button);
-         finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
-         start_journey.setOnClickListener(new View.OnClickListener() {
+        start_journey = (Button) view.findViewById(R.id.start_journey_button);
+        finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
+        final JourneyDatabase db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+
+        start_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Start journey actions start here
+
 
                 //remove the Toast below when finished testing
 //                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
@@ -91,26 +99,49 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 startTimer(Timer);
             }
         });
-         finish_journey.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 //finish journey actions start here 
+        finish_journey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //finish journey actions start here
 
-                 //remove the Toast below when finished testing
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(getContext(),
+                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestStoragePermission();
+                    return;
+                }
+                //Calculates Distance
+                getlatlon();
+
+                TotalDistance = TotalDistance * 100;
+                //remove the Toast below when finished testing
 //                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
-                 if (ActivityCompat.checkSelfPermission(getContext(),
-                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                         ActivityCompat.checkSelfPermission(getContext(),
-                                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                     requestStoragePermission();
-                     return;
-                 }
-                 locationManager.removeUpdates(locationListenerGPS);
-                 mMap.setMyLocationEnabled(false);
-                 stopTimer(Timer);
+                locationManager.removeUpdates(locationListenerGPS);
+                mMap.setMyLocationEnabled(false);
+                stopTimer(Timer);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // db.journeyDao().clearJourneys();
 
-             }
-         });
+                        db.journeyDao().insertJourneys(
+                                new Journey(TotalDistance, null)
+
+                        );
+                        final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                        Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public void startTimer (View v){
@@ -121,12 +152,12 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void stopTimer (View v) {
-        if (running) {
-            Timer.stop();
-            running = false;
+    public void stopTimer (View v){
+        if(running){
+        Timer.stop();
+        running=false;
         }
-    }
+        }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -157,6 +188,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 5, locationListenerGPS);
 
     }
+
 
     private void getCameraUpdates(Location location)
     {
@@ -204,10 +236,43 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
+                coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
                 mMap.addPolyline(polyline);
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
         });
+    }
+
+    public void getlatlon(){
+        //Calculating the distance in meters
+        double latitude = 0;
+        double longitude = 0;
+
+        for (int i = 0; i+1 < coordinates.size(); i++){
+            if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
+                latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
+            }
+            else if(coordinates.get(i).getpLat() > coordinates.get(i+1).getpLat()) {
+                latitude = coordinates.get(i).getpLat() - coordinates.get(i+1).getpLat();
+            }
+            if (coordinates.get(i).getpLon() < coordinates.get(i+1).getpLon()){
+                longitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
+            }
+            else if(coordinates.get(i).getpLon() > coordinates.get(i+1).getpLon()) {
+                longitude = coordinates.get(i).getpLon() - coordinates.get(i+1).getpLon();
+            }
+            getcaldistance(latitude, longitude);
+        }
+    }
+
+    public void getcaldistance(Double latitude, Double longitude){
+        latitude = latitude * latitude;
+        longitude = longitude * longitude;
+
+        Double Distance = Math.sqrt(latitude + longitude);
+        TotalDistance = TotalDistance + Distance;
+        String t = String.valueOf(TotalDistance*100);
+        Log.d(t, "size");
     }
 
     LocationListener locationListenerGPS = new LocationListener() {

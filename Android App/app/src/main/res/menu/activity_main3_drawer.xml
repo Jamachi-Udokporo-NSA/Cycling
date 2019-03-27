@@ -9,23 +9,14 @@
             android:icon="@drawable/ic_navigation_black_24dp"
             android:title="Track My Journey" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_view_my_journeys"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="View my Journeys" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_goal_contribution"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Goal Contribution" />
 
-        <item
-            android:id="@+id/nav_half_battery"
-            android:icon="@drawable/ic_battery_50_black_24dp"
-            android:title="@string/app_name"
-            />
     </group>
 
     <item android:title="Communicate">
