@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,8 +59,10 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestStoragePermission();
     }
 
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -173,8 +176,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
         getCameraUpdates(location);
         previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -214,8 +217,9 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                     Toast.makeText(this.getActivity(), "Access is now granted", Toast.LENGTH_SHORT).show();
                     // permission was granted, yay!
                 } else {
-                    Toast.makeText(this.getActivity(), "Access has been declined by user", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this.getActivity(), "Access has been declined by user", Toast.LENGTH_SHORT).show();
                     Toast.makeText(this.getActivity(), "Permission must be accepted to start", Toast.LENGTH_SHORT).show();
+                    requestStoragePermission();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -291,8 +295,12 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
         @Override
         public void onProviderDisabled(String provider) {
-
+            Toast.makeText(getContext(), "You must enable gps", Toast.LENGTH_SHORT).show();
         }
     };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }
