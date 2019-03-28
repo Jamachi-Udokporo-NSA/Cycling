@@ -21,10 +21,14 @@ public class Journey{
     @ColumnInfo(name = "duration")
     private Double duration;
 
+    @ColumnInfo(name = "date and time")
+    private String dateAndTime ;
 
-    public Journey(Double distance, Double duration) {
+
+    public Journey(Double distance, Double duration, String dateAndTime) {
         this.distance = distance;
         this.duration = duration;
+        this.dateAndTime = dateAndTime;
     }
 
     public void setJid(int jid) {
@@ -43,12 +47,17 @@ public class Journey{
         return duration;
     }
 
+    public String getDateAndTime() {
+        return dateAndTime;
+    }
+
     @Override
     public String toString() {
         return "Journey{" +
                 "jid=" + jid +
                 ", distance=" + distance +
                 ", duration=" + duration +
+                ", dateAndTime='" + dateAndTime + '\'' +
                 '}';
     }
 }

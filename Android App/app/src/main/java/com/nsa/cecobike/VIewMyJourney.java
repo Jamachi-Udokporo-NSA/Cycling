@@ -3,9 +3,11 @@ package com.nsa.cecobike;
 import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.util.Log;
@@ -64,18 +66,20 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
 
                 getActivity().runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
                         listOfJourneys.add(String.format("Journey " + 0));
                         for(int i=0; i!=numberOfJourneys; i++){
-                            listOfJourneys.add(String.format("Journey " + (i+1)));
+                            listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
                             Log.d(journeys.get(i).toString(), "Journey" + i);
                         }
                         //Create the adapter and connect to the data
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                                 getContext(),
-                                android.R.layout.simple_list_item_1,
+//                                android.R.layout.list_view,
+                                R.layout.list_view_layout,
                                 listOfJourneys
                         );
                         //Fetch the listview and connect to the adapter
