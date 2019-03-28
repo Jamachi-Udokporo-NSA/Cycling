@@ -70,7 +70,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                         listOfJourneys.add(String.format("Journey " + 0));
                         for(int i=0; i!=numberOfJourneys; i++){
                             listOfJourneys.add(String.format("Journey " + (i+1)));
-                            Log.d(journeys.get(0).toString(), "Journey" + i);
+                            Log.d(journeys.get(i).toString(), "Journey" + i);
                         }
                         //Create the adapter and connect to the data
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -80,7 +80,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                         );
                         //Fetch the listview and connect to the adapter
                         ListView lv = v.findViewById(R.id.lv_journeys);
-                        Log.d(adapter.getItem(0), "adapter");
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(VIewMyJourney.this);
                     }

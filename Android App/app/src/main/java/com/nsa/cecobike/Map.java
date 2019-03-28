@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,12 +120,14 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
+                final Double seconds = ((double) calculateElapsedTime(Timer) /1000);
+                Log.d("Timer", String.valueOf(seconds));
                         AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        // db.journeyDao().clearJourneys();
+//                        db.journeyDao().clearJourneys();
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, Double.valueOf(String.valueOf(Timer)))
+                                new Journey(TotalDistance, seconds)
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
@@ -134,10 +137,29 @@ public class Map extends Fragment implements OnMapReadyCallback {
                                 Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
                             }
                         });
+                        db.close();
                     }
                 });
             }
         });
+    }
+    private long calculateElapsedTime(Chronometer mChronometer) {
+
+        long stoppedMilliseconds = 0;
+
+        String caronText = mChronometer.getText().toString();
+        String array[] = caronText.split(":");
+        if (array.length == 2) {
+            stoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 1000
+                    + Integer.parseInt(array[1]) * 1000;
+        } else if (array.length == 3) {
+            stoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 60 * 1000
+                    + Integer.parseInt(array[1]) * 60 * 1000
+                    + Integer.parseInt(array[2]) * 1000;
+        }
+
+        return stoppedMilliseconds;
+
     }
 
     public void startTimer (View v){
