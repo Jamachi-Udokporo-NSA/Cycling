@@ -124,7 +124,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                     public void run() {
                         // db.journeyDao().clearJourneys();
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, Timer)
+                                new Journey(TotalDistance, null)
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
