@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Entity
 public class Journey{
@@ -24,11 +25,14 @@ public class Journey{
     @ColumnInfo(name = "date and time")
     private String dateAndTime ;
 
+    @ColumnInfo(name = "coordinates")
+    private ArrayList<Point>coordinates;
 
-    public Journey(Double distance, Double duration, String dateAndTime) {
+    public Journey(Double distance, Double duration, String dateAndTime, ArrayList<Point> coordinates) {
         this.distance = distance;
         this.duration = duration;
         this.dateAndTime = dateAndTime;
+        this.coordinates = coordinates;
     }
 
     public void setJid(int jid) {
@@ -51,6 +55,10 @@ public class Journey{
         return dateAndTime;
     }
 
+    public ArrayList<Point> getCoordinates() {
+        return coordinates;
+    }
+
     @Override
     public String toString() {
         return "Journey{" +
@@ -58,6 +66,7 @@ public class Journey{
                 ", distance=" + distance +
                 ", duration=" + duration +
                 ", dateAndTime='" + dateAndTime + '\'' +
+                ", coordinates=" + coordinates +
                 '}';
     }
 }
