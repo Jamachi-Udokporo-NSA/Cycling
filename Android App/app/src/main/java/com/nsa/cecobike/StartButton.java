@@ -1,7 +1,5 @@
 package com.nsa.cecobike;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
@@ -29,7 +27,7 @@ public class StartButton extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.start_fragment, new Maps())
+                        .replace(R.id.start_fragment, new Map())
                         .commit();
             }
         });

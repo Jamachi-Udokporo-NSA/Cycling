@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Maps extends Fragment implements OnMapReadyCallback {
+public class Map extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private final int STORAGE_PERMISSION_CODE = 1;
     LatLng previousLocation;
@@ -51,7 +51,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     ArrayList<Point> coordinates = new ArrayList<>();
     Double TotalDistance = 0.0;
 
-    public Maps() {
+    public Map() {
         // Required empty public constructor
     }
 
@@ -119,12 +119,12 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
-                AsyncTask.execute(new Runnable() {
+                        AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
                         // db.journeyDao().clearJourneys();
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, Timer)
+                                new Journey(TotalDistance, Double.valueOf(String.valueOf(Timer)))
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));

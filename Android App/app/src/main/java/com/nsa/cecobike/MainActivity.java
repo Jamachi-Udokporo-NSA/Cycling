@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.start_fragment, new Maps()).commit();
+                    .replace(R.id.start_fragment, new Map()).commit();
             navigationView.setCheckedItem(R.id.nav_track_my_journey);
         }
     }
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_track_my_journey) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.start_fragment, new Maps()).commit();
+                    .replace(R.id.start_fragment, new Map()).commit();
             navigationView.setCheckedItem(R.id.nav_track_my_journey);
         } else if (id == R.id.nav_view_my_journeys) {
 //            Toast.makeText(this, "View_my_journey fragment has not been created yet", Toast.LENGTH_SHORT).show();
