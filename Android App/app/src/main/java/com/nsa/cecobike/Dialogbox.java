@@ -5,13 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 
-public class Dialogbox extends DialogFragment {
+public class Dialogbox extends Fragment {
     private Button button;
 
     @Override
@@ -30,7 +31,8 @@ public class Dialogbox extends DialogFragment {
     }
 
     public void openDialog(){
-        Dialogboxaction exmapleDilaog = new Dialogboxaction();
-        exmapleDilaog.show(getFragmentManager(), "anything");
+        Dialogboxaction dialaog = new Dialogboxaction();
+        dialaog.show(getSupporttManager(), "anything");
     }
+
 }
