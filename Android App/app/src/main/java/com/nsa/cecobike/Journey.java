@@ -6,7 +6,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
-import android.widget.Chronometer;
 
 import java.util.ArrayList;
 
@@ -22,10 +21,18 @@ public class Journey{
     @ColumnInfo(name = "duration")
     private Double duration;
 
+    @ColumnInfo(name = "date and time")
+    private String dateAndTime ;
 
+<<<<<<< HEAD
     public Journey(Double distance, Double duration) {
+=======
+
+    public Journey(Double distance, Double duration, String dateAndTime) {
+>>>>>>> viewmyjourneys-feature
         this.distance = distance;
         this.duration = duration;
+        this.dateAndTime = dateAndTime;
     }
 
     public void setJid(int jid) {
@@ -44,12 +51,17 @@ public class Journey{
         return duration;
     }
 
+    public String getDateAndTime() {
+        return dateAndTime;
+    }
+
     @Override
     public String toString() {
         return "Journey{" +
                 "jid=" + jid +
                 ", distance=" + distance +
                 ", duration=" + duration +
+                ", dateAndTime='" + dateAndTime + '\'' +
                 '}';
     }
 }

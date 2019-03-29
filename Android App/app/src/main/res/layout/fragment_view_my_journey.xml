@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/list_view_my_journeys"
     tools:context=".VIewMyJourney"
-    android:background="#015b66">
+    android:background="@color/common_google_signin_btn_text_dark_pressed">
 
     <!--You Died-->
     <ListView
@@ -14,4 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+<<<<<<< HEAD
 </android.support.v7.widget.LinearLayoutCompat>
+=======
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textSize"
+        android:textSize="20sp"
+        android:textColor="#ff0000" />
+
+</RelativeLayout>
+>>>>>>> viewmyjourneys-feature
