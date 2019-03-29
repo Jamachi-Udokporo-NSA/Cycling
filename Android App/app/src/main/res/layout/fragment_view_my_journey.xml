@@ -9,6 +9,7 @@
     android:background="@color/common_google_signin_btn_text_dark_pressed">
 
     <ListView
+        android:layout_marginTop="55dp"
         android:id="@+id/lv_journeys"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
