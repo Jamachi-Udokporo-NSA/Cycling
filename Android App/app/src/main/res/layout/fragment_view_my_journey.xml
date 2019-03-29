@@ -8,18 +8,41 @@
     tools:context=".VIewMyJourney"
     android:background="@color/common_google_signin_btn_text_dark_pressed">
 
-    <!--You Died-->
-    <ListView
-        android:layout_marginTop="55dp"
-        android:id="@+id/lv_journeys"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/progress"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:layout_marginRight="@dimen/row_padding"
+        android:src="@drawable/ic_menu_camera"/>
+
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textSize"
-        android:textSize="20sp"
-        android:textColor="#ff0000" />
+    <!--You Died-->
+    <!--<ListView-->
+        <!--android:layout_marginTop="55dp"-->
+        <!--android:id="@+id/lv_journeys"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/journey_text"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Journeys "/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/dateAndTime_text"
+            android:textColor="@android:color/tertiary_text_light"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date and Time"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>
