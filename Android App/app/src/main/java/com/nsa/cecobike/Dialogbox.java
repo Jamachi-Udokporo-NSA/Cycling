@@ -3,6 +3,7 @@ package com.nsa.cecobike;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-public class Dialogbox extends Fragment {
+public class Dialogbox extends DialogFragment {
     private Button button;
 
     @Override
@@ -30,6 +31,6 @@ public class Dialogbox extends Fragment {
 
     public void openDialog(){
         Dialogboxaction exmapleDilaog = new Dialogboxaction();
-        Dialogboxaction.show(getSupportFragmentManager(), "anything I want");
+        exmapleDilaog.show(getFragmentManager(), "anything");
     }
 }
