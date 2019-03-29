@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class Dialogbox extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_dialogbox, container, false);
-        button = (Button) v.findViewById(R.id.finish_journey_button);
+        button = (Button) v.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,10 +30,9 @@ public class Dialogbox extends Fragment {
         });
         return v;
     }
-
+//code implementation in maps
     public void openDialog(){
-        Dialogboxaction dialaog = new Dialogboxaction();
-        dialaog.show(getSupporttManager(), "anything");
+//        Dialogboxaction dialaog = new Dialogboxaction();
+//        dialaog.show(getActivity().getSupportFragmentManager(), "anything");
     }
-
 }
