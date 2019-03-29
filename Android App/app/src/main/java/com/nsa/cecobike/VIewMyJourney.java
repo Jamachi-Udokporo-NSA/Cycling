@@ -70,7 +70,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-                        listOfJourneys.add(String.format("Journey " + 0));
                         for(int i=0; i!=numberOfJourneys; i++){
                             listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
                             Log.d(journeys.get(i).toString(), "Journey" + i);
