@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DividerItemDecoration;
@@ -56,11 +57,12 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-                        for (int i = 0; i != numberOfJourneys; i++) {
-                            {
-                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
-                            }
-                        }
+//                        for (int i = 0; i != numberOfJourneys; i++) {
+//                            {
+//                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
+                                listOfJourneys = journeys;
+//                            }
+//                        }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -183,6 +185,10 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                                 String.valueOf((i+1)),
                                 this.JourneyText.getText()),
                         Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.start_fragment, new ViewAJourney());
+                transaction.commit();
+                listOfJourneys.get(i).getJid();
             }
         }
 
