@@ -1,7 +1,7 @@
 package com.nsa.cecobike;
 
-import android.app.Activity;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,18 +9,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +31,45 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     //    View Creation
 
     private View v;
-    private ArrayList<String> listOfJourneys = new ArrayList<>();
+    private List<Journey> listOfJourneys;
     private int numberOfJourneys;
     private JourneyDatabase db;
+
+    private static final int COLUMN_COUNT = 1;
+
+    private RecyclerView recyclerView;
+    private CustomRecyclerViewAdapter customAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_view_my_journey, container, false);
-        ArrayAdapter();
+        v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
+//        ArrayAdapter();
+        listOfJourneys = new ArrayList<Journey>();
+        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        numberOfJourneys = journeys.size();
+                        for (int i = 0; i != numberOfJourneys; i++) {
+                            {
+                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
+                            }
+                        }
+                        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+                        CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerView.setAdapter(recyclerViewAdapter);
+
+                    }
+                });
+            }
+        });
         return v;
     }
 
@@ -55,44 +88,103 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
     }
     //List Adapter
-    private void ArrayAdapter(){
-       //Obtain the data
-
-        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                final List<Journey> journeys = db.journeyDao().getAllJourneys();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void run() {
-                        numberOfJourneys = journeys.size();
-                        for(int i=0; i!=numberOfJourneys; i++){
-                            listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
-                            Log.d(journeys.get(i).toString(), "Journey" + i);
-                        }
+//    private void ArrayAdapter(){
+//        Obtain the data
+//        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+//
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                final List<Journey> journeys = db.journeyDao().getAllJourneys();
+//
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//                    @Override
+//                    public void run() {
+//                        numberOfJourneys = journeys.size();
+//                        for(int i=0; i!=numberOfJourneys; i++){
+//                            listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
+//                            Log.d(journeys.get(i).toString(), "Journey" + i);
+//                        }
                         //Create the adapter and connect to the data
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                                getContext(),
-//                                android.R.layout.list_view,
-                                R.layout.list_view_layout,
-                                listOfJourneys
-                        );
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                                getContext(),
+//                                R.layout.list_view_layout,
+//                                listOfJourneys
+//                        );
                         //Fetch the listview and connect to the adapter
-                        ListView lv = v.findViewById(R.id.lv_journeys);
-                        lv.setAdapter(adapter);
-                        lv.setOnItemClickListener(VIewMyJourney.this);
-                    }
-                });
-            }
-        });
-    }
+//                        ListView lv = v.findViewById(R.id.lv_journeys);
+//                        lv.setAdapter(adapter);
+//                        lv.setOnItemClickListener(VIewMyJourney.this);
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(getContext(), String.format("Item clicked on = %d", i), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), String.format("Journey clicked on = %d", i), Toast.LENGTH_SHORT).show();
+    }
+
+
+    private class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.CustomViewHolder> {
+
+        Context mContext;
+        List<Journey>mData;
+
+        public CustomRecyclerViewAdapter(Context mContext, List<Journey> mData) {
+            this.mContext = mContext;
+            this.mData = mData;
+
+            Log.d("TEST", String.valueOf(mData.size()));
+        }
+
+        @Override
+        public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View row = LayoutInflater.from(mContext).inflate(R.layout.fragment_view_my_journey, parent, false);
+            CustomViewHolder cHolder = new CustomViewHolder(row);
+            return cHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
+            customViewHolder.JourneyText.setText("Journey " + (position + 1));
+            customViewHolder.DateAndTimeText.setText(mData.get(position).getDateAndTime());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mData.size();
+        }
+
+        protected class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            private AppCompatTextView JourneyText;
+            private AppCompatTextView DateAndTimeText;
+            private AppCompatImageView icon;
+
+            CustomViewHolder(View itemView) {
+                super(itemView);
+
+                JourneyText = (AppCompatTextView) itemView.findViewById(R.id.journey_text);
+                DateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
+                icon = (AppCompatImageView) itemView.findViewById(R.id.progress);
+
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+
+                int i = this.getAdapterPosition();
+                Toast.makeText(getContext(),
+                        String.format(getString(R.string.item_on_tapped_toast_test),
+                                String.valueOf((i+1)),
+                                this.JourneyText.getText()),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 }
