@@ -30,6 +30,8 @@ public class SetGoal extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
         // Inflate the layout for this fragment
+        seekBar = (SeekBar) v.findViewById(R.id.seek_bar);
+        textView = (TextView) v.findViewById(R.id.goal_miles);
         return v;
     }
 
@@ -37,9 +39,9 @@ public class SetGoal extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //        Seekbar Code Below
-//        seekBar = seekBar.findViewById(R.id.seek_bar);
-//        textView = textView.findViewById(R.id.goal_miles);
-//
+        seekBar = seekBar.findViewById(R.id.seek_bar);
+        textView = textView.findViewById(R.id.goal_miles);
+
 //        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 //            @Override
 //            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
