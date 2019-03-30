@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -162,14 +163,14 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         protected class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             private AppCompatTextView JourneyText;
             private AppCompatTextView DateAndTimeText;
-            private AppCompatImageView icon;
+            private ProgressBar progressBar;
 
             CustomViewHolder(View itemView) {
                 super(itemView);
 
                 JourneyText = (AppCompatTextView) itemView.findViewById(R.id.journey_text);
                 DateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
-                icon = (AppCompatImageView) itemView.findViewById(R.id.progress);
+                progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
 
                 itemView.setOnClickListener(this);
             }

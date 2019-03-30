@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_view_my_journeys"
     tools:context=".VIewMyJourney"
     android:background="@color/common_google_signin_btn_text_dark_pressed"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/progress"
+    <ProgressBar
+        android:id="@+id/determ_circular_progress"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="@dimen/row_padding"
-        android:layout_marginRight="@dimen/row_padding"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_menu_camera"
-        />
+        style="?android:progressBarStyleHorizontal"
+        android:progress="75"
+        android:padding="2pt"
+        android:progressDrawable="@drawable/circle"/>
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-    <!--You Died-->
-    <!--<ListView-->
-        <!--android:layout_marginTop="55dp"-->
-        <!--android:id="@+id/lv_journeys"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/journey_text"

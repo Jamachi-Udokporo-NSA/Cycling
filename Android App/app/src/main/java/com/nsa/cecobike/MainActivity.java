@@ -100,8 +100,11 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_share) {
             Toast.makeText(this, "share fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_send) {
-            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_set_goal) {
+            Toast.makeText(this, "Set Goal Fragment is in Development", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new SetGoal()).commit();
+            navigationView.setCheckedItem(R.id.nav_set_goal);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
