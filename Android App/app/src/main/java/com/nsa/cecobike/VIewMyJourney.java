@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
-
+    EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
     private int numberOfJourneys;
@@ -61,6 +63,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 //                            {
 //                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
                                 listOfJourneys = journeys;
+                                Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
 //                        }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
@@ -179,16 +182,25 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             @Override
             public void onClick(View view) {
 
+
                 int i = this.getAdapterPosition();
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
                                 String.valueOf((i+1)),
                                 this.JourneyText.getText()),
                         Toast.LENGTH_SHORT).show();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.start_fragment, new ViewAJourney());
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("Journey id", listOfJourneys.get(i).getJid());
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                ViewAJourney viewAJourney = new ViewAJourney();
+                viewAJourney.setArguments(bundle);
+
+                transaction.replace(R.id.start_fragment, viewAJourney);
                 transaction.commit();
-                listOfJourneys.get(i).getJid();
             }
         }
 
