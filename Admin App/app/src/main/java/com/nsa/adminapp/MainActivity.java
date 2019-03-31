@@ -16,6 +16,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+    private boolean isDrawerVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,30 +25,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        toggleDrawer(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawerLayout.addDrawerListener(toggle);
-                toggle.syncState();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
         }
 
+
     }
+
+    public void toggleDrawer(Toolbar toolbar) {
+        if(isDrawerVisible) {
+            drawerLayout = findViewById(R.id.drawer_layout);
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         NavigationView navigationView = findViewById(R.id.nav_view);
         Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
 
     }
 
+    public void setDrawerVisible(boolean drawerVisible) {
+        isDrawerVisible = drawerVisible;
+    }
+
+    public boolean isDrawerVisible() {
+        return isDrawerVisible;
+    }
 }
