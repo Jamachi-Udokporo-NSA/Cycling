@@ -6,13 +6,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_track_my_journey"
-            android:title="Track My Journey" />
+            android:title="Heat Map" />
         <item
             android:id="@+id/nav_view_my_journeys"
-            android:title="View my Journeys" />
+            android:title="Empty Section 1" />
         <item
             android:id="@+id/nav_goal_contribution"
-            android:title="Goal Contribution" />
+            android:title="Empty Section 2" />
 
     </group>
 
@@ -20,10 +20,10 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:title="Share" />
+                android:title="Export" />
             <item
                 android:id="@+id/nav_send"
-                android:title="Send" />
+                android:title="Log Out" />
         </menu>
     </item>
 
