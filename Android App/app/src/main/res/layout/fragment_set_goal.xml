@@ -17,11 +17,18 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/seek_bar"
-                    android:max="100"
+                    android:max="600"
                     android:progress="0"
                     android:progressDrawable="@drawable/goal_track"
                     android:thumb="@drawable/goal_thumb"
                     android:indeterminate="false" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set your goal in Miles"
+                android:textSize="30sp"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -35,15 +42,6 @@
                 android:text=""
                 android:id="@+id/goal_miles"
                 android:textSize="35sp"/>
-
         </TableRow>
-
-
     </TableLayout>
-
-
-
-
-
-
 </android.support.v7.widget.LinearLayoutCompat>
