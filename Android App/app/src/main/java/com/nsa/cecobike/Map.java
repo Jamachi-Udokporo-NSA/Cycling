@@ -279,18 +279,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
         double longitude = 0;
 
         for (int i = 0; i+1 < coordinates.size(); i++){
-            if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
-                latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
-            }
-            else if(coordinates.get(i).getpLat() > coordinates.get(i+1).getpLat()) {
-                latitude = coordinates.get(i).getpLat() - coordinates.get(i+1).getpLat();
-            }
-            if (coordinates.get(i).getpLon() < coordinates.get(i+1).getpLon()){
-                longitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
-            }
-            else if(coordinates.get(i).getpLon() > coordinates.get(i+1).getpLon()) {
-                longitude = coordinates.get(i).getpLon() - coordinates.get(i+1).getpLon();
-            }
+            latitude = coordinates.get(i).getpLat() - coordinates.get(i+1).getpLat();
+            longitude = coordinates.get(i).getpLon() - coordinates.get(i+1).getpLon();
             getcaldistance(latitude, longitude);
         }
     }
