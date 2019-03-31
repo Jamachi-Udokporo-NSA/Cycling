@@ -18,19 +18,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private boolean isDrawerVisible = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if(!isDrawerVisible) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
+            }
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         toggleDrawer(toolbar);
 
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
-        }
 
 
     }
