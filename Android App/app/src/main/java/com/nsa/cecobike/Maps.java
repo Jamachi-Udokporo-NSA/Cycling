@@ -150,8 +150,8 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 });
 
 
-                Dialogboxaction dialaog = new Dialogboxaction();
-                dialaog.show(getActivity().getSupportFragmentManager(), "anything");
+                Dialogboxaction dialog = new Dialogboxaction();
+                dialog.show(getActivity().getSupportFragmentManager(), "anything");
             }
         });
     }
