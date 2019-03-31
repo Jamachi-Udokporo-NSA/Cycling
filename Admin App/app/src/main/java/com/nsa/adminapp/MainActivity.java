@@ -1,33 +1,61 @@
 package com.nsa.adminapp;
 
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.draw_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawerLayout = (DrawerLayout)findViewById(R.id.draw_layout);
-//        NavigationView navigationView = findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout = findViewById(R.id.draw_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
                 drawerLayout.addDrawerListener(toggle);
                 toggle.syncState();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
-//            navigationView.setCheckedItem(R.id.nav_track_my_journey);
+            navigationView.setCheckedItem(R.id.nav_track_my_journey);
         }
+
+    }
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        if (id == R.id.nav_track_my_journey) {
+            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_view_my_journeys) {
+            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_goal_contribution) {
+            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_share) {
+            Toast.makeText(this, "share fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_send) {
+            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        }
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.draw_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
 
     }
 
