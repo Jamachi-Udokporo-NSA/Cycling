@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DividerItemDecoration;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +32,7 @@ import java.util.List;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
-
+    EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
     private int numberOfJourneys;
@@ -56,11 +59,13 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-                        for (int i = 0; i != numberOfJourneys; i++) {
-                            {
-                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
-                            }
-                        }
+//                        for (int i = 0; i != numberOfJourneys; i++) {
+//                            {
+//                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
+                                listOfJourneys = journeys;
+                                Log.d(listOfJourneys.toString(), "All journeys");
+//                            }
+//                        }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -177,12 +182,25 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             @Override
             public void onClick(View view) {
 
+
                 int i = this.getAdapterPosition();
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
-                                String.valueOf((i+1)),
+                                String.valueOf(i),
                                 this.JourneyText.getText()),
                         Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
+                bundle.putInt("Journey id", i);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                ViewAJourney viewAJourney = new ViewAJourney();
+                viewAJourney.setArguments(bundle);
+
+                transaction.replace(R.id.start_fragment, viewAJourney);
+                transaction.commit();
             }
         }
 
