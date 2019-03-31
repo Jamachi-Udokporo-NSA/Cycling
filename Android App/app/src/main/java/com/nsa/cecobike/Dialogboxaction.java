@@ -12,7 +12,7 @@ public class Dialogboxaction extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Information") //change the dialog box header here
-                .setMessage("Enter emissions saved, etc here") // change/input the emmissions saved here
+                .setMessage("Your Journey has been saved") // change/input the emmissions saved here
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
