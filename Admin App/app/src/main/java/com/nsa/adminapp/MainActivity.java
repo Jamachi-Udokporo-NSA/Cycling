@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private boolean isDrawerVisible = false;
+    private Toolbar toolbar;
 
 
     @Override
@@ -28,8 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
             }
         }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         toggleDrawer(toolbar);
@@ -56,7 +56,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         NavigationView navigationView = findViewById(R.id.nav_view);
-        Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        if (id == R.id.log_out) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new LoginScreen()).commit();
+            navigationView.setCheckedItem(R.id.login_fragment);
+            isDrawerVisible = true;
+            finish();
+            startActivity(getIntent());
+        }else {
+            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
