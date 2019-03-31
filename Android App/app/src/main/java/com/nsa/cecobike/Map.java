@@ -51,6 +51,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private Chronometer Timer;
     private boolean running;
     LocationManager locationManager;
+    boolean permissionIsGranted = false;
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -95,15 +96,16 @@ public class Map extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 //Start journey actions start here
-
-
                 //remove the Toast below when finished testing
 //                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
-                getCurrentLocation();
-                start_journey.setVisibility(View.GONE);
-                finish_journey.setVisibility(View.VISIBLE);
-                Timer = view.findViewById(R.id.timer);
-                startTimer(Timer);
+                requestStoragePermission();
+                if (permissionIsGranted) {
+                    getCurrentLocation();
+                    start_journey.setVisibility(View.GONE);
+                    finish_journey.setVisibility(View.VISIBLE);
+                    Timer = view.findViewById(R.id.timer);
+                    startTimer(Timer);
+                }
             }
         });
         finish_journey.setOnClickListener(new View.OnClickListener() {
@@ -229,9 +231,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     }
     private void requestStoragePermission() {
-//        ActivityCompat.requestPermissions(this.getActivity(),
-//                   new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                STORAGE_PERMISSION_CODE);
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 STORAGE_PERMISSION_CODE);
     }
@@ -245,11 +244,12 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this.getActivity(), "Access is now granted", Toast.LENGTH_SHORT).show();
+                    permissionIsGranted = true;
                     // permission was granted, yay!
                 } else {
 //                    Toast.makeText(this.getActivity(), "Access has been declined by user", Toast.LENGTH_SHORT).show();
                     Toast.makeText(this.getActivity(), "Permission must be accepted to start", Toast.LENGTH_SHORT).show();
-                    requestStoragePermission();
+                    permissionIsGranted = false;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
