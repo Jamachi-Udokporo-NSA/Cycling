@@ -23,6 +23,7 @@ public class LoginScreen extends Fragment {
     EditText password;
     ImageView logo;
     TextView title;
+
     public LoginScreen() {
         // Required empty public constructor
     }
@@ -31,9 +32,7 @@ public class LoginScreen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-}
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,22 +48,21 @@ public class LoginScreen extends Fragment {
         logo.setX(-500);
         title = view.findViewById(R.id.title);
         title.setY(-100);
-        username  = view.findViewById(R.id.editText2);
-        password  = view.findViewById(R.id.editText1);
+        username = view.findViewById(R.id.editText2);
+        password = view.findViewById(R.id.editText1);
         mButton = view.findViewById(R.id.button1);
-        mButton.setOnClickListener( new View.OnClickListener() {
+        mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view)
-            {
-                if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
-                    Toast.makeText(view.getContext(),"Login Sucsessful",Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
+                    Toast.makeText(view.getContext(), "Login Sucsessful", Toast.LENGTH_SHORT).show();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     ft.replace(R.id.start_fragment, new HomePage(), "detailFragment");
                     ft.commit();
-                }else{
-                    Toast.makeText(view.getContext(),"Login Unsucsessful",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(view.getContext(), "Login Unsucsessful", Toast.LENGTH_SHORT).show();
 
                 }
 
