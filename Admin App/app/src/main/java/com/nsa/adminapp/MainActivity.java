@@ -7,7 +7,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+
 import android.view.MenuItem;
+
 import android.widget.Toast;
 
 
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.draw_main);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.draw_layout);
@@ -30,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.start_fragment, new LoginScreen()).commit();
-            navigationView.setCheckedItem(R.id.nav_track_my_journey);
         }
 
     }
@@ -39,20 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         NavigationView navigationView = findViewById(R.id.nav_view);
-
-
-        if (id == R.id.nav_track_my_journey) {
-            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_view_my_journeys) {
-            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_goal_contribution) {
-            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "share fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_send) {
-            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        }
-
+        Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
         drawerLayout = (DrawerLayout)findViewById(R.id.draw_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
