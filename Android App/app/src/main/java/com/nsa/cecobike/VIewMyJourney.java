@@ -186,12 +186,12 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 int i = this.getAdapterPosition();
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
-                                String.valueOf((i+1)),
+                                String.valueOf(i),
                                 this.JourneyText.getText()),
                         Toast.LENGTH_SHORT).show();
-
                 Bundle bundle = new Bundle();
-                bundle.putInt("Journey id", listOfJourneys.get(i).getJid());
+                Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
+                bundle.putInt("Journey id", i);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();

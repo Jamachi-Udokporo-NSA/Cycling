@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment"
-        android:textSize="100sp"
+        android:textSize="25sp"
         android:gravity="center"/>
 
 </FrameLayout>

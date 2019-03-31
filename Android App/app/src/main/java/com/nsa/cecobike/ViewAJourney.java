@@ -37,21 +37,29 @@ public class ViewAJourney extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_view_ajourney, container, false);
         // Inflate the layout for this fragment
-        getJourneyInfo();
+        getJourneyInfo(v);
+        return v;
+    }
+
+    private View getJourneyInfo(final View v){
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
                 getActivity().runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
                         listOfJourneys = journeys;
+                        Log.d("test journey id", String.valueOf(listOfJourneys.get(0).getJid()));
                         Bundle bundle = getArguments();
                         int text = bundle.getInt("Journey id");
+                        Log.d("actual journey id", String.valueOf(text));
                         TextView JourneyText = (TextView) v.findViewById(R.id.text_journey);
-                        JourneyText.setText(String.format("%s%s%s%s%s", listOfJourneys.get(text).getDateAndTime(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
-                        return v;
+                        JourneyText.setText(String.format("Date and Time : %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDateAndTime(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
+//                        JourneyText.setText("Date and Time: " + listOfJourneys.get(text).getDateAndTime() );
+
                     }
                 });
             }
@@ -59,7 +67,4 @@ public class ViewAJourney extends Fragment {
         return v;
     }
 
-    private void getJourneyInfo(){
-        
-    }
 }
