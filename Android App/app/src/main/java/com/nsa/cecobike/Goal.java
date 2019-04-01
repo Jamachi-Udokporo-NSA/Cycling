@@ -1,43 +1,57 @@
 package com.nsa.cecobike;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity
 public class Goal {
-    private double Goal_Miles;
-    private double Average_Miles;
-    private double Progress_Miles;
 
-    public Goal(double goal_Miles, double average_Miles) {
-        Goal_Miles = goal_Miles;
-        Average_Miles = average_Miles;
+    @PrimaryKey(autoGenerate = true)
+    private int gid;
+
+    @ColumnInfo(name = "goal_Miles")
+    private double goal_miles;
+
+    @ColumnInfo(name = "date and time")
+    private String milestone_date;
+
+
+    public Goal(double goal_miles, String milestone_date) {
+        this.goal_miles = goal_miles;
+        this.milestone_date = milestone_date;
     }
 
-    public double getGoal_Miles() {
-        return Goal_Miles;
+    public void setGid(int gid) {
+        this.gid = gid;
     }
 
-    public void setGoal_Miles(double goal_Miles) {
-        Goal_Miles = goal_Miles;
+    public int getGid() {
+        return gid;
     }
 
-    public double getAverage_Miles() {
-        return Average_Miles;
+    public double getGoal_miles() {
+        return goal_miles;
     }
 
-    public void setAverage_Miles(double average_Miles) {
-        Average_Miles = average_Miles;
+    public void setGoal_miles(double goal_miles) {
+        this.goal_miles = goal_miles;
     }
 
-    public double getProgress_Miles() {
-        return Progress_Miles;
+    public void setMilestone_date(String milestone_date) {
+        this.milestone_date = milestone_date;
     }
 
-    public void setProgress_Miles(double progress_Miles) {
-        Progress_Miles = progress_Miles;
+    public String getMilestone_date() {
+        return milestone_date;
     }
 
-    public Double calculateMiles(Double progress_Miles){
-        Double bMiles = getGoal_Miles();
-        Double cMiles = getAverage_Miles();
-
-        return progress_Miles;
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "gid=" + gid +
+                ", Goal_Miles=" + goal_miles +
+                ", milestone_date='" + milestone_date + '\'' +
+                '}';
     }
 }

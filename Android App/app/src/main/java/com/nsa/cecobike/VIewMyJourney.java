@@ -58,9 +58,8 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     public void run() {
                         numberOfJourneys = journeys.size();
                         for (int i = 0; i != numberOfJourneys; i++) {
-                            {
                                 listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
-                            }
+
                         }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
@@ -150,8 +149,10 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
-            customViewHolder.JourneyText.setText("Journey " + (position + 1));
-            customViewHolder.DateAndTimeText.setText(mData.get(position).getDateAndTime());
+            customViewHolder.journeyText.setText("Journey " + (position + 1));
+            customViewHolder.dateAndTimeText.setText(mData.get(position).getDateAndTime());
+//            Set the distance
+            //            customViewHolder.progressBar.setProgress();
 
         }
 
@@ -161,17 +162,21 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         }
 
         protected class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            private AppCompatTextView JourneyText;
-            private AppCompatTextView DateAndTimeText;
+            private AppCompatTextView journeyText;
+            private AppCompatTextView dateAndTimeText;
+            private AppCompatTextView milestoneText;
             private ProgressBar progressBar;
 
             CustomViewHolder(View itemView) {
                 super(itemView);
 
-                JourneyText = (AppCompatTextView) itemView.findViewById(R.id.journey_text);
-                DateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
-                progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
+//                 add task to get data
 
+                journeyText = (AppCompatTextView) itemView.findViewById(R.id.journey_text);
+                dateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
+                progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
+                milestoneText = (AppCompatTextView) itemView.findViewById(R.id.milestone);
+                milestoneText.setText("Abc");
                 itemView.setOnClickListener(this);
             }
 
@@ -182,7 +187,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
                                 String.valueOf((i+1)),
-                                this.JourneyText.getText()),
+                                this.journeyText.getText()),
                         Toast.LENGTH_SHORT).show();
             }
         }

@@ -43,5 +43,21 @@
                 android:id="@+id/goal_miles"
                 android:textSize="35sp"/>
         </TableRow>
+        <TableRow>
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/set_goal"
+                android:text="Set Goal"
+                />
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/remove_goal"
+                android:text="Remove Goal"
+                />
+        </TableRow>
     </TableLayout>
 </android.support.v7.widget.LinearLayoutCompat>
