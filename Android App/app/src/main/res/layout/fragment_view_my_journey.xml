@@ -6,8 +6,8 @@
     android:id="@+id/list_view_my_journeys"
     tools:context=".VIewMyJourney"
     android:background="@color/common_google_signin_btn_text_dark_pressed"
-    android:orientation="horizontal">
-
+    android:orientation="horizontal"
+    android:padding="10dp">
     <ProgressBar
         android:id="@+id/determ_circular_progress"
         android:layout_width="50dp"
