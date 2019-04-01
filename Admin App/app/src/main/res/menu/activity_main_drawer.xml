@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/heat_map"
+            android:title="Heat Map" />
+        <item
+            android:id="@+id/section_1"
+            android:title="Empty Section 1" />
+        <item
+            android:id="@+id/section_2"
+            android:title="Empty Section 2" />
+
+    </group>
+
+    <item android:title="Actions">
+        <menu>
+            <item
+                android:id="@+id/export"
+                android:title="Export" />
+            <item
+                android:id="@+id/log_out"
+                android:title="Log Out" />
+        </menu>
+    </item>
+
+</menu>
