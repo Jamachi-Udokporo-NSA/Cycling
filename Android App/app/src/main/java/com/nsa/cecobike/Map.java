@@ -1,6 +1,7 @@
 package com.nsa.cecobike;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -54,6 +55,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private boolean running;
     LocationManager locationManager;
     boolean permissionIsGranted = false;
+    Location location;
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -110,13 +112,25 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 //Start journey actions start here
                 //remove the Toast below when finished testing
 //                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
-                requestStoragePermission();
-                if (permissionIsGranted) {
-                    getCurrentLocation();
-                    start_journey.setVisibility(View.GONE);
-                    finish_journey.setVisibility(View.VISIBLE);
-                    Timer = view.findViewById(R.id.timer);
-                    startTimer(Timer);
+                boolean getCurrentLocationFailed = false;
+                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (permissionIsGranted && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    try {
+                        requestStoragePermission();
+                        getCurrentLocation();
+                        getCurrentLocationFailed = false;
+                    }catch (Exception e){
+                        Log.d("Location error" , "Couldn't get location");
+                        getCurrentLocationFailed = true;
+                       }
+                    if (!getCurrentLocationFailed) {
+                        start_journey.setVisibility(View.GONE);
+                        finish_journey.setVisibility(View.VISIBLE);
+                        Timer = view.findViewById(R.id.timer);
+                        startTimer(Timer);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Couldn't get location, Please ensure you enable GPS and aeroplane mode is off", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -212,7 +226,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
     }
 
     public void getCurrentLocation() {
-
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(),
@@ -221,18 +234,28 @@ public class Map extends Fragment implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
+        Log.d("Location status", "Im here now");
+        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        Log.d("Location status", "Im here now 2");
+        try {
+            getCameraUpdates(location);
+            previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        }catch (Exception e){
+            Log.d("Last Location" , "Couldn't get last location,  ...applying another method");
+//            locationManager.requestSingleUpdate(criteria, locationListenerGPS, Looper.myLooper());
+//            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+//            Log.d("Lat", String.valueOf(l.latitude));
 
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
-        getCameraUpdates(location);
-        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+        }
+        Log.d("Location status", "Im here now 3");
+//        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("Location status", "Im here now 4");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);
+        Log.d("Location status", "Im here now 5");
 
     }
 
@@ -278,13 +301,15 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void run() {
-                PolylineOptions polyline = new PolylineOptions().add(previousLocation)
-                .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
+                if (previousLocation == null) {
+                    PolylineOptions polyline = new PolylineOptions().add(previousLocation)
+                            .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
-                coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
-                mMap.addPolyline(polyline);
-                previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
+                    mMap.addPolyline(polyline);
+                    previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                }
             }
         });
     }
@@ -341,7 +366,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
         @Override
         public void onProviderDisabled(String provider) {
-            Toast.makeText(getContext(), "You must enable gps", Toast.LENGTH_SHORT).show();
         }
     }
     ;
