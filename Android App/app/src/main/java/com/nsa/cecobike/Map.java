@@ -114,9 +114,9 @@ public class Map extends Fragment implements OnMapReadyCallback {
 //                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 boolean getCurrentLocationFailed = false;
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                requestStoragePermission();
                 if (permissionIsGranted && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     try {
-                        requestStoragePermission();
                         getCurrentLocation();
                         getCurrentLocationFailed = false;
                     }catch (Exception e){
@@ -129,7 +129,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                         Timer = view.findViewById(R.id.timer);
                         startTimer(Timer);
                     }
-                } else {
+                } else if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     Toast.makeText(getContext(), "Couldn't get location, Please ensure you enable GPS and aeroplane mode is off", Toast.LENGTH_SHORT).show();
                 }
             }
