@@ -166,7 +166,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     }
                 });
 
-
                 Dialogboxaction dialog = new Dialogboxaction();
                 dialog.show(getActivity().getSupportFragmentManager(), "anything");
             }
