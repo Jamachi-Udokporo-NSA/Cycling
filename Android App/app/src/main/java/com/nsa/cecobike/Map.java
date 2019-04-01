@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
@@ -373,5 +374,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }
