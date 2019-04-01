@@ -21,7 +21,7 @@ public class Dialogboxaction extends AppCompatDialogFragment {
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-                        transaction.replace(R.id.start_fragment, new Map());
+                        transaction.replace(R.id.start_fragment, new JourneySummary());
                         transaction.commit();
 
                     }
