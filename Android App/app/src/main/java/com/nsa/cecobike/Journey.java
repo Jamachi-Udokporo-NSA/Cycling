@@ -27,17 +27,21 @@ public class Journey{
     @ColumnInfo(name = "duration")
     private Double duration;
 
-    @ColumnInfo(name = "date and time")
-    private String dateAndTime ;
+    @ColumnInfo(name = "date")
+    private String date;
+
+    @ColumnInfo(name = "time")
+    private String time;
 
 //    @ColumnInfo(name = "coordinates")
 //    private ArrayList<Point>coordinates;
 
-    public Journey(Double distance, Double duration, String dateAndTime) {//ArrayList<Point> coordinates) {
+
+    public Journey(Double distance, Double duration, String date, String time) {
         this.distance = distance;
         this.duration = duration;
-        this.dateAndTime = dateAndTime;
-//        this.coordinates = coordinates;
+        this.date = date;
+        this.time = time;
     }
 
     public void setJid(int jid) {
@@ -56,13 +60,18 @@ public class Journey{
         return duration;
     }
 
-    public String getDateAndTime() {
-        return dateAndTime;
+    public String getDate() {
+        return date;
     }
 
-//    public ArrayList<Point> getCoordinates() {
+    public String getTime() {
+        return time;
+    }
+
+    //    public ArrayList<Point> getCoordinates() {
 //        return coordinates;
 //    }
+
 
     @Override
     public String toString() {
@@ -70,8 +79,8 @@ public class Journey{
                 "jid=" + jid +
                 ", distance=" + distance +
                 ", duration=" + duration +
-                ", dateAndTime='" + dateAndTime + '\'' +
-//                ", coordinates=" + coordinates +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
                 '}';
     }
 }

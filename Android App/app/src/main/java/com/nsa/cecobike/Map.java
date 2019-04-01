@@ -73,6 +73,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
         return v;
     }
@@ -131,17 +132,20 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
                 final Double seconds = ((double) calculateElapsedTime(Timer) /1000);
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
-                final String currentDateAndTime = String.valueOf(dtf.format(now));
-                Log.d(currentDateAndTime, "Date");
+                final String currentDate = String.valueOf(df.format(now));
+                final String currentTime = String.valueOf(tf.format(now));
+                Log.d(currentDate, "Date");
+                Log.d(currentTime, "Time");
                 Log.d("Timer", String.valueOf(seconds));
                         AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
 //                        db.journeyDao().clearJourneys();
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, seconds, currentDateAndTime)
+                                new Journey(TotalDistance, seconds, currentDate, currentTime)
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));

@@ -155,7 +155,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
             customViewHolder.JourneyText.setText("Journey " + (position + 1));
-            customViewHolder.DateAndTimeText.setText(mData.get(position).getDateAndTime());
+            customViewHolder.DateAndTimeText.setText(mData.get(position).getDate() + " " +mData.get(position).getTime());
 
         }
 
@@ -199,7 +199,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 ViewAJourney viewAJourney = new ViewAJourney();
                 viewAJourney.setArguments(bundle);
 
-                transaction.replace(R.id.start_fragment, viewAJourney);
+                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null);
                 transaction.commit();
             }
         }

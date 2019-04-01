@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.okhttp.internal.InternalCache;
+
 import java.util.List;
 
 
@@ -57,8 +59,8 @@ public class ViewAJourney extends Fragment {
                         int text = bundle.getInt("Journey id");
                         Log.d("actual journey id", String.valueOf(text));
                         TextView JourneyText = (TextView) v.findViewById(R.id.text_journey);
-                        JourneyText.setText(String.format("Date and Time : %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDateAndTime(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
-//                        JourneyText.setText("Date and Time: " + listOfJourneys.get(text).getDateAndTime() );
+//                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
+                        JourneyText.setText("Date: " + listOfJourneys.get(text).getDate() + System.lineSeparator() + System.lineSeparator() + "Time: " + listOfJourneys.get(text).getTime() + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(text).getDistance() + System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(text).getDuration());
 
                     }
                 });
