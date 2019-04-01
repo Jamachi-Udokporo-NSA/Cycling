@@ -301,15 +301,15 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void run() {
-                if (previousLocation == null) {
+                if (previousLocation != null) {
                     PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                             .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                     coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
                     mMap.addPolyline(polyline);
-                    previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 }
+                previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
         });
     }
