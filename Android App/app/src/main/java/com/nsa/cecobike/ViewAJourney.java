@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.internal.InternalCache;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -58,9 +60,10 @@ public class ViewAJourney extends Fragment {
                         Bundle bundle = getArguments();
                         int text = bundle.getInt("Journey id");
                         Log.d("actual journey id", String.valueOf(text));
-                        TextView JourneyText = (TextView) v.findViewById(R.id.text_journey);
+                        TextView JourneyText = v.findViewById(R.id.text_journey);
+//                        DateFormat dateFormat = android.text.format.DateFormat.format("dd-MM-yyyy", new Date());
 //                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
-                        JourneyText.setText("Date: " + listOfJourneys.get(text).getDate() + System.lineSeparator() + System.lineSeparator() + "Time: " + listOfJourneys.get(text).getTime() + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(text).getDistance() + System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(text).getDuration());
+                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(text).getDate())) + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("yyyy-MM-dd HH:mm:ss a" ,listOfJourneys.get(text).getDate()) + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(text).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(text).getDuration());
 
                     }
                 });

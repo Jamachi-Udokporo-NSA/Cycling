@@ -12,8 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Timer;
 
 @Entity
 public class Journey{
@@ -28,21 +31,24 @@ public class Journey{
     private Double duration;
 
     @ColumnInfo(name = "date")
-    private String date;
+    private Date date;
 
-    @ColumnInfo(name = "time")
-    private String time;
+//    @ColumnInfo(name = "Coordinates")
+//    private ArrayList<Point>coordinates = new ArrayList<>();
+
 
 //    @ColumnInfo(name = "coordinates")
 //    private ArrayList<Point>coordinates;
 
-
-    public Journey(Double distance, Double duration, String date, String time) {
+    public Journey(Double distance, Double duration, Date date){//, ArrayList<Point> coordinates) {
         this.distance = distance;
         this.duration = duration;
         this.date = date;
-        this.time = time;
+//        this.coordinates.addAll(coordinates);
     }
+
+
+//        this.coordinates = coordinates;
 
     public void setJid(int jid) {
         this.jid = jid;
@@ -60,18 +66,14 @@ public class Journey{
         return duration;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public String getTime() {
-        return time;
-    }
 
-    //    public ArrayList<Point> getCoordinates() {
+//    public ArrayList<Point> getCoordinates() {
 //        return coordinates;
 //    }
-
 
     @Override
     public String toString() {
@@ -80,7 +82,7 @@ public class Journey{
                 ", distance=" + distance +
                 ", duration=" + duration +
                 ", date='" + date + '\'' +
-                ", time='" + time + '\'' +
+//                ", coordinates=" + coordinates +
                 '}';
     }
 }
