@@ -1,6 +1,7 @@
 package com.nsa.cecobike;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -23,6 +24,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +67,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     boolean permissionIsGranted = false;
     double valueResult;
     ArrayList<String> test = new ArrayList<>();
+    Location location;
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -86,6 +90,16 @@ public class Map extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
+        AppCompatButton dialog = v.findViewById(R.id.finish_journey_button);
+
+        dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fr = getFragmentManager().beginTransaction();
+                fr.replace(R.id.finish_journey_button, new Dialogbox());
+                fr.commit();
+            }
+        });
         return v;
     }
 
@@ -111,13 +125,25 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 //Start journey actions start here
                 //remove the Toast below when finished testing
 //                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+                boolean getCurrentLocationFailed = false;
+                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 requestStoragePermission();
-                if (permissionIsGranted) {
-                    getCurrentLocation();
-                    start_journey.setVisibility(View.GONE);
-                    finish_journey.setVisibility(View.VISIBLE);
-                    Timer = view.findViewById(R.id.timer);
-                    startTimer(Timer);
+                if (permissionIsGranted && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    try {
+                        getCurrentLocation();
+                        getCurrentLocationFailed = false;
+                    }catch (Exception e){
+                        Log.d("Location error" , "Couldn't get location");
+                        getCurrentLocationFailed = true;
+                       }
+                    if (!getCurrentLocationFailed) {
+                        start_journey.setVisibility(View.GONE);
+                        finish_journey.setVisibility(View.VISIBLE);
+                        Timer = view.findViewById(R.id.timer);
+                        startTimer(Timer);
+                    }
+                } else if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Toast.makeText(getContext(), "Couldn't get location, Please ensure you enable GPS and aeroplane mode is off", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -166,6 +192,9 @@ public class Map extends Fragment implements OnMapReadyCallback {
                         db.close();
                     }
                 });
+
+                Dialogboxaction dialog = new Dialogboxaction();
+                dialog.show(getActivity().getSupportFragmentManager(), "anything");
             }
         });
     }
@@ -218,7 +247,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
     }
 
     public void getCurrentLocation() {
-
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(),
@@ -227,18 +255,28 @@ public class Map extends Fragment implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
+        Log.d("Location status", "Im here now");
+        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        Log.d("Location status", "Im here now 2");
+        try {
+            getCameraUpdates(location);
+            previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        }catch (Exception e){
+            Log.d("Last Location" , "Couldn't get last location,  ...applying another method");
+//            locationManager.requestSingleUpdate(criteria, locationListenerGPS, Looper.myLooper());
+//            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+//            Log.d("Lat", String.valueOf(l.latitude));
 
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16f));
-        getCameraUpdates(location);
-        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
+        }
+        Log.d("Location status", "Im here now 3");
+//        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("Location status", "Im here now 4");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);
+        Log.d("Location status", "Im here now 5");
 
     }
 
@@ -284,12 +322,14 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void run() {
-                PolylineOptions polyline = new PolylineOptions().add(previousLocation)
-                .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
+                if (previousLocation != null) {
+                    PolylineOptions polyline = new PolylineOptions().add(previousLocation)
+                            .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
 //                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
-                coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
-                mMap.addPolyline(polyline);
+                    coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
+                    mMap.addPolyline(polyline);
+                }
                 previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
             }
         });
@@ -357,15 +397,14 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
         @Override
         public void onProviderDisabled(String provider) {
-            Toast.makeText(getContext(), "You must enable gps", Toast.LENGTH_SHORT).show();
         }
-    };
+    }
+    ;
 
     @Override
     public void onResume() {
         super.onResume();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
     }
 
 
