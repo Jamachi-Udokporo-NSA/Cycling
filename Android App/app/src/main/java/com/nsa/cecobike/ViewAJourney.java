@@ -64,7 +64,6 @@ public class ViewAJourney extends Fragment {
 //                        DateFormat dateFormat = android.text.format.DateFormat.format("dd-MM-yyyy", new Date());
 //                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
                         JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(text).getDate())) + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("yyyy-MM-dd HH:mm:ss a" ,listOfJourneys.get(text).getDate()) + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(text).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(text).getDuration());
-
                     }
                 });
             }

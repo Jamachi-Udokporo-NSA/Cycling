@@ -63,6 +63,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     LocationManager locationManager;
     boolean permissionIsGranted = false;
     double valueResult;
+    ArrayList<String> test = new ArrayList<>();
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -151,7 +152,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     public void run() {
 //                        db.journeyDao().clearJourneys();
                             db.journeyDao().insertJourneys(
-                                    new Journey(totalDistanceKmRounded, seconds, currentDate)
+                                    new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
 
                             );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
