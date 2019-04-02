@@ -31,8 +31,7 @@
             android:text="@string/finish_my_journey"
             android:textColor="@android:color/background_light"
             android:textSize="30sp"
-            android:visibility="gone"
-            android:onClick="stopTimer"/>
+            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/start_journey_button"
@@ -44,7 +43,6 @@
             android:text="@string/start_the_journey"
             android:textColor="@android:color/background_light"
             android:textSize="30sp"
-            android:onClick="startTimer"
             />
 
 
