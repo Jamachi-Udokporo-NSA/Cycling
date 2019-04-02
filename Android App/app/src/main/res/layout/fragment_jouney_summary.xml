@@ -17,8 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <android.support.v7.widget.AppCompatButton
+        <Button
             android:id="@+id/close_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
