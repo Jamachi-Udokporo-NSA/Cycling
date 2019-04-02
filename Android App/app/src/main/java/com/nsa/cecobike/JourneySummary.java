@@ -49,13 +49,17 @@ public class JourneySummary extends Fragment {
         View v = inflater.inflate(R.layout.fragment_jouney_summary, container, false);
         // Inflate the layout for this fragment
         getJourneyInfo(v);
-//        close_button = (Button) v.findViewById(R.id.close_button);
-//        close_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        close_button = (Button) v.findViewById(R.id.close_button);
+        close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.replace(R.id.close_button, new Map());
+                transaction.commit();
+            }
+        });
         return v;
     }
 
@@ -80,6 +84,7 @@ public class JourneySummary extends Fragment {
                 });
             }
         });
+
         return v;
     }
 
