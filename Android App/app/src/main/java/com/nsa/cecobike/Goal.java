@@ -13,7 +13,7 @@ public class Goal {
     @ColumnInfo(name = "goal_Miles")
     private double goal_miles;
 
-    @ColumnInfo(name = "date and time")
+    @ColumnInfo(name = "date")
     private String milestone_date;
 
 
@@ -30,7 +30,7 @@ public class Goal {
         return gid;
     }
 
-    public double getGoal_miles() {
+    public Double getGoal_miles() {
         return goal_miles;
     }
 

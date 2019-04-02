@@ -22,18 +22,17 @@ import java.util.Arrays;
 import java.util.List;
 import static android.support.constraint.Constraints.TAG;
 
-
 public class SetGoal extends Fragment {
     SeekBar seekBar;
     TextView textView;
     Button  setGoalButton;
     Button  removeGoalButton;
-    private Double goal_Miles =0.0;
+    private Double goal_Miles = 0.0;
     public SetGoal() {
         // Required empty public constructor
     }
 
-//    Seekbar set goal in Miles
+    //Seekbar set goal in Miles
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,22 +41,25 @@ public class SetGoal extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
+
+        //Getting IDs
         seekBar = v.findViewById(R.id.seek_bar);
         textView = v.findViewById(R.id.goal_miles);
         setGoalButton = (Button) v.findViewById(R.id.set_goal);
         removeGoalButton = (Button) v.findViewById(R.id.remove_goal);
 
-//                Bike Miles
+        //Set Default Miles
         final String i = "0";
         textView.setText(i);
         goal_Miles = Double.valueOf(textView.getText().toString());
 
+
+        //Distance Slider
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                goal_Miles = Double.valueOf(progress);
+                goal_Miles = (double) progress;
                 textView.setText(progress + "");
                 Log.d(TAG, "onProgressChanged: " + progress);
             }
@@ -69,85 +71,91 @@ public class SetGoal extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                //Logs the set value, Goal should match this
                 Log.d(TAG, "onStopTrackingTouch: " + goal_Miles);
             }
         });
-
+//        Insert Button Task
         setGoalButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                final GoalDatabase db = Room.databaseBuilder(v.getContext(), GoalDatabase.class, "MyGoalDatabase").build();
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        final GoalDatabase db = Room.databaseBuilder(getContext(), GoalDatabase.class, "MyGoalDatabase").build();
-                        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
-                        final LocalDateTime now = LocalDateTime.now();
+                        List<Goal> goals = db.goalDao().getAllGoals();
 
-//                        Gets the set goals from the database
-                        final List<Goal> goals = db.goalDao().getAllGoals();
-                        Log.d("current number of goals", String.valueOf(goals.size()));
+                        //Init DTF formatter for date
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
+                        LocalDateTime now = LocalDateTime.now();
+                        String dateNow = String.valueOf(dtf.format(now));
 
-//                        goes through each goal
-                        for (int j = 0; j < goals.size(); j++) {
-//                            adds date of milestone goal
-                            List<String> milestone_dates = Arrays.asList(goals.get(j).getMilestone_date().split("/"));
-                            Log.d("Milestone Dates", String.valueOf(milestone_dates.size()));
+                        Log.d(TAG, "You pressed this button but the code did not run as its always false");
+                        Log.d("Size of goals",String.valueOf(goals.size()));
 
-//                            gets the current month
-                            final String currentMonth = goals.get(j).getMilestone_date();
-                            Log.d("Current Month", currentMonth);
-                            final String currentDateAndTime = String.valueOf(dtf.format(now));
+                        if (goals.size() == 0) {
+                            Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
+                            goals.add(newGoal);
+                            db.goalDao().insertGoals(newGoal);
+                            Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
 
-//                          Run check to see if set goal already exists with the same Milestone Date comparison
-                            if (!milestone_dates.get(j).equals(currentMonth)) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-//                            Creates new Goal in database
-                                        db.goalDao().insertGoals(
-                                                new Goal(goal_Miles, String.valueOf(currentMonth))
-                                        );
-                                        Log.d("Creating new milestone", String.valueOf(goals.size()));
+                            //else if size is not 0
+                        }
+
+                        for (Goal goal : goals) {
+                            //while count is less than the size of the list will check to see if
+                                for (int j = 0; j < goals.size(); j++) {
+                                    String currentMonth = goals.get(j).getMilestone_date();
+                                    List<String> milestone_dates = Arrays.asList(currentMonth.split("/"));
+
+                                    //Gets the month
+                                    Log.d("date", milestone_dates.get(0));
+                                    Log.d("Milestone Dates", String.valueOf(milestone_dates.size()));
+
+                                    //Checks the date of milestone dates list
+                                    if (!milestone_dates.get(0).equals(currentMonth)) {
+                                        Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
+                                        db.goalDao().insertGoals(newGoal);
+                                        Log.i("New GOAL 2", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
                                     }
-                                });
-                                db.close();
+                                    else {
 
-                            } else {
+                                        Log.d("Existing Milestone", goals.get(j).getMilestone_date());
+                                        Log.d("Milestone Value", String.valueOf(goals.get(j).getGoal_miles()));
 
-                                final int finalJ = j;
-                                getActivity().runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        Log.d("Existing Milestone", goals.get(finalJ).getMilestone_date());
-                                        Log.d("Milestone Value", String.valueOf(goals.get(finalJ).getGoal_miles()));
                                     }
-                                });
+                                }
+
+                                Log.i("Update GOAL", goal.getGoal_miles().toString() + " - " + goal.getMilestone_date());
+
                             }
                         }
-                    }
                 });
+                db.close();
             }
         });
+//      End Insert Task
 
+//        Remove Task Button
         removeGoalButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                final GoalDatabase db = Room.databaseBuilder(getContext(), GoalDatabase.class, "MyGoalDatabase").build();
+                final GoalDatabase db = Room.databaseBuilder(v.getContext(), GoalDatabase.class, "MyGoalDatabase").build();
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        final List<Goal> goals = db.goalDao().getAllGoals();
+                        List<Goal> goals = db.goalDao().getAllGoals();
+                        Log.d("Goals to be removed", String.valueOf(goals.size()));
                         db.goalDao().clearGoals();
-                        Log.d("Goals have been removed", String.valueOf(goals.size()));
-                        db.close();
+                        Log.d("Goals left over", String.valueOf(goals.size()));
                     }
                 });
+                db.close();
+//            End Remove Task
             }
         });
-
         return v;
     }
 
