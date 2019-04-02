@@ -91,46 +91,36 @@ public class SetGoal extends Fragment {
                         LocalDateTime now = LocalDateTime.now();
                         String dateNow = String.valueOf(dtf.format(now));
 
-                        Log.d(TAG, "You pressed this button but the code did not run as its always false");
-                        Log.d("Size of goals",String.valueOf(goals.size()));
+                        Log.d(TAG, "Button Pressed");
+                        Log.d("Goals: ",String.valueOf(goals.size()));
 
                         if (goals.size() == 0) {
                             Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
-                            goals.add(newGoal);
+//                            goals.add(newGoal);
                             db.goalDao().insertGoals(newGoal);
                             Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
 
-                            //else if size is not 0
-                        }
-
-                        for (Goal goal : goals) {
-                            //while count is less than the size of the list will check to see if
+                            for (Goal goal : goals) {
+                                //while count is less than the size of the list will check to see if
                                 for (int j = 0; j < goals.size(); j++) {
                                     String currentMonth = goals.get(j).getMilestone_date();
                                     List<String> milestone_dates = Arrays.asList(currentMonth.split("/"));
-
-                                    //Gets the month
                                     Log.d("date", milestone_dates.get(0));
                                     Log.d("Milestone Dates", String.valueOf(milestone_dates.size()));
 
-                                    //Checks the date of milestone dates list
                                     if (!milestone_dates.get(0).equals(currentMonth)) {
-                                        Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
-                                        db.goalDao().insertGoals(newGoal);
-                                        Log.i("New GOAL 2", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
-                                    }
-                                    else {
-
-                                        Log.d("Existing Milestone", goals.get(j).getMilestone_date());
-                                        Log.d("Milestone Value", String.valueOf(goals.get(j).getGoal_miles()));
-
+//                                        Goal e = goals.get(goals.size() - 1);
+//                                        goals.remove(e);
+                                        Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
+                                    } else {
+                                        Log.i("Update GOAL", goal.getGoal_miles().toString() + " - " + goal.getMilestone_date());
                                     }
                                 }
-
-                                Log.i("Update GOAL", goal.getGoal_miles().toString() + " - " + goal.getMilestone_date());
-
                             }
+                        }else {
+                            Log.i(TAG,"Existing GOAL");
                         }
+                    }
                 });
                 db.close();
             }
