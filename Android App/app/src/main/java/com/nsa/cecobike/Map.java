@@ -135,7 +135,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     }catch (Exception e){
                         Log.d("Location error" , "Couldn't get location");
                         getCurrentLocationFailed = true;
-                       }
+                    }
                     if (!getCurrentLocationFailed) {
                         start_journey.setVisibility(View.GONE);
                         finish_journey.setVisibility(View.VISIBLE);
@@ -173,14 +173,14 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 final Date currentDate = new Date();
                 Log.d(currentDate.toString(), "Date");
                 Log.d("Timer", String.valueOf(seconds));
-                        AsyncTask.execute(new Runnable() {
+                AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
 //                        db.journeyDao().clearJourneys();
-                            db.journeyDao().insertJourneys(
-                                    new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
+                        db.journeyDao().insertJourneys(
+                                new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
 
-                            );
+                        );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
                         getActivity().runOnUiThread(new Runnable() {
@@ -236,10 +236,10 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     public void stopTimer (View v){
         if(running){
-        Timer.stop();
-        running=false;
+            Timer.stop();
+            running=false;
         }
-        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -399,7 +399,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
         public void onProviderDisabled(String provider) {
         }
     }
-    ;
+            ;
 
     @Override
     public void onResume() {

@@ -59,7 +59,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                                 Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
 //                        }
-                        recyclerView = v.findViewById(R.id.recycler_view);
+                        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         recyclerView.setAdapter(recyclerViewAdapter);
@@ -147,8 +147,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
-            customViewHolder.journeyText.setText("Journey " + (position + 1));
-            customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
+            customViewHolder.JourneyText.setText("Journey " + (position + 1));
+
+            customViewHolder.DateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
+
+
         }
 
         @Override
@@ -192,7 +195,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 ViewAJourney viewAJourney = new ViewAJourney();
                 viewAJourney.setArguments(bundle);
 
-                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null);
+                transaction.replace(R.id.start_fragment, viewAJourney);
                 transaction.commit();
             }
         }

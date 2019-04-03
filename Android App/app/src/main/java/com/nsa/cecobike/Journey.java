@@ -33,10 +33,6 @@ public class Journey{
     @ColumnInfo(name = "date")
     private Date date;
 
-//    @ColumnInfo(name = "Coordinates")
-//    private ArrayList<Point>coordinates = new ArrayList<>();
-
-
     @ColumnInfo(name = "coordinates")
     private ArrayList<Point>coordinates;
 
@@ -46,7 +42,6 @@ public class Journey{
         this.date = date;
         this.coordinates = coordinates;
     }
-//        this.coordinates = coordinates;
 
     public void setJid(int jid) {
         this.jid = jid;
