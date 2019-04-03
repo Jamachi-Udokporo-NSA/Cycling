@@ -202,4 +202,5 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         }
 
     }
+
 }

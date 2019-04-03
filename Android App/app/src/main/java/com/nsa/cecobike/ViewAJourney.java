@@ -1,10 +1,7 @@
 package com.nsa.cecobike;
 
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.graphics.Color;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,9 +12,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,11 +28,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.squareup.okhttp.internal.InternalCache;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -48,6 +46,7 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -105,7 +104,7 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
 
         if (listOfJourneys.get(text).getCoordinates().size() != 0){
             mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() + 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() + 1).getpLon())).title("End location"));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
                     .zoom(10)// Sets the zoom
@@ -122,10 +121,33 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                    PolylineOptions polyline = new PolylineOptions().add(new LatLng(pLat1, pLon1))
-                            .add(new LatLng(pLat2, pLon2)).width(20).color(Color.BLUE).geodesic(true);
-                    mMap.addPolyline(polyline);
+                PolylineOptions polyline = new PolylineOptions().add(new LatLng(pLat1, pLon1))
+                        .add(new LatLng(pLat2, pLon2)).width(20).color(Color.BLUE).geodesic(true);
+                mMap.addPolyline(polyline);
             }
         });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.main3, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_delete) {
+            Toast.makeText(getContext(), "Delete is in development", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (id == R.id.action_rename) {
+            Toast.makeText(getContext(), "rename is in development", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
