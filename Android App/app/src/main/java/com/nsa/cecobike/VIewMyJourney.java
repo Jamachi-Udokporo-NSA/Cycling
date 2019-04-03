@@ -3,18 +3,13 @@ package com.nsa.cecobike;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,10 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +59,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                                 Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
 //                        }
-                        recyclerView = v.findViewById(R.id.recycler_view);
+                        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         recyclerView.setAdapter(recyclerViewAdapter);
@@ -154,8 +147,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
-            customViewHolder.JourneyText.setText("Journey " + (position + 1));
-            customViewHolder.DateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
+            customViewHolder.journeyText.setText("Journey " + (position + 1));
+
+            customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
+
+
         }
 
         @Override
@@ -164,17 +160,18 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         }
 
         protected class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            private AppCompatTextView JourneyText;
-            private AppCompatTextView DateAndTimeText;
-            private AppCompatImageView icon;
+            private AppCompatTextView journeyText;
+            private AppCompatTextView dateAndTimeText;
+            private AppCompatTextView milestoneText;
+            private ProgressBar progressBar;
 
             CustomViewHolder(View itemView) {
                 super(itemView);
-
-                JourneyText = itemView.findViewById(R.id.journey_text);
-                DateAndTimeText = itemView.findViewById(R.id.dateAndTime_text);
-                icon = itemView.findViewById(R.id.progress);
-
+                journeyText = (AppCompatTextView) itemView.findViewById(R.id.journey_text);
+                dateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
+                progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
+                milestoneText = (AppCompatTextView) itemView.findViewById(R.id.milestone);
+                milestoneText.setText("Abc");
                 itemView.setOnClickListener(this);
             }
 
@@ -186,7 +183,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
                                 String.valueOf(i),
-                                this.JourneyText.getText()),
+                                this.journeyText.getText()),
                         Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
@@ -198,7 +195,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 ViewAJourney viewAJourney = new ViewAJourney();
                 viewAJourney.setArguments(bundle);
 
-                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null) ;
+                transaction.replace(R.id.start_fragment, viewAJourney);
                 transaction.commit();
             }
         }

@@ -24,17 +24,7 @@ public class JourneySummary extends Fragment {
     private List<Journey> listOfJourneys;
     private JourneyDatabase db;
     Button closebutton;
-
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +53,7 @@ public class JourneySummary extends Fragment {
         return v;
     }
 
+
     private View getJourneyInfo(final View v){
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
         AsyncTask.execute(new Runnable() {
@@ -84,7 +75,6 @@ public class JourneySummary extends Fragment {
                 });
             }
         });
-
         return v;
     }
 
