@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "141543797181",
+    "firebase_url": "https://fir-cecobike.firebaseio.com",
+    "project_id": "fir-cecobike",
+    "storage_bucket": "fir-cecobike.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141543797181:android:6d2e2f841d0a8bd0",
+        "android_client_info": {
+          "package_name": "com.nsa.cecobike"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOSdhxed7t3ITH28E1wvupgrgkHHOSHnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141543797181-e3tjeqc11a65ppih12c0uid08krimskg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
