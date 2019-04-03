@@ -23,7 +23,7 @@ public class JourneySummary extends Fragment {
 
     private List<Journey> listOfJourneys;
     private JourneyDatabase db;
-    Button closebutton;
+    Button close_button;
 
 
 //    @Override
@@ -49,17 +49,13 @@ public class JourneySummary extends Fragment {
         View v = inflater.inflate(R.layout.fragment_jouney_summary, container, false);
         // Inflate the layout for this fragment
         getJourneyInfo(v);
-        closebutton = (Button) v.findViewById(R.id.close_button);
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-                transaction.replace(R.id.start_fragment, new Map());
-                transaction.commit();
-            }
-        });
+//        close_button = (Button) v.findViewById(R.id.close_button);
+//        close_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         return v;
     }
 
@@ -77,14 +73,13 @@ public class JourneySummary extends Fragment {
                         listOfJourneys = journeys;
                         Log.d("test journey id", String.valueOf(listOfJourneys.get(0).getJid()));
                         TextView JourneyText = (TextView) v.findViewById(R.id.journey_summary_text);
-                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(listOfJourneys.size() - 1).getDate())) + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("yyyy-MM-dd HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate()) + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration());
+                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(listOfJourneys.size() - 1).getDate())) + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate()) + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration());
 //                        JourneyText.setText("Date and Time: " + listOfJourneys.get(journeys.size()).getDateAndTime() );
 
                     }
                 });
             }
         });
-
         return v;
     }
 
