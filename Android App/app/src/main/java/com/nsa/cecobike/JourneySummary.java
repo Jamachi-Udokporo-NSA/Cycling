@@ -23,7 +23,7 @@ public class JourneySummary extends Fragment {
 
     private List<Journey> listOfJourneys;
     private JourneyDatabase db;
-    Button close_button;
+    Button closebutton;
 
 
 //    @Override
@@ -49,15 +49,20 @@ public class JourneySummary extends Fragment {
         View v = inflater.inflate(R.layout.fragment_jouney_summary, container, false);
         // Inflate the layout for this fragment
         getJourneyInfo(v);
-//        close_button = (Button) v.findViewById(R.id.close_button);
-//        close_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        closebutton = (Button) v.findViewById(R.id.close_button);
+        closebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.replace(R.id.start_fragment, new Map());
+                transaction.commit();
+            }
+        });
         return v;
     }
+
 
     private View getJourneyInfo(final View v){
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();

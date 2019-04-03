@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,10 +43,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 public class Map extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -56,6 +65,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private boolean running;
     LocationManager locationManager;
     boolean permissionIsGranted = false;
+    double valueResult;
+    ArrayList<String> test = new ArrayList<>();
     Location location;
 
     //List of Points for Database:
@@ -77,6 +88,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
         AppCompatButton dialog = v.findViewById(R.id.finish_journey_button);
 
@@ -103,8 +115,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         //button to start the journey
 
-        start_journey = (Button) view.findViewById(R.id.start_journey_button);
-        finish_journey = (Button) view.findViewById(R.id.finish_journey_button);
+        start_journey = view.findViewById(R.id.start_journey_button);
+        finish_journey = view.findViewById(R.id.finish_journey_button);
         final JourneyDatabase db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
 
         start_journey.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +135,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     }catch (Exception e){
                         Log.d("Location error" , "Couldn't get location");
                         getCurrentLocationFailed = true;
-                       }
+                    }
                     if (!getCurrentLocationFailed) {
                         start_journey.setVisibility(View.GONE);
                         finish_journey.setVisibility(View.VISIBLE);
@@ -151,23 +163,23 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 //Calculates Distance
                 getlatlon();
 
-                TotalDistance = TotalDistance * 100;
-//                 Toast.makeText(getContext(), "Finish journey button was clicked ", Toast.LENGTH_SHORT).show();
+                Log.d("Distance", TotalDistance.toString());
+                final double totalDistanceKmRounded = round(TotalDistance, 2);
+                Log.d("Distance", String.valueOf(totalDistanceKmRounded));
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
                 final Double seconds = ((double) calculateElapsedTime(Timer) /1000);
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                final String currentDateAndTime = String.valueOf(dtf.format(now));
-                Log.d(currentDateAndTime, "Date");
+                final Date currentDate = new Date();
+                Log.d(currentDate.toString(), "Date");
                 Log.d("Timer", String.valueOf(seconds));
-                        AsyncTask.execute(new Runnable() {
+                AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
 //                        db.journeyDao().clearJourneys();
                         db.journeyDao().insertJourneys(
-                                new Journey(TotalDistance, seconds, currentDateAndTime)
+                                new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
+
                         );
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
@@ -186,6 +198,15 @@ public class Map extends Fragment implements OnMapReadyCallback {
             }
         });
     }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
     private long calculateElapsedTime(Chronometer mChronometer) {
 
         long stoppedMilliseconds = 0;
@@ -215,10 +236,10 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     public void stopTimer (View v){
         if(running){
-        Timer.stop();
-        running=false;
+            Timer.stop();
+            running=false;
         }
-        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -320,30 +341,40 @@ public class Map extends Fragment implements OnMapReadyCallback {
         double longitude = 0;
 
         for (int i = 0; i+1 < coordinates.size(); i++){
-            if (coordinates.get(i).getpLat() < coordinates.get(i+1).getpLat()){
-                latitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
-            }
-            else if(coordinates.get(i).getpLat() > coordinates.get(i+1).getpLat()) {
-                latitude = coordinates.get(i).getpLat() - coordinates.get(i+1).getpLat();
-            }
-            if (coordinates.get(i).getpLon() < coordinates.get(i+1).getpLon()){
-                longitude = coordinates.get(i+1).getpLat() - coordinates.get(i).getpLat();
-            }
-            else if(coordinates.get(i).getpLon() > coordinates.get(i+1).getpLon()) {
-                longitude = coordinates.get(i).getpLon() - coordinates.get(i+1).getpLon();
-            }
-            getcaldistance(latitude, longitude);
+            double lat1 = coordinates.get(i).getpLat();
+            double lat2 = coordinates.get(i+1).getpLat();
+            double lon1 = coordinates.get(i).getpLon();
+            double lon2 = coordinates.get(i+1).getpLon();
+            latitude = Math.toRadians(lat2 - lat1);
+            longitude = Math.toRadians(lon2 - lon1);
+            getcaldistance(latitude, longitude, lat1, lat2);
         }
     }
 
-    public void getcaldistance(Double latitude, Double longitude){
-        latitude = latitude * latitude;
-        longitude = longitude * longitude;
+    public void getcaldistance(Double latitude, Double longitude, Double lat1, Double lat2){
+        int Radius = 6371;
+        double a = Math.sin(latitude / 2) * Math.sin(latitude / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(longitude / 2)
+                * Math.sin(longitude / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.d("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+        Log.d("Radius" , String.valueOf(Radius * c));
+//        latitude = latitude * latitude;
+//        longitude = longitude * longitude;
 
-        Double Distance = Math.sqrt(latitude + longitude);
-        TotalDistance = TotalDistance + Distance;
-        String t = String.valueOf(TotalDistance*100);
-        Log.d(t, "size");
+//        Double Distance = Math.sqrt(latitude + longitude);
+//        Log.d("TEST", TotalDistance.toString());
+        TotalDistance = TotalDistance + valueResult;
+//        String t = String.valueOf(TotalDistance);
+//        Log.d(t, "size");
     }
 
     LocationListener locationListenerGPS = new LocationListener() {
@@ -368,11 +399,13 @@ public class Map extends Fragment implements OnMapReadyCallback {
         public void onProviderDisabled(String provider) {
         }
     }
-    ;
+            ;
 
     @Override
     public void onResume() {
         super.onResume();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
+
 }
