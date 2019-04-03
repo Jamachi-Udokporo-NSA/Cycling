@@ -74,7 +74,7 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         Log.d("actual journey id", String.valueOf(text));
                         TextView timeAndDateText = v.findViewById(R.id.time_and_date_text);
 //                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
-                        timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "     Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
+                        timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
 //                                + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(text).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(text).getDuration());
                     }
                 });
