@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_track_my_journey"
-            android:icon="@drawable/ic_navigation_black_24dp"
+            android:icon="@drawable/ic_action_name"
             android:title="Start a Journey" />
         <item
             android:id="@+id/nav_view_my_journeys"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_history_black_24dp"
             android:title="View my Journeys" />
         <item
             android:id="@+id/nav_goal_contribution"
