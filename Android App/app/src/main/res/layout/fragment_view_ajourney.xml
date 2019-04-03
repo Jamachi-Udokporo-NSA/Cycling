@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewAJourney">
+    tools:context=".ViewAJourney"
+    android:layout_marginTop="55dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/text_journey"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/time_and_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/hello_blank_fragment"
-        android:textSize="25sp"
-        android:gravity="center"/>
+        android:textSize="20sp" />
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/view_my_journey_on_map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="60dp">
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/distance_and_duration_text"
+        android:text="Distance and Duration"
+        android:layout_marginTop="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp"
+    />
+
+
+    <TextView
+        android:id="@+id/emissions_text"
+        android:text="Emissions"
+        android:layout_marginTop="350dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:paddingHorizontal="10dp"
+
+        />
+</RelativeLayout>
