@@ -123,8 +123,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 //Start journey actions start here
-                //remove the Toast below when finished testing
-//                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
+
                 boolean getCurrentLocationFailed = false;
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 requestStoragePermission();
@@ -257,26 +256,17 @@ public class Map extends Fragment implements OnMapReadyCallback {
         mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Log.d("Location status", "Im here now");
         location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        Log.d("Location status", "Im here now 2");
         try {
             getCameraUpdates(location);
             previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
         }catch (Exception e){
             Log.d("Last Location" , "Couldn't get last location,  ...applying another method");
-//            locationManager.requestSingleUpdate(criteria, locationListenerGPS, Looper.myLooper());
-//            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
-//            Log.d("Lat", String.valueOf(l.latitude));
-
         }
-        Log.d("Location status", "Im here now 3");
 //        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        Log.d("Location status", "Im here now 4");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);
-        Log.d("Location status", "Im here now 5");
 
     }
 
@@ -325,8 +315,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 if (previousLocation != null) {
                     PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                             .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
-//                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                     coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
                     mMap.addPolyline(polyline);
                 }
