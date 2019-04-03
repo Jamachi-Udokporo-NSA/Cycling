@@ -5,13 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".ViewAJourney">
 
+    <FrameLayout
+        android:id="@+id/view_my_journey_on_map"
+        android:layout_height="200dp"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="200dp"
+        class="com.google.android.gms.maps.SupportMapFragment" >
+    </FrameLayout>
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/text_journey"
+        android:id="@+id/time_and_date_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment"
         android:textSize="25sp"
-        android:gravity="center"/>
+        android:gravity="top|center"
+        android:layout_marginTop="55dp"/>
 
 </FrameLayout>

@@ -198,7 +198,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 ViewAJourney viewAJourney = new ViewAJourney();
                 viewAJourney.setArguments(bundle);
 
-                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null);
+                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null) ;
                 transaction.commit();
             }
         }
