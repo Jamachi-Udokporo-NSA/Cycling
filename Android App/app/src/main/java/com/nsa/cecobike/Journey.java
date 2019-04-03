@@ -12,8 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Timer;
 
 @Entity
 public class Journey{
@@ -27,18 +30,23 @@ public class Journey{
     @ColumnInfo(name = "duration")
     private Double duration;
 
-    @ColumnInfo(name = "date and time")
-    private String dateAndTime ;
+    @ColumnInfo(name = "date")
+    private Date date;
 
-//    @ColumnInfo(name = "coordinates")
-//    private ArrayList<Point>coordinates;
+//    @ColumnInfo(name = "Coordinates")
+//    private ArrayList<Point>coordinates = new ArrayList<>();
 
-    public Journey(Double distance, Double duration, String dateAndTime) {//ArrayList<Point> coordinates) {
+
+    @ColumnInfo(name = "coordinates")
+    private ArrayList<Point>coordinates;
+
+    public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
         this.distance = distance;
         this.duration = duration;
-        this.dateAndTime = dateAndTime;
-//        this.coordinates = coordinates;
+        this.date = date;
+        this.coordinates = coordinates;
     }
+//        this.coordinates = coordinates;
 
     public void setJid(int jid) {
         this.jid = jid;
@@ -56,13 +64,14 @@ public class Journey{
         return duration;
     }
 
-    public String getDateAndTime() {
-        return dateAndTime;
+    public Date getDate() {
+        return date;
     }
 
-//    public ArrayList<Point> getCoordinates() {
-//        return coordinates;
-//    }
+
+    public ArrayList<Point> getCoordinates() {
+        return coordinates;
+    }
 
     @Override
     public String toString() {
@@ -70,8 +79,9 @@ public class Journey{
                 "jid=" + jid +
                 ", distance=" + distance +
                 ", duration=" + duration +
-                ", dateAndTime='" + dateAndTime + '\'' +
-//                ", coordinates=" + coordinates +
+                ", date='" + date + '\'' +
+                ", coordinates=" + (coordinates == null ? null : Arrays.asList(coordinates)) +
                 '}';
     }
 }
+ 
