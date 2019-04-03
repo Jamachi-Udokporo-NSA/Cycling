@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:background="@color/common_google_signin_btn_text_dark_disabled"
+    >
+ <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
@@ -8,8 +14,12 @@
     android:padding="16dip"
     tools:context=".VIewMyJourney"
     android:layout_marginTop="5dp"
-    android:background="@color/common_google_signin_btn_text_dark_disabled"
+    android:background="@color/common_google_signin_btn_text_dark_pressed"
     >
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/design_default_color_primary">-->
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/progress"
@@ -47,4 +57,5 @@
             android:text="Date and Time"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
-</android.support.v7.widget.LinearLayoutCompat>
+ </android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>
