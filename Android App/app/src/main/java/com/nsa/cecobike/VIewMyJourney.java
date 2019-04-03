@@ -59,7 +59,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                                 Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
 //                        }
-                        recyclerView = v.findViewById(R.id.recycler_view);
+                        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                         recyclerView.setAdapter(recyclerViewAdapter);
@@ -192,7 +192,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 ViewAJourney viewAJourney = new ViewAJourney();
                 viewAJourney.setArguments(bundle);
 
-                transaction.replace(R.id.start_fragment, viewAJourney).addToBackStack(null);
+                transaction.replace(R.id.start_fragment, viewAJourney);
                 transaction.commit();
             }
         }
