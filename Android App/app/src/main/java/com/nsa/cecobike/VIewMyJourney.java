@@ -25,7 +25,6 @@ import java.util.List;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
-    EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
     private int numberOfJourneys;
@@ -52,9 +51,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-//                        for (int i = 0; i != numberOfJourneys; i++) {
-//                            {
-//                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
                                 listOfJourneys = journeys;
                                 Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
