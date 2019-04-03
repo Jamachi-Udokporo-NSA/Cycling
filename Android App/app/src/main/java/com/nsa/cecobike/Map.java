@@ -56,7 +56,11 @@ public class Map extends Fragment implements OnMapReadyCallback {
     private boolean running;
     LocationManager locationManager;
     boolean permissionIsGranted = false;
+<<<<<<< HEAD
     Location location;
+=======
+    double valueResult;
+>>>>>>> parent of 0cd4ff0... Implement coordinates into db
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -166,9 +170,16 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void run() {
 //                        db.journeyDao().clearJourneys();
+<<<<<<< HEAD
                         db.journeyDao().insertJourneys(
                                 new Journey(TotalDistance, seconds, currentDateAndTime)
                         );
+=======
+                            db.journeyDao().insertJourneys(
+                                    new Journey(totalDistanceKmRounded, seconds, currentDate)
+
+                            );
+>>>>>>> parent of 0cd4ff0... Implement coordinates into db
                         final List<Journey> journeys = db.journeyDao().getAllJourneys();
                         Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
                         getActivity().runOnUiThread(new Runnable() {

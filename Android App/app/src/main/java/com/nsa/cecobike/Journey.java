@@ -37,15 +37,17 @@ public class Journey{
 //    private ArrayList<Point>coordinates = new ArrayList<>();
 
 
-    @ColumnInfo(name = "coordinates")
-    private ArrayList<Point>coordinates;
+//    @ColumnInfo(name = "coordinates")
+//    private ArrayList<Point>coordinates;
 
-    public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
+    public Journey(Double distance, Double duration, Date date){//, ArrayList<Point> coordinates) {
         this.distance = distance;
         this.duration = duration;
         this.date = date;
-        this.coordinates = coordinates;
+//        this.coordinates.addAll(coordinates);
     }
+
+
 //        this.coordinates = coordinates;
 
     public void setJid(int jid) {
@@ -69,9 +71,9 @@ public class Journey{
     }
 
 
-    public ArrayList<Point> getCoordinates() {
-        return coordinates;
-    }
+//    public ArrayList<Point> getCoordinates() {
+//        return coordinates;
+//    }
 
     @Override
     public String toString() {
@@ -80,7 +82,7 @@ public class Journey{
                 ", distance=" + distance +
                 ", duration=" + duration +
                 ", date='" + date + '\'' +
-                ", coordinates=" + (coordinates == null ? null : Arrays.asList(coordinates)) +
+//                ", coordinates=" + coordinates +
                 '}';
     }
 }
