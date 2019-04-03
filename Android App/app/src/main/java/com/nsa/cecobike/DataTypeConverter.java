@@ -11,14 +11,13 @@ import java.util.Date;
 
 public class DataTypeConverter {
     @TypeConverter
-    public static ArrayList<Integer> fromString(String value) {
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
+    public static ArrayList<Point> fromString(String value) {
+        Type listType = new TypeToken<ArrayList<Point>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromArrayList(ArrayList<Integer> list) {
+    public static String fromArrayList(ArrayList<Point> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         return json;
