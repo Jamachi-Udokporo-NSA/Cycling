@@ -23,13 +23,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
     EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
+    private List<Goal> listOfGoals;
     private int numberOfJourneys;
     private JourneyDatabase db;
+    private GoalDatabase gdb;
+    private Double goalMax;
+    private Double journeyDistance;
+    private int journeyProgress;
 
     private static final int COLUMN_COUNT = 1;
 
@@ -40,25 +47,26 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
-//        ArrayAdapter();
         listOfJourneys = new ArrayList<Journey>();
-        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+
+        db = Room.databaseBuilder(v.getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+        gdb = Room.databaseBuilder(v.getContext(), GoalDatabase.class, "MyGoalDatabase").build();
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                final List<Goal> goals = gdb.goalDao().getAllGoals();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-//                        for (int i = 0; i != numberOfJourneys; i++) {
-//                            {
-//                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
-                                listOfJourneys = journeys;
-                                Log.d(listOfJourneys.toString(), "All journeys");
-//                            }
-//                        }
+                        listOfJourneys = journeys;
+                        listOfGoals = goals;
+                        Log.d(listOfJourneys.toString(), "All journeys");
+                        if (goals.size() == 0){
+                            Log.d(TAG, "Goals Must be added");
+                        }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -85,40 +93,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         // Required empty public constructor
 
     }
-    //List Adapter
-//    private void ArrayAdapter(){
-//        Obtain the data
-//        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
-//
-//        AsyncTask.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                final List<Journey> journeys = db.journeyDao().getAllJourneys();
-//
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//                    @Override
-//                    public void run() {
-//                        numberOfJourneys = journeys.size();
-//                        for(int i=0; i!=numberOfJourneys; i++){
-//                            listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
-//                            Log.d(journeys.get(i).toString(), "Journey" + i);
-//                        }
-                        //Create the adapter and connect to the data
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                                getContext(),
-//                                R.layout.list_view_layout,
-//                                listOfJourneys
-//                        );
-                        //Fetch the listview and connect to the adapter
-//                        ListView lv = v.findViewById(R.id.lv_journeys);
-//                        lv.setAdapter(adapter);
-//                        lv.setOnItemClickListener(VIewMyJourney.this);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -134,7 +108,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         public CustomRecyclerViewAdapter(Context mContext, List<Journey> mData) {
             this.mContext = mContext;
             this.mData = mData;
-
             Log.d("TEST", String.valueOf(mData.size()));
         }
 
@@ -145,12 +118,20 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             return cHolder;
         }
 
+        public void CalculateProgress(int position){
+            journeyDistance = mData.get(position).getDistance() * 1.609;
+            goalMax = listOfGoals.get(position).getGoal_miles() * 1.609;
+            journeyProgress = (int) (journeyDistance * goalMax);
+            journeyProgress = journeyProgress / 100;
+        }
+
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
+            CalculateProgress(position);
             customViewHolder.journeyText.setText("Journey " + (position + 1));
-
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
-
+            customViewHolder.milestoneText.setText(journeyProgress + "%");
+            customViewHolder.progressBar.setProgress(journeyProgress);
 
         }
 
@@ -171,14 +152,12 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 dateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
                 progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
                 milestoneText = (AppCompatTextView) itemView.findViewById(R.id.milestone);
-                milestoneText.setText("Abc");
+
                 itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-
-
                 int i = this.getAdapterPosition();
                 Toast.makeText(getContext(),
                         String.format(getString(R.string.item_on_tapped_toast_test),
@@ -199,6 +178,5 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 transaction.commit();
             }
         }
-
     }
 }
