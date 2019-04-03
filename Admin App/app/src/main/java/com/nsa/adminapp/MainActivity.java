@@ -1,5 +1,6 @@
 package com.nsa.adminapp;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!isDrawerVisible) {
+        if (!isDrawerVisible) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             if (savedInstanceState == null) {
@@ -35,12 +36,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggleDrawer(toolbar);
 
 
-
-
     }
 
     public void toggleDrawer(Toolbar toolbar) {
-        if(isDrawerVisible) {
+        if (isDrawerVisible) {
             drawerLayout = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
@@ -63,7 +62,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             isDrawerVisible = true;
             finish();
             startActivity(getIntent());
-        }else {
+
+        }  if (id == R.id.heat_map) {
+            startActivity( new Intent( this, MapsActivity.class) );
+
+
+        } else {
             Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
         }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
