@@ -100,6 +100,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 fr.commit();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 
@@ -161,40 +162,44 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     return;
                 }
                 //Calculates Distance
-                getlatlon();
+                if (coordinates.size() != 0) {
+                    getlatlon();
+                    Log.d("Distance", TotalDistance.toString());
+                    final double totalDistanceKmRounded = round(TotalDistance, 2);
+                    Log.d("Distance", String.valueOf(totalDistanceKmRounded));
+                    final Double seconds = ((double) calculateElapsedTime(Timer) / 1000);
+                    final Date currentDate = new Date();
+                    Log.d(currentDate.toString(), "Date");
+                    Log.d("Timer", String.valueOf(seconds));
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+//                        db.journeyDao().clearJourneys();
+                            db.journeyDao().insertJourneys(
+                                    new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
 
-                Log.d("Distance", TotalDistance.toString());
-                final double totalDistanceKmRounded = round(TotalDistance, 2);
-                Log.d("Distance", String.valueOf(totalDistanceKmRounded));
+                            );
+                            final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                            Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(String.format("Number of Journeys: %d", journeys.size()), "Total Journeys");
+                                }
+                            });
+                            db.close();
+                        }
+                    });
+
+                    Dialogboxaction dialog = new Dialogboxaction();
+                    dialog.show(getActivity().getSupportFragmentManager(), "anything");
+                } else {
+                    JourneyNotSavedDialogue dialog = new JourneyNotSavedDialogue();
+                    dialog.show(getActivity().getSupportFragmentManager(), "Null");
+                }
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
-                final Double seconds = ((double) calculateElapsedTime(Timer) /1000);
-                final Date currentDate = new Date();
-                Log.d(currentDate.toString(), "Date");
-                Log.d("Timer", String.valueOf(seconds));
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-//                        db.journeyDao().clearJourneys();
-                        db.journeyDao().insertJourneys(
-                                new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
-
-                        );
-                        final List<Journey> journeys = db.journeyDao().getAllJourneys();
-                        Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
-                            }
-                        });
-                        db.close();
-                    }
-                });
-
-                Dialogboxaction dialog = new Dialogboxaction();
-                dialog.show(getActivity().getSupportFragmentManager(), "anything");
             }
         });
     }

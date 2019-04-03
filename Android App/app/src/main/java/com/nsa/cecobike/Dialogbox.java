@@ -28,6 +28,7 @@ public class Dialogbox extends Fragment {
                 openDialog();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 //code implementation in maps

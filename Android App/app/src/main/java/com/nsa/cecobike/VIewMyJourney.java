@@ -40,6 +40,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
+        setHasOptionsMenu(false);
 //        ArrayAdapter();
         listOfJourneys = new ArrayList<Journey>();
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
