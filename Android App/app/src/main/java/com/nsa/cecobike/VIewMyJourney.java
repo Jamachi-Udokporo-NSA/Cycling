@@ -25,7 +25,6 @@ import java.util.List;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
-    EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
     private int numberOfJourneys;
@@ -53,9 +52,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-//                        for (int i = 0; i != numberOfJourneys; i++) {
-//                            {
-//                                listOfJourneys.add(new Journey(1.0, 2.0, journeys.get(i).getDateAndTime()));
                                 listOfJourneys = journeys;
                                 Log.d(listOfJourneys.toString(), "All journeys");
 //                            }
@@ -86,40 +82,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         // Required empty public constructor
 
     }
-    //List Adapter
-//    private void ArrayAdapter(){
-//        Obtain the data
-//        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
-//
-//        AsyncTask.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                final List<Journey> journeys = db.journeyDao().getAllJourneys();
-//
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//                    @Override
-//                    public void run() {
-//                        numberOfJourneys = journeys.size();
-//                        for(int i=0; i!=numberOfJourneys; i++){
-//                            listOfJourneys.add(String.format("Journey " + (i+1) + System.lineSeparator() +journeys.get(i).getDateAndTime()));
-//                            Log.d(journeys.get(i).toString(), "Journey" + i);
-//                        }
-                        //Create the adapter and connect to the data
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                                getContext(),
-//                                R.layout.list_view_layout,
-//                                listOfJourneys
-//                        );
-                        //Fetch the listview and connect to the adapter
-//                        ListView lv = v.findViewById(R.id.lv_journeys);
-//                        lv.setAdapter(adapter);
-//                        lv.setOnItemClickListener(VIewMyJourney.this);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -148,7 +110,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
-            customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
+            customViewHolder.journeyText.setText("Journey " + (position + 1));
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
         }
 

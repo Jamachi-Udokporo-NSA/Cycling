@@ -92,7 +92,6 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
-                        // mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
                     }
                 });
             }
