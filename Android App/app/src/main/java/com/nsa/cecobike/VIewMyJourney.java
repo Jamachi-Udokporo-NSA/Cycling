@@ -39,6 +39,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
+        setHasOptionsMenu(false);
 //        ArrayAdapter();
         listOfJourneys = new ArrayList<Journey>();
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
@@ -111,8 +112,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
             customViewHolder.journeyText.setText("Journey " + (position + 1));
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
-
-
         }
 
         @Override
@@ -162,4 +161,5 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         }
 
     }
+
 }

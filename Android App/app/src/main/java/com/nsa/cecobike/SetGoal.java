@@ -146,6 +146,7 @@ public class SetGoal extends Fragment {
 //            End Remove Task
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 

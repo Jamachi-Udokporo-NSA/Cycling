@@ -50,6 +50,7 @@ public class JourneySummary extends Fragment {
                 transaction.commit();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 
