@@ -68,9 +68,12 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         LatLng cardiff = new LatLng(-37.1886, 145.708);
         mMap.addMarker(new MarkerOptions().position(cardiff).title("Marker in Cardiff"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cardiff));
-        for (LatLng latLng : list) {
-            mMap.addMarker(new MarkerOptions().position(latLng));
-        }
+//        for (LatLng latLng : list) {
+//            mMap.addMarker(new MarkerOptions().position(latLng));
+//        }
+        Collection<LatLng> collection =  new ArrayList<>(list);
+        mProvider = new HeatmapTileProvider.Builder().data(collection).build();
+        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
 
 
 
