@@ -67,7 +67,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     boolean permissionIsGranted = false;
     double valueResult;
     ArrayList<String> test = new ArrayList<>();
-    Location location;
+    Location location = null;
 
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
@@ -175,11 +175,11 @@ public class Map extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void run() {
 //                        db.journeyDao().clearJourneys();
+                            final List<Journey> journeys = db.journeyDao().getAllJourneys();
                             db.journeyDao().insertJourneys(
-                                    new Journey( "Journey " + (String.valueOf(coordinates.size() + 1)),totalDistanceKmRounded, seconds, currentDate, coordinates)
+                                    new Journey( "Journey " + (String.valueOf(journeys.size() + 1)),totalDistanceKmRounded, seconds, currentDate, coordinates)
 
                             );
-                            final List<Journey> journeys = db.journeyDao().getAllJourneys();
                             Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
@@ -263,7 +263,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Log.d("Location status", "Im here now");
-        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         Log.d("Location status", "Im here now 2");
         try {
             getCameraUpdates(location);
@@ -278,6 +277,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
         Log.d("Location status", "Im here now 3");
 //        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
         Log.d("Location status", "Im here now 4");
+        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);

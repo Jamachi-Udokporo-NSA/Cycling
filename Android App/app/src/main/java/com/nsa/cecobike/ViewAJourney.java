@@ -20,12 +20,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -101,19 +103,25 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (listOfJourneys.get(text).getCoordinates().size() != 0){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() + 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() + 1).getpLon())).title("End location"));
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
-                    .zoom(10)// Sets the zoom
-                    .build();
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
         coordinates = listOfJourneys.get(text).getCoordinates();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i+1 < coordinates.size(); i++){
             addPolyLinesToMap(coordinates.get(i).getpLat(), coordinates.get(i).getpLon(), coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon());
+            builder.include(new LatLng(coordinates.get(i).getpLat(), coordinates.get(i).getpLon()));
+        }
+        LatLngBounds bounds = builder.build();
+        int padding = 130;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.moveCamera(cu);
+        if (listOfJourneys.get(text).getCoordinates().size() != 0){
+            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+//            CameraPosition cameraPosition = new CameraPosition.Builder()
+//                    .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
+//                    .zoom(10)// Sets the zoom
+//                    .build();
+//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            Log.d("Number of journeys", listOfJourneys.toString());
         }
     }
 
