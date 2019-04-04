@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(getIntent());
 
         }  if (id == R.id.heat_map) {
-            startActivity( new Intent( this, MapsActivity.class) );
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new Maps()).commit();
+            navigationView.setCheckedItem(R.id.heat_map);
 
 
         } else {
