@@ -1,7 +1,6 @@
 package com.nsa.adminapp;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,20 +49,9 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
 //        LatLng cardiff = new LatLng(51.495624, -3.176227);
         LatLng cardiff = new LatLng(-37.1886, 145.708);
         mMap.addMarker(new MarkerOptions().position(cardiff).title("Marker in Cardiff"));
@@ -75,9 +63,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         mProvider = new HeatmapTileProvider.Builder().data(collection).build();
         mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
 
-
-
-
     }
     protected GoogleMap getMap() {
 
@@ -87,17 +72,19 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
 
         try {
-            list = readItems(R.raw.police);
+            list = readItems(R.raw.points);
         } catch (JSONException e) {
             Toast.makeText(this.getActivity(), "Problem reading list of locations.", Toast.LENGTH_LONG).show();
 
         }
 
-        // Create a heat map tile provider, passing it the latlngs of the police stations.
+        // Create a heat map tile provider, passing it the latlngs of the points stations.
         mProvider = new HeatmapTileProvider.Builder()
                 .data(list)
                 .build();
     }
+
+    //Reference:https://developers.google.com/maps/documentation/android-sdk/utility/heatmap
     private ArrayList<LatLng> readItems(int resource) throws JSONException {
         ArrayList<LatLng> list = new ArrayList<LatLng>();
         InputStream inputStream = getResources().openRawResource(resource);
