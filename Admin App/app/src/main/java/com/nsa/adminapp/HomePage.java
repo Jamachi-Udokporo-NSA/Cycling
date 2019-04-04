@@ -24,10 +24,6 @@ public class HomePage extends Fragment {
 
         main.onCreate(savedInstanceState);
 
-
-
-
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
