@@ -140,10 +140,10 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("Journey id", text);
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("Journey id", text);
 
             ConfirmationDialogue dialog = new ConfirmationDialogue();
             dialog.setArguments(bundle);
@@ -153,6 +153,7 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
         }else if (id == R.id.action_rename) {
 
             JourneyRename dialog = new JourneyRename();
+            dialog.setArguments(bundle);
 
             dialog.show(getActivity().getSupportFragmentManager(), "Null");
             return true;

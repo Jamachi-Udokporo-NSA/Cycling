@@ -148,11 +148,8 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
-            customViewHolder.journeyText.setText("Journey " + (position + 1));
-
+            customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
-
-
         }
 
         @Override

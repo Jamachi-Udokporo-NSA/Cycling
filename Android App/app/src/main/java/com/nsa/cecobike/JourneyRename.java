@@ -20,10 +20,13 @@ public class JourneyRename extends AppCompatDialogFragment {
     private List<Journey> listOfJourneys;
     private JourneyDatabase db;
     int text;
+    private EditText input;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        input = new EditText(getContext());
+        builder.setView(input);
         builder.setTitle("Rename Journey") //change the dialog box header here
                 .setCancelable(true)
                 .setMessage("Journey Name")
@@ -36,20 +39,18 @@ public class JourneyRename extends AppCompatDialogFragment {
                 .setPositiveButton("Rename", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        deleteAJourney();
+                        renameAJourney();
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.start_fragment, new VIewMyJourney());
                         transaction.commit();
                     }
                 });
-        final EditText input = new EditText(getContext());
-        builder.setView(input);
         return builder.create();
 
     }
 
-    private void deleteAJourney() {
+    private void renameAJourney() {
         Bundle bundle = getArguments();
         text = bundle.getInt("Journey id");
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
@@ -58,8 +59,7 @@ public class JourneyRename extends AppCompatDialogFragment {
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
                 listOfJourneys = journeys;
-                listOfJourneys.get(text);
-                db.journeyDao().deleteAJourneyById(listOfJourneys.get(text).getJid());
+                db.journeyDao().updateAJourneyById(listOfJourneys.get(text).getJid(), input.getText().toString());
             }
         });
     }
