@@ -24,7 +24,10 @@ public class Journey{
     @PrimaryKey(autoGenerate = true)
     private int jid;
 
-    @ColumnInfo(name = "distance_miles")
+    @ColumnInfo(name = "journeyName")
+    private String journeyname;
+
+    @ColumnInfo(name = "distanceKm")
     private Double distance;
 
     @ColumnInfo(name = "duration")
@@ -36,7 +39,9 @@ public class Journey{
     @ColumnInfo(name = "coordinates")
     private ArrayList<Point>coordinates;
 
-    public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
+
+    public Journey(String journeyname, Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
+        this.journeyname = journeyname;
         this.distance = distance;
         this.duration = duration;
         this.date = date;
@@ -63,6 +68,9 @@ public class Journey{
         return date;
     }
 
+    public String getJourneyname() {
+        return journeyname;
+    }
 
     public ArrayList<Point> getCoordinates() {
         return coordinates;
@@ -72,9 +80,10 @@ public class Journey{
     public String toString() {
         return "Journey{" +
                 "jid=" + jid +
+                ", journeyname='" + journeyname + '\'' +
                 ", distance=" + distance +
                 ", duration=" + duration +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", coordinates=" + (coordinates == null ? null : Arrays.asList(coordinates)) +
                 '}';
     }

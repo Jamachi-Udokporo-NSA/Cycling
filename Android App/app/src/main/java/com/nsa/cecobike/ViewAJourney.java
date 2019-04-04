@@ -142,10 +142,19 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-            Toast.makeText(getContext(), "Delete is in development", Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("Journey id", text);
+
+            ConfirmationDialogue dialog = new ConfirmationDialogue();
+            dialog.setArguments(bundle);
+
+            dialog.show(getActivity().getSupportFragmentManager(), "Null");
             return true;
         }else if (id == R.id.action_rename) {
-            Toast.makeText(getContext(), "rename is in development", Toast.LENGTH_SHORT).show();
+
+            JourneyRename dialog = new JourneyRename();
+
+            dialog.show(getActivity().getSupportFragmentManager(), "Null");
             return true;
         }
         return super.onOptionsItemSelected(item);
