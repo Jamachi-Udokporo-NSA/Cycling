@@ -108,9 +108,10 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
         for (int i = 0; i+1 < coordinates.size(); i++){
             addPolyLinesToMap(coordinates.get(i).getpLat(), coordinates.get(i).getpLon(), coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon());
             builder.include(new LatLng(coordinates.get(i).getpLat(), coordinates.get(i).getpLon()));
+            builder.include(new LatLng(coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon()));
         }
         LatLngBounds bounds = builder.build();
-        int padding = 130;
+        int padding = 70;
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
         if (listOfJourneys.get(text).getCoordinates().size() != 0){
