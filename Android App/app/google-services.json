@@ -13,7 +13,16 @@
           "package_name": "com.nsa.cecobike"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "141543797181-v4rh43l4lri04n18kbc4j8r4qbo467q4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsa.cecobike",
+            "certificate_hash": "731c133e9da4d9d9e7f35c7343595dbdd01299a3"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCOSdhxed7t3ITH28E1wvupgrgkHHOSHnI"

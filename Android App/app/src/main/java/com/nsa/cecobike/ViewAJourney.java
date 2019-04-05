@@ -13,10 +13,12 @@ import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +29,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.okhttp.internal.InternalCache;
 
 import java.text.DateFormat;
@@ -42,6 +46,9 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     int text;
     ArrayList<Point> coordinates = new ArrayList<>();
+//    FirebaseDatabase database;
+    DatabaseReference reff;
+    Journey ajourney;
 
     public ViewAJourney() {
         // Required empty public constructor
@@ -84,13 +91,28 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         Bundle bundle = getArguments();
                         text = bundle.getInt("Journey id");
                         Log.d("actual journey id", String.valueOf(text));
-                        TextView timeAndDateText = v.findViewById(R.id.time_and_date_text);
-                        TextView distAndDurationText = v.findViewById(R.id.distance_and_duration_text);
-                        TextView emissionsText = v.findViewById(R.id.emissions_text);
+                        final TextView timeAndDateText = v.findViewById(R.id.time_and_date_text);
+                        final TextView distAndDurationText = v.findViewById(R.id.distance_and_duration_text);
+                        final TextView emissionsText = v.findViewById(R.id.emissions_text);
 //                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
                         timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
+
+//                        ajourney = new Journey();
+                        reff = FirebaseDatabase.getInstance().getReference("Journey");
+                        AppCompatButton buttonsend = v.findViewById(R.id.finish_journey_button);
+                        buttonsend.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Double dist = Double.parseDouble(distAndDurationText.getText().toString().trim());
+                                Double emits = Double.parseDouble(emissionsText.getText().toString().trim());
+
+                                ajourney.setDistance(dist);
+
+                                reff.push().setValue("Journey");
+                            }
+                        });
                     }
                 });
             }
