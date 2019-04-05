@@ -259,9 +259,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         try {
             getCameraUpdates(location);
             previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -269,6 +268,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
             Log.d("Last Location" , "Couldn't get last location,  ...applying another method");
         }
 //        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);
