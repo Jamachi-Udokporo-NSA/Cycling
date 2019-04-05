@@ -36,6 +36,9 @@ public class Journey{
     @ColumnInfo(name = "coordinates")
     private ArrayList<Point>coordinates;
 
+    public Journey() {
+    }
+
     public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
         this.distance = distance;
         this.duration = duration;
@@ -46,6 +49,23 @@ public class Journey{
     public void setJid(int jid) {
         this.jid = jid;
     }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setCoordinates(ArrayList<Point> coordinates) {
+        this.coordinates = coordinates;
+    }
+
 
     public int getJid() {
         return jid;
