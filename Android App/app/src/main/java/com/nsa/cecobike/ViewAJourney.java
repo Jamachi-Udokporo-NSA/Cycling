@@ -109,19 +109,21 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
             builder.include(new LatLng(coordinates.get(i).getpLat(), coordinates.get(i).getpLon()));
             builder.include(new LatLng(coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon()));
         }
-        LatLngBounds bounds = builder.build();
-        int padding = 70;
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.moveCamera(cu);
-        if (listOfJourneys.get(text).getCoordinates().size() != 0){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+        if (coordinates.size() > 1) {
+            LatLngBounds bounds = builder.build();
+            int padding = 70;
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mMap.moveCamera(cu);
+            if (listOfJourneys.get(text).getCoordinates().size() != 0) {
+                mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat(), listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat(), listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
 //            CameraPosition cameraPosition = new CameraPosition.Builder()
 //                    .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
 //                    .zoom(10)// Sets the zoom
 //                    .build();
 //            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            Log.d("Number of journeys", listOfJourneys.toString());
+                Log.d("Number of journeys", listOfJourneys.toString());
+            }
         }
     }
 

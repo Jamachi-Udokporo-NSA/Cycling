@@ -161,7 +161,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     return;
                 }
                 //Calculates Distance
-                if (coordinates.size() != 0) {
+                if (coordinates.size() > 1) {
                     getlatlon();
                     Log.d("Distance", TotalDistance.toString());
                     final double totalDistanceKmRounded = round(TotalDistance, 2);
