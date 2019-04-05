@@ -1,12 +1,13 @@
 package com.nsa.cecobike;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Holds Lat and Long as Decimal Point to be converted to string
 public class Point {
     private Double pLat;
     private Double pLon;
-    private List<Double> Coords;
+    private ArrayList<Double> Coords;
 
 
     public Point(Double pLat, Double pLon) {

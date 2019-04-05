@@ -3,6 +3,7 @@ package com.nsa.cecobike;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 
 @Entity
@@ -36,6 +38,11 @@ public class Journey{
     @ColumnInfo(name = "coordinates")
     private ArrayList<Point>coordinates;
 
+    @ColumnInfo(name = "coordinatesString")
+    private List<String> points;
+
+
+    @Ignore
     public Journey() {
     }
 
@@ -83,6 +90,13 @@ public class Journey{
         return date;
     }
 
+    public List<String> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<String> points) {
+        this.points = points;
+    }
 
     public ArrayList<Point> getCoordinates() {
         return coordinates;

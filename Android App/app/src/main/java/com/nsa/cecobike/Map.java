@@ -202,12 +202,11 @@ public class Map extends Fragment implements OnMapReadyCallback {
                                     coords.clear();
 
                                     Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
-                                    Log.d("Test 2", String.valueOf(coords.size()));
                                 }
-                                Log.d("Test 2", points.toString());
+
                                 ajourney = new Journey();
-                                reff = FirebaseDatabase.getInstance().getReference("Journey");
-                                ajourney.setCoordinates(journeys.get(0).getCoordinates().get(0).getpLat());
+                                reff = FirebaseDatabase.getInstance().getReference("Journey");;
+                                ajourney.setPoints(points);
                                 reff.push().setValue(ajourney);
                             }
                         });

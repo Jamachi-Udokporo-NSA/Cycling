@@ -35,6 +35,7 @@ import com.squareup.okhttp.internal.InternalCache;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -98,14 +99,23 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
+                        final ArrayList<Double> coords = new ArrayList<Double>() {};
+                        final ArrayList<String> points = new ArrayList<String>();
+                        for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
+                            Double lat = Double.valueOf(pts.getCoords()[0].toString());
+                            Double lon = Double.valueOf(pts.getCoords()[1].toString());
+
+                            coords.addAll(Arrays.asList(lat, lon));
+                            points.add(coords.toString());
+                            coords.clear();
+
+                            Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
+                        }
 
                         ajourney = new Journey();
-                        reff = FirebaseDatabase.getInstance().getReference("Journey");
-                        ajourney.setDistance(listOfJourneys.get(0).getDistance());
-//                        Double dist = Double.parseDouble(distAndDurationText.getText().toString().trim());
+                        reff = FirebaseDatabase.getInstance().getReference("Journey");;
+                        ajourney.setPoints(points);
                         reff.push().setValue(ajourney);
-
-
                     }
                 });
             }
@@ -116,19 +126,19 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
+//        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
-                .zoom(10)// Sets the zoom
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
+//                .zoom(10)// Sets the zoom
+//                .build();
+//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        coordinates = listOfJourneys.get(text).getCoordinates();
+//        coordinates = listOfJourneys.get(text).getCoordinates();
         for (int i = 0; i+1 < coordinates.size(); i++){
             addPolyLinesToMap(coordinates.get(i).getpLat(), coordinates.get(i).getpLon(), coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon());
         }
-        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+//        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
     }
 
     public void addPolyLinesToMap(final Double pLat1, final Double pLon1, final Double pLat2, final Double pLon2) {

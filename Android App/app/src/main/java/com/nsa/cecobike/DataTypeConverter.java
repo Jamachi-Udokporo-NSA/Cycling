@@ -12,13 +12,40 @@ import java.util.List;
 
 public class DataTypeConverter {
     @TypeConverter
-    public static List<Point> fromString(String value) {
+    public static ArrayList<Point> fromString(String value) {
         Type listType = new TypeToken<List<Point>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromArrayList(List<Point> list) {
+    public static String fromArrayList(ArrayList<Point> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
+    }
+
+    @TypeConverter
+    public static List<Double> fromDouble(String value) {
+        Type listType = new TypeToken<List<Double>>() {}.getType();
+        return new Gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String fromArrayList(List<Double> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
+    }
+
+
+    @TypeConverter
+    public static List<String> fromavalue(String value) {
+        Type listType = new TypeToken<List<String>>() {}.getType();
+        return new Gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String fromList(List<String> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         return json;

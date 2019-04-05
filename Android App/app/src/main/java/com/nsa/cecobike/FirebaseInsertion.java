@@ -13,8 +13,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Date;
 
 public class FirebaseInsertion extends AppCompatActivity {
-DatabaseReference reff;
-Journey ajourney;
+    DatabaseReference reff;
+    Journey ajourney;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
