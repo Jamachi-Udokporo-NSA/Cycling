@@ -119,6 +119,13 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         }
 
         public void CalculateProgress(int position){
+            for (Goal goal: listOfGoals){
+
+                for (Journey journey: listOfJourneys){
+                    android.text.format.DateFormat.format("MM-yyyy" , journey.getDate());
+
+                }
+            }
             journeyDistance = mData.get(position).getDistance() * 1.609;
             goalMax = listOfGoals.get(position).getGoal_miles() * 1.609;
             journeyProgress = (int) (journeyDistance * goalMax);

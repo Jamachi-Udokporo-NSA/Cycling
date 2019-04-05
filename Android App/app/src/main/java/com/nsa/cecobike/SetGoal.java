@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class SetGoal extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
+        final View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
 
         //Getting IDs
         seekBar = v.findViewById(R.id.seek_bar);
@@ -73,6 +75,8 @@ public class SetGoal extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Logs the set value, Goal should match this
                 Log.d(TAG, "onStopTrackingTouch: " + goal_Miles);
+                Toast.makeText(getContext(), "Set your goal", Toast.LENGTH_SHORT).show();
+
             }
         });
 //        Insert Button Task
@@ -97,8 +101,8 @@ public class SetGoal extends Fragment {
                         if (goals.size() == 0) {
                             Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
 //                            goals.add(newGoal);
-                            db.goalDao().insertGoals(newGoal);
-                            Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
+//                            db.goalDao().insertGoals(newGoal);
+//                            Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
 
                             for (Goal goal : goals) {
                                 //while count is less than the size of the list will check to see if
@@ -111,6 +115,7 @@ public class SetGoal extends Fragment {
                                     if (!milestone_dates.get(0).equals(currentMonth)) {
 //                                        Goal e = goals.get(goals.size() - 1);
 //                                        goals.remove(e);
+                                        db.goalDao().insertGoals(newGoal);
                                         Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
                                     } else {
                                         Log.i("Update GOAL", goal.getGoal_miles().toString() + " - " + goal.getMilestone_date());
@@ -123,6 +128,7 @@ public class SetGoal extends Fragment {
                     }
                 });
                 db.close();
+                Toast.makeText(getContext(), "Goal Set", Toast.LENGTH_SHORT).show();
             }
         });
 //      End Insert Task
@@ -143,6 +149,7 @@ public class SetGoal extends Fragment {
                     }
                 });
                 db.close();
+                Toast.makeText(getContext(), "Removed Goal", Toast.LENGTH_SHORT).show();
 //            End Remove Task
             }
         });

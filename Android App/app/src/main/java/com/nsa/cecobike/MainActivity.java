@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            Toast.makeText(this, "you clicked on settings", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//
+//            Toast.makeText(this, "you clicked on settings", Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                 navigationView.setCheckedItem(R.id.nav_view_my_journeys);
         } else if (id == R.id.nav_goal_contribution) {
             Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_view) {
             Toast.makeText(this, "share fragment has not been created yet", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_set_goal) {
             Toast.makeText(this, "Set Goal Fragment is in Development", Toast.LENGTH_SHORT).show();
