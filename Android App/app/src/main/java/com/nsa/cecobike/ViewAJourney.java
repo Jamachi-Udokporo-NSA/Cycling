@@ -99,23 +99,23 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
-                        final ArrayList<Double> coords = new ArrayList<Double>() {};
-                        final ArrayList<String> points = new ArrayList<String>();
-                        for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
-                            Double lat = Double.valueOf(pts.getCoords()[0].toString());
-                            Double lon = Double.valueOf(pts.getCoords()[1].toString());
-
-                            coords.addAll(Arrays.asList(lat, lon));
-                            points.add(coords.toString());
-                            coords.clear();
-
-                            Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
-                        }
-
-                        ajourney = new Journey();
-                        reff = FirebaseDatabase.getInstance().getReference("Journey");;
-                        ajourney.setPoints(points);
-                        reff.push().setValue(ajourney);
+//                        final ArrayList<Double> coords = new ArrayList<Double>() {};
+//                        final ArrayList<String> points = new ArrayList<String>();
+//                        for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
+//                            Double lat = Double.valueOf(pts.getCoords()[0].toString());
+//                            Double lon = Double.valueOf(pts.getCoords()[1].toString());
+//
+//                            coords.addAll(Arrays.asList(lat, lon));
+//                            points.add(coords.toString());
+//                            coords.clear();
+//
+//                            Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
+//                        }
+//
+//                        ajourney = new Journey();
+//                        reff = FirebaseDatabase.getInstance().getReference("Journey");;
+//                        ajourney.setPoints(points);
+//                        reff.push().setValue(ajourney);
                     }
                 });
             }
