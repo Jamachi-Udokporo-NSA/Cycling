@@ -36,6 +36,8 @@ public class Journey{
     @ColumnInfo(name = "coordinates")
     private ArrayList<Point>coordinates;
 
+    public Journey() {
+    }
 
     public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
         this.distance = distance;

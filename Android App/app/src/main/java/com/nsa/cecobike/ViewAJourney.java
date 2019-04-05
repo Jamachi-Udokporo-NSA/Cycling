@@ -99,20 +99,13 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
 
-//                        ajourney = new Journey();
+                        ajourney = new Journey();
                         reff = FirebaseDatabase.getInstance().getReference("Journey");
-                        AppCompatButton buttonsend = v.findViewById(R.id.finish_journey_button);
-                        buttonsend.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Double dist = Double.parseDouble(distAndDurationText.getText().toString().trim());
-                                Double emits = Double.parseDouble(emissionsText.getText().toString().trim());
+                        ajourney.setDistance(listOfJourneys.get(0).getDistance());
+//                        Double dist = Double.parseDouble(distAndDurationText.getText().toString().trim());
+                        reff.push().setValue(ajourney);
 
-                                ajourney.setDistance(dist);
 
-                                reff.push().setValue("Journey");
-                            }
-                        });
                     }
                 });
             }
