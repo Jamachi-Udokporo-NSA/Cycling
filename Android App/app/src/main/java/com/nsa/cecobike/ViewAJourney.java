@@ -110,7 +110,7 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
             builder.include(new LatLng(coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon()));
         }
         LatLngBounds bounds = builder.build();
-        int padding = 70;
+        int padding = 100;
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
         if (listOfJourneys.get(text).getCoordinates().size() != 0){
