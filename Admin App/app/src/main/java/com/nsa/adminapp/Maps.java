@@ -15,6 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import org.json.JSONArray;
@@ -51,6 +54,12 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        DatabaseReference test = FirebaseDatabase.getInstance().getReference();
+
+
+
+
         mMap = googleMap;
 //        LatLng cardiff = new LatLng(51.495624, -3.176227);
         LatLng cardiff = new LatLng(-37.1886, 145.708);
