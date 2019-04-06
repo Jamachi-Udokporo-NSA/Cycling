@@ -1,7 +1,6 @@
 package com.nsa.adminapp;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 public class HomePage extends Fragment {
 
     public HomePage() {
-        // Required empty public constructor
+
     }
 
 
@@ -23,10 +22,6 @@ public class HomePage extends Fragment {
         main.setDrawerVisible(true);
 
         main.onCreate(savedInstanceState);
-
-
-
-
 
     }
     @Override
