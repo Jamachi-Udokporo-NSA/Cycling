@@ -185,12 +185,13 @@ public class Map extends Fragment implements OnMapReadyCallback {
                             );
                             final ArrayList<Double> coords = new ArrayList<Double>() {};
                             final ArrayList<String> points = new ArrayList<String>() {};
+                            final List<Journey> journeys2 = db.journeyDao().getAllJourneys();
                             Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
-                                    for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
+                                    Log.d(String.format("Number of Journeys: %d", journeys2.size()),"Total Journeys");
+                                    for (Point pts: journeys2.get(journeys2.size() - 1).getCoordinates()) {
                                         Double lat = Double.valueOf(pts.getCoords()[0].toString());
                                         Double lon = Double.valueOf(pts.getCoords()[1].toString());
 
