@@ -183,16 +183,33 @@ public class Map extends Fragment implements OnMapReadyCallback {
                                     new Journey( "Journey " + (String.valueOf(journeys.size() + 1)),totalDistanceKmRounded, seconds, currentDate, coordinates)
 
                             );
+                            final ArrayList<Double> coords = new ArrayList<Double>() {};
+                            final ArrayList<String> points = new ArrayList<String>() {};
                             Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.d(String.format("Number of Journeys: %d", journeys.size()), "Total Journeys");
+                                    Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
+                                    for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
+                                        Double lat = Double.valueOf(pts.getCoords()[0].toString());
+                                        Double lon = Double.valueOf(pts.getCoords()[1].toString());
+
+                                        coords.addAll(Arrays.asList(lat, lon));
+                                        points.add(coords.toString());
+                                        coords.clear();
+
+                                        Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
+                                    }
+
+                                    ajourney = new Journey();
+                                    reff = FirebaseDatabase.getInstance().getReference("Journey");;
+                                    ajourney.setPoints(points);
+                                    reff.push().setValue(ajourney);
                                 }
                             });
+                            db.close();
                         }
                     });
-
                     Dialogboxaction dialog = new Dialogboxaction();
                     dialog.show(getActivity().getSupportFragmentManager(), "anything");
                 } else {
@@ -206,46 +223,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 final Date currentDate = new Date();
                 Log.d(currentDate.toString(), "Date");
                 Log.d("Timer", String.valueOf(seconds));
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-//                        db.journeyDao().clearJourneys();
-                        final List<Journey> journeys = db.journeyDao().getAllJourneys();
-                        db.journeyDao().insertJourneys(
-                                new Journey( "Journey " + (String.valueOf(journeys.size() + 1)), totalDistanceKmRounded, seconds, currentDate, coordinates)
-
-                        );
-                        final ArrayList<Double> coords = new ArrayList<Double>() {};
-                        final ArrayList<String> points = new ArrayList<String>() {};
-                        Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
-                                for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
-                                    Double lat = Double.valueOf(pts.getCoords()[0].toString());
-                                    Double lon = Double.valueOf(pts.getCoords()[1].toString());
-
-                                    coords.addAll(Arrays.asList(lat, lon));
-                                    points.add(coords.toString());
-                                    coords.clear();
-
-                                    Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
-                                }
-
-                                ajourney = new Journey();
-                                reff = FirebaseDatabase.getInstance().getReference("Journey");;
-                                ajourney.setPoints(points);
-                                reff.push().setValue(ajourney);
-                            }
-                        });
-                        db.close();
-                    }
-                });
             }
         });
-        Dialogboxaction dialog = new Dialogboxaction();
-        dialog.show(getActivity().getSupportFragmentManager(), "anything");
     }
 
     public static double round(double value, int places) {
