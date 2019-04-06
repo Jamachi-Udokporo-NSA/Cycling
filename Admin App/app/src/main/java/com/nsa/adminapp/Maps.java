@@ -42,14 +42,18 @@ public class Maps extends Fragment implements OnMapReadyCallback {
     private TileOverlay mOverlay;
     private GoogleMap mMap;
     private List<LatLng> list = null;
+    private Points p;
+    String data = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        p = new Points("");
         addHeatMap();
 
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_maps, null, false);
@@ -65,14 +69,25 @@ public class Maps extends Fragment implements OnMapReadyCallback {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference reff = database.getDatabase().getReference().child("Journey");
         Query positionQuery = reff;
-        
         positionQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                data = "";
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    data += singleSnapshot.child("points").getValue().toString() + ";";
                     Log.d("dataFire", singleSnapshot.child("points").getValue().toString());
                 }
+                p.setLocations(data);
+                Log.d("lTag", "" +p.getLocations());
+//                for (LatLng latLng : p.getLocations()) {
+//                    mMap.addMarker(new MarkerOptions().position(latLng));
+//                }
+                Collection<LatLng> collection = new ArrayList<>(p.getLocations());
+                mProvider = new HeatmapTileProvider.Builder().data(collection).build();
+                mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException());
@@ -81,24 +96,21 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
 
 
-
         mMap = googleMap;
-//        LatLng cardiff = new LatLng(51.495624, -3.176227);
-        LatLng cardiff = new LatLng(-37.1886, 145.708);
+        LatLng cardiff = new LatLng(51.495624, -3.176227);
+//        LatLng cardiff = new LatLng(-37.1886, 145.708);
         mMap.addMarker(new MarkerOptions().position(cardiff).title("Marker in Cardiff"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cardiff));
-//        for (LatLng latLng : list) {
-//            mMap.addMarker(new MarkerOptions().position(latLng));
-//        }
-        Collection<LatLng> collection =  new ArrayList<>(list);
-        mProvider = new HeatmapTileProvider.Builder().data(collection).build();
-        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+
+
 
     }
+
     protected GoogleMap getMap() {
 
         return mMap;
     }
+
     private void addHeatMap() {
 
 
