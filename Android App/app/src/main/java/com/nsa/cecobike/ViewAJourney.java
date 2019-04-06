@@ -1,10 +1,7 @@
-    package com.nsa.cecobike;
+package com.nsa.cecobike;
 
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.graphics.Color;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,30 +10,28 @@ import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.okhttp.internal.InternalCache;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 
@@ -47,15 +42,13 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     int text;
     ArrayList<Point> coordinates = new ArrayList<>();
-//    FirebaseDatabase database;
-    DatabaseReference reff;
-    Journey ajourney;
 
     public ViewAJourney() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -92,30 +85,13 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
                         Bundle bundle = getArguments();
                         text = bundle.getInt("Journey id");
                         Log.d("actual journey id", String.valueOf(text));
-                        final TextView timeAndDateText = v.findViewById(R.id.time_and_date_text);
-                        final TextView distAndDurationText = v.findViewById(R.id.distance_and_duration_text);
-                        final TextView emissionsText = v.findViewById(R.id.emissions_text);
+                        TextView timeAndDateText = v.findViewById(R.id.time_and_date_text);
+                        TextView distAndDurationText = v.findViewById(R.id.distance_and_duration_text);
+                        TextView emissionsText = v.findViewById(R.id.emissions_text);
 //                        JourneyText.setText(String.format("Date: %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(text).getDate(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(text).getDuration()));
                         timeAndDateText.setText("Date: " + android.text.format.DateFormat.format("dd-MM-yyyy", (listOfJourneys.get(text).getDate())) + "  Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(text).getDate()));
                         distAndDurationText.setText("Distance: " + listOfJourneys.get(text).getDistance() + " Km" + "   Duration: " + listOfJourneys.get(text).getDuration()+"s");
                         emissionsText.setText("Emissions saved: " + (listOfJourneys.get(text).getDistance() * 271) + "g");
-//                        final ArrayList<Double> coords = new ArrayList<Double>() {};
-//                        final ArrayList<String> points = new ArrayList<String>();
-//                        for (Point pts: journeys.get(journeys.size() - 1).getCoordinates()) {
-//                            Double lat = Double.valueOf(pts.getCoords()[0].toString());
-//                            Double lon = Double.valueOf(pts.getCoords()[1].toString());
-//
-//                            coords.addAll(Arrays.asList(lat, lon));
-//                            points.add(coords.toString());
-//                            coords.clear();
-//
-//                            Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
-//                        }
-//
-//                        ajourney = new Journey();
-//                        reff = FirebaseDatabase.getInstance().getReference("Journey");;
-//                        ajourney.setPoints(points);
-//                        reff.push().setValue(ajourney);
                     }
                 });
             }
@@ -126,29 +102,70 @@ public class ViewAJourney extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
-
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
-//                .zoom(10)// Sets the zoom
-//                .build();
-//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-//        coordinates = listOfJourneys.get(text).getCoordinates();
+        coordinates = listOfJourneys.get(text).getCoordinates();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i+1 < coordinates.size(); i++){
             addPolyLinesToMap(coordinates.get(i).getpLat(), coordinates.get(i).getpLon(), coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon());
+            builder.include(new LatLng(coordinates.get(i).getpLat(), coordinates.get(i).getpLon()));
+            builder.include(new LatLng(coordinates.get((i+1)).getpLat(),coordinates.get((i+1)).getpLon()));
         }
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+        LatLngBounds bounds = builder.build();
+        int padding = 70;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.moveCamera(cu);
+        if (listOfJourneys.get(text).getCoordinates().size() != 0){
+            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())).title("Start location"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLat() , listOfJourneys.get(text).getCoordinates().get(coordinates.size() - 1).getpLon())).title("End location"));
+//            CameraPosition cameraPosition = new CameraPosition.Builder()
+//                    .target((new LatLng(listOfJourneys.get(text).getCoordinates().get(0).getpLat() , listOfJourneys.get(text).getCoordinates().get(0).getpLon())))      // Sets the center of the map to location user
+//                    .zoom(10)// Sets the zoom
+//                    .build();
+//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            Log.d("Number of journeys", listOfJourneys.toString());
+        }
     }
 
     public void addPolyLinesToMap(final Double pLat1, final Double pLon1, final Double pLat2, final Double pLon2) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                    PolylineOptions polyline = new PolylineOptions().add(new LatLng(pLat1, pLon1))
-                            .add(new LatLng(pLat2, pLon2)).width(20).color(Color.BLUE).geodesic(true);
-                    mMap.addPolyline(polyline);
+                PolylineOptions polyline = new PolylineOptions().add(new LatLng(pLat1, pLon1))
+                        .add(new LatLng(pLat2, pLon2)).width(20).color(Color.BLUE).geodesic(true);
+                mMap.addPolyline(polyline);
             }
         });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.main3, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("Journey id", text);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_delete) {
+
+            ConfirmationDialogue dialog = new ConfirmationDialogue();
+            dialog.setArguments(bundle);
+
+            dialog.show(getActivity().getSupportFragmentManager(), "Null");
+            return true;
+        }else if (id == R.id.action_rename) {
+
+            JourneyRename dialog = new JourneyRename();
+            dialog.setArguments(bundle);
+
+            dialog.show(getActivity().getSupportFragmentManager(), "Null");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

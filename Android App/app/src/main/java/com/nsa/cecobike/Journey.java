@@ -21,12 +21,15 @@ import java.util.List;
 import java.util.Timer;
 
 @Entity
-public class Journey{
+public class Journey {
 
     @PrimaryKey(autoGenerate = true)
     private int jid;
 
-    @ColumnInfo(name = "distance_miles")
+    @ColumnInfo(name = "journeyName")
+    private String journeyname;
+
+    @ColumnInfo(name = "distanceKm")
     private Double distance;
 
     @ColumnInfo(name = "duration")
@@ -36,7 +39,7 @@ public class Journey{
     private Date date;
 
     @ColumnInfo(name = "coordinates")
-    private ArrayList<Point>coordinates;
+    private ArrayList<Point> coordinates;
 
     @ColumnInfo(name = "coordinatesString")
     private List<String> points;
@@ -46,7 +49,9 @@ public class Journey{
     public Journey() {
     }
 
-    public Journey(Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
+
+    public Journey(String journeyname, Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
+        this.journeyname = journeyname;
         this.distance = distance;
         this.duration = duration;
         this.date = date;
@@ -98,17 +103,22 @@ public class Journey{
         this.points = points;
     }
 
-    public ArrayList<Point> getCoordinates() {
+    public String getJourneyname () {
+        return journeyname;
+    }
+
+    public ArrayList<Point> getCoordinates () {
         return coordinates;
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return "Journey{" +
                 "jid=" + jid +
+                ", journeyname='" + journeyname + '\'' +
                 ", distance=" + distance +
                 ", duration=" + duration +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", coordinates=" + (coordinates == null ? null : Arrays.asList(coordinates)) +
                 '}';
     }

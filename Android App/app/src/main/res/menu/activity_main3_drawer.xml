@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_track_my_journey"
-            android:icon="@drawable/ic_action_name"
+            android:icon="@drawable/ic_start_a_journey"
             android:title="Start a Journey" />
         <item
             android:id="@+id/nav_view_my_journeys"
@@ -17,19 +17,17 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Goal Contribution" />
 
+        <item
+            android:id="@+id/nav_set_goal"
+            android:icon="@drawable/ic_goal_icon1"
+            android:title="Set Journey Goal" />
+
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_set_goal"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Set Journey Goal" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+<!---->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>
