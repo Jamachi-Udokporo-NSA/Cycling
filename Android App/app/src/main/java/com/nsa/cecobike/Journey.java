@@ -3,6 +3,7 @@ package com.nsa.cecobike;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
 import android.os.AsyncTask;
@@ -16,10 +17,11 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 
 @Entity
-public class Journey{
+public class Journey {
 
     @PrimaryKey(autoGenerate = true)
     private int jid;
@@ -37,7 +39,15 @@ public class Journey{
     private Date date;
 
     @ColumnInfo(name = "coordinates")
-    private ArrayList<Point>coordinates;
+    private ArrayList<Point> coordinates;
+
+    @ColumnInfo(name = "coordinatesString")
+    private List<String> points;
+
+
+    @Ignore
+    public Journey() {
+    }
 
 
     public Journey(String journeyname, Double distance, Double duration, Date date, ArrayList<Point> coordinates) {
@@ -51,6 +61,23 @@ public class Journey{
     public void setJid(int jid) {
         this.jid = jid;
     }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setCoordinates(ArrayList<Point> coordinates) {
+        this.coordinates = coordinates;
+    }
+
 
     public int getJid() {
         return jid;
@@ -68,16 +95,24 @@ public class Journey{
         return date;
     }
 
-    public String getJourneyname() {
+    public List<String> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<String> points) {
+        this.points = points;
+    }
+
+    public String getJourneyname () {
         return journeyname;
     }
 
-    public ArrayList<Point> getCoordinates() {
+    public ArrayList<Point> getCoordinates () {
         return coordinates;
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return "Journey{" +
                 "jid=" + jid +
                 ", journeyname='" + journeyname + '\'' +
