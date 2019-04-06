@@ -140,11 +140,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
 
                 int i = this.getAdapterPosition();
-                Toast.makeText(getContext(),
-                        String.format(getString(R.string.item_on_tapped_toast_test),
-                                String.valueOf(i),
-                                this.journeyText.getText()),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        String.format(getString(R.string.item_on_tapped_toast_test),
+//                                String.valueOf(i),
+//                                this.journeyText.getText()),
+//                        Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
                 bundle.putInt("Journey id", i);
