@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="50dp"
-    tools:context=".JourneySummary">
+    tools:context=".JourneySummary"
+    android:background="@color/common_google_signin_btn_text_dark_pressed">
 
     <ScrollView
         android:layout_width="fill_parent"
