@@ -42,6 +42,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,6 +53,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -67,11 +70,13 @@ public class Map extends Fragment implements OnMapReadyCallback {
     boolean permissionIsGranted = false;
     double valueResult;
     ArrayList<String> test = new ArrayList<>();
-    Location location;
-
+    DatabaseReference reff;
+    Journey ajourney;
+    Location location = null;
     //List of Points for Database:
     ArrayList<Point> coordinates = new ArrayList<>();
     Double TotalDistance = 0.0;
+    double totalDistanceKmRounded;
 
     public Map() {
         // Required empty public constructor
@@ -100,6 +105,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 fr.commit();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 
@@ -123,8 +129,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 //Start journey actions start here
-                //remove the Toast below when finished testing
-//                Toast.makeText(getContext(), "Start the journey button was clicked ", Toast.LENGTH_SHORT).show();
                 boolean getCurrentLocationFailed = false;
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 requestStoragePermission();
@@ -161,11 +165,59 @@ public class Map extends Fragment implements OnMapReadyCallback {
                     return;
                 }
                 //Calculates Distance
-                getlatlon();
+                if (coordinates.size() > 1) {
+                    getlatlon();
+                    Log.d("Distance", TotalDistance.toString());
+                    totalDistanceKmRounded = round(TotalDistance, 2);
+                    Log.d("Distance", String.valueOf(totalDistanceKmRounded));
+                    final Double seconds = ((double) calculateElapsedTime(Timer) / 1000);
+                    final Date currentDate = new Date();
+                    Log.d(currentDate.toString(), "Date");
+                    Log.d("Timer", String.valueOf(seconds));
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+//                        db.journeyDao().clearJourneys();
+                            final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                            db.journeyDao().insertJourneys(
+                                    new Journey( "Journey " + (String.valueOf(journeys.size() + 1)),totalDistanceKmRounded, seconds, currentDate, coordinates)
 
-                Log.d("Distance", TotalDistance.toString());
-                final double totalDistanceKmRounded = round(TotalDistance, 2);
-                Log.d("Distance", String.valueOf(totalDistanceKmRounded));
+                            );
+                            final ArrayList<Double> coords = new ArrayList<Double>() {};
+                            final ArrayList<String> points = new ArrayList<String>() {};
+                            final List<Journey> journeys2 = db.journeyDao().getAllJourneys();
+                            Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(String.format("Number of Journeys: %d", journeys2.size()),"Total Journeys");
+                                    for (Point pts: journeys2.get(journeys2.size() - 1).getCoordinates()) {
+                                        Double lat = Double.valueOf(pts.getCoords()[0].toString());
+                                        Double lon = Double.valueOf(pts.getCoords()[1].toString());
+
+                                        coords.addAll(Arrays.asList(lat, lon));
+                                        points.add(coords.toString());
+                                        coords.clear();
+
+                                        Log.d("Points", pts.getCoords()[0].toString()+":"+pts.getCoords()[1].toString());
+                                    }
+
+                                    ajourney = new Journey();
+                                    reff = FirebaseDatabase.getInstance().getReference("Journey");;
+                                    ajourney.setPoints(points);
+                                    ajourney.setDate(currentDate);
+                                    reff.push().setValue(ajourney);
+                                }
+                            });
+                            db.close();
+                        }
+                    });
+                    Dialogboxaction dialog = new Dialogboxaction();
+                    dialog.show(getActivity().getSupportFragmentManager(), "anything");
+                } else {
+                    JourneyNotSavedDialogue dialog = new JourneyNotSavedDialogue();
+                    dialog.show(getActivity().getSupportFragmentManager(), "Null");
+                }
                 locationManager.removeUpdates(locationListenerGPS);
                 mMap.setMyLocationEnabled(false);
                 stopTimer(Timer);
@@ -173,28 +225,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 final Date currentDate = new Date();
                 Log.d(currentDate.toString(), "Date");
                 Log.d("Timer", String.valueOf(seconds));
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-//                        db.journeyDao().clearJourneys();
-                        db.journeyDao().insertJourneys(
-                                new Journey(totalDistanceKmRounded, seconds, currentDate, coordinates)
-
-                        );
-                        final List<Journey> journeys = db.journeyDao().getAllJourneys();
-                        Log.d("Journey_TEST", String.format("Number of Journeys: %d", journeys.size()));
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(String.format("Number of Journeys: %d", journeys.size()),"Total Journeys");
-                            }
-                        });
-                        db.close();
-                    }
-                });
-
-                Dialogboxaction dialog = new Dialogboxaction();
-                dialog.show(getActivity().getSupportFragmentManager(), "anything");
             }
         });
     }
@@ -255,28 +285,19 @@ public class Map extends Fragment implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Log.d("Location status", "Im here now");
-        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        Log.d("Location status", "Im here now 2");
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         try {
             getCameraUpdates(location);
             previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
         }catch (Exception e){
             Log.d("Last Location" , "Couldn't get last location,  ...applying another method");
-//            locationManager.requestSingleUpdate(criteria, locationListenerGPS, Looper.myLooper());
-//            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
-//            Log.d("Lat", String.valueOf(l.latitude));
-
         }
-        Log.d("Location status", "Im here now 3");
 //        previousLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        Log.d("Location status", "Im here now 4");
+        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000,
                 5, locationListenerGPS);
-        Log.d("Location status", "Im here now 5");
 
     }
 
@@ -325,8 +346,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
                 if (previousLocation != null) {
                     PolylineOptions polyline = new PolylineOptions().add(previousLocation)
                             .add(new LatLng(location.getLatitude(), location.getLongitude())).width(20).color(Color.BLUE).geodesic(true);
-//                mMap.addMarker(new MarkerOptions().position((previousLocation)).title("Old location"));
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("new location"));
                     coordinates.add(new Point(location.getLatitude(), location.getLongitude()));
                     mMap.addPolyline(polyline);
                 }

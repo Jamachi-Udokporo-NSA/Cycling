@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import android.widget.Toast;
+
+import com.google.firebase.FirebaseApp;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!isDrawerVisible) {
+        FirebaseApp.initializeApp(this);
+        if (!isDrawerVisible) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             if (savedInstanceState == null) {
@@ -35,12 +39,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggleDrawer(toolbar);
 
 
-
-
     }
 
     public void toggleDrawer(Toolbar toolbar) {
-        if(isDrawerVisible) {
+        if (isDrawerVisible) {
             drawerLayout = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
@@ -63,13 +65,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             isDrawerVisible = true;
             finish();
             startActivity(getIntent());
-        }else {
-            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        }
+        if (id == R.id.heat_map) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new Maps()).commit();
+            navigationView.setCheckedItem(R.id.heat_map);
+        } else if (id != R.id.log_out) {
+            Toast.makeText(this, "this fragment has not been created yet", Toast.LENGTH_SHORT).show();
         }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-
     }
 
     public void setDrawerVisible(boolean drawerVisible) {
@@ -79,4 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean isDrawerVisible() {
         return isDrawerVisible;
     }
+
+
 }
