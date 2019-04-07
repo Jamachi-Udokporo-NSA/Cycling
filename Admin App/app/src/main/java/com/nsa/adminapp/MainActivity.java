@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import android.widget.Toast;
+
+import com.google.firebase.FirebaseApp;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseApp.initializeApp(this);
         if (!isDrawerVisible) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
@@ -81,4 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean isDrawerVisible() {
         return isDrawerVisible;
     }
+
+
 }
