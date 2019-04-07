@@ -124,7 +124,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                     android.text.format.DateFormat.format("MM/yyyy" , journey.getDate());
 
 //                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy" , journey.getDate()))) {
-//                        journeyDistance = journey.getDistance();
+//                        goalMax = goal.getGoal_miles() * 1.609;
 //
 //                    }
                 }
