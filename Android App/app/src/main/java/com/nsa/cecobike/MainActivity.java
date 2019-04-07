@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.start_fragment, new SetGoal()).commit();
             navigationView.setCheckedItem(R.id.nav_set_goal);
+        } else if (id == R.id.nav_about_us)
+        {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new AboutUs()).commit();
+            navigationView.setCheckedItem(R.id.nav_about_us);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
