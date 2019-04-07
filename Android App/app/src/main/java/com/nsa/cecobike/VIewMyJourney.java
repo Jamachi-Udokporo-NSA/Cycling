@@ -57,7 +57,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             @Override
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
-                final List<Goal> goals = gdb.goalDao().getAllGoals();
+                listOfGoals = gdb.goalDao().getAllGoals();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
