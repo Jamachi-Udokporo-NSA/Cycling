@@ -81,6 +81,7 @@
                 android:textSize="20sp"
                 android:gravity="center_horizontal"
                 android:textColor="#015b66"
+                android:paddingBottom="40dp"
                 />
         </RelativeLayout>
     </ScrollView>
