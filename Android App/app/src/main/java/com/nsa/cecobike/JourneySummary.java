@@ -50,6 +50,7 @@ public class JourneySummary extends Fragment {
                 transaction.commit();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 
@@ -68,7 +69,11 @@ public class JourneySummary extends Fragment {
                         listOfJourneys = journeys;
                         Log.d("test journey id", String.valueOf(listOfJourneys.get(0).getJid()));
                         TextView JourneyText = (TextView) v.findViewById(R.id.journey_summary_text);
-                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(listOfJourneys.size() - 1).getDate())) + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate()) + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"+ System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration());
+                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(listOfJourneys.size() - 1).getDate()))
+                                + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate())
+                                + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"
+                                + System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration()
+                                + System.lineSeparator() + System.lineSeparator() + "Car emissions saved " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance()+ "g");
 //                        JourneyText.setText("Date and Time: " + listOfJourneys.get(journeys.size()).getDateAndTime() );
 
                     }

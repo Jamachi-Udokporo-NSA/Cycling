@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewAJourney"
-    android:layout_marginTop="55dp">
+    android:layout_marginTop="55dp"
+    tools:context=".ViewAJourney">
 
     <TextView
         android:id="@+id/time_and_date_text"
@@ -13,7 +13,6 @@
         android:paddingHorizontal="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="@string/hello_blank_fragment"
         android:textSize="20sp" />
 
     <FrameLayout
@@ -21,28 +20,24 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="60dp">
-    </FrameLayout>
+        android:layout_marginTop="60dp" />
 
     <TextView
         android:id="@+id/distance_and_duration_text"
-        android:text="Distance and Duration"
-        android:layout_marginTop="300dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_marginTop="300dp"
         android:paddingHorizontal="10dp"
-    />
+        android:textSize="20sp" />
 
 
     <TextView
         android:id="@+id/emissions_text"
-        android:text="Emissions"
-        android:layout_marginTop="350dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_marginTop="350dp"
         android:paddingHorizontal="10dp"
+        android:textSize="20sp"
 
         />
 </RelativeLayout>

@@ -15,7 +15,7 @@ public class Dialogboxaction extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Information") //change the dialog box header here
                 .setMessage("Your Journey has been saved") // change/input the emmissions saved here
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

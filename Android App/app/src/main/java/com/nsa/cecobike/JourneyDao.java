@@ -21,5 +21,10 @@ public interface JourneyDao { ;
     @Query("DELETE FROM Journey")
     void clearJourneys();
 
+    @Query("DELETE FROM Journey WHERE jid = :journeyId")
+    void deleteAJourneyById(long journeyId);
+
+    @Query("UPDATE journey SET journeyName = :jName WHERE jid = :journeyID")
+    void updateAJourneyById(long journeyID, String jName);
 
 }

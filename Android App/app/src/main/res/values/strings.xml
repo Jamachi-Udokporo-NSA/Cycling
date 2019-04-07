@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CecoBike</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_main3">App</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -16,4 +15,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="item_on_tapped_toast_test">Tapped on item %s: %s</string>
     <string name="milestext">Miles:</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="close">Close</string>
+    <string name="about_us">About Us</string>
+    <string name="info_about_us">Information about the cardiff council. We are trying to reduce the emission by trying to encourage more people to use their bikes to travel. Our target is to get 50% of people to walk or cycle by 2020.</string>
+    <string name="app_info">This app is aimed to help you record your journeys so you can track the number of emissions you have helped save.</string>
+    <string name="more_info">For more information visit https://www.cardiff.gov.uk/ENG/Home/</string>
+    <string name="contact_info">Contact us on https://www.cardiff.gov.uk/ENG/Home/Contact-us/Pages/default.aspx</string>
 </resources>

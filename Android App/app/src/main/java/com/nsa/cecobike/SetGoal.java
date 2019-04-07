@@ -163,6 +163,7 @@ public class SetGoal extends Fragment {
                 Toast.makeText(getContext(), "Removed Goal", Toast.LENGTH_SHORT).show();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
 
