@@ -27,7 +27,6 @@ import static android.support.constraint.Constraints.TAG;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
-    EditText sendJourneyId;
     private View v;
     private List<Journey> listOfJourneys;
     private List<Goal> listOfGoals;
@@ -47,6 +46,8 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
+        setHasOptionsMenu(false);
+//        ArrayAdapter();
         listOfJourneys = new ArrayList<Journey>();
 
         db = Room.databaseBuilder(v.getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
@@ -135,6 +136,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
+            customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
             CalculateProgress();
             customViewHolder.journeyText.setText("Journey " + (position + 1));
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
@@ -167,11 +169,11 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             @Override
             public void onClick(View view) {
                 int i = this.getAdapterPosition();
-                Toast.makeText(getContext(),
-                        String.format(getString(R.string.item_on_tapped_toast_test),
-                                String.valueOf(i),
-                                this.journeyText.getText()),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        String.format(getString(R.string.item_on_tapped_toast_test),
+//                                String.valueOf(i),
+//                                this.journeyText.getText()),
+//                        Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
                 bundle.putInt("Journey id", i);
@@ -183,8 +185,9 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 viewAJourney.setArguments(bundle);
 
                 transaction.replace(R.id.start_fragment, viewAJourney);
-                transaction.commit();
+                transaction.addToBackStack(null).commit();
             }
         }
     }
+
 }
