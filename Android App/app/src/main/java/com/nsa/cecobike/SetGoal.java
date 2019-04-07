@@ -75,7 +75,6 @@ public class SetGoal extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Logs the set value, Goal should match this
                 Log.d(TAG, "onStopTrackingTouch: " + goal_Miles);
-                Toast.makeText(getContext(), "Set your goal", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -119,7 +118,8 @@ public class SetGoal extends Fragment {
                             Log.d("date", currentMonth);
                             Log.d("Milestone Dates", String.valueOf(milestone_dates.toString()));
 
-                            if (!milestone_dates.get(0).equals(currentMonth)) {
+                            if (!milestone_dates.get(0).equals(monthNow) && (milestone_dates.get(1).equals(yearNow)) ||
+                                    milestone_dates.get(0).equals(monthNow) && (!milestone_dates.get(1).equals(yearNow))) {
                                 db.goalDao().insertGoals(
                                         new Goal(goal_Miles, String.valueOf(dateNow))
                                 );
