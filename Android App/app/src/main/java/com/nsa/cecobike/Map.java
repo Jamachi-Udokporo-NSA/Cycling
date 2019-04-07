@@ -205,6 +205,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
                                     ajourney = new Journey();
                                     reff = FirebaseDatabase.getInstance().getReference("Journey");;
                                     ajourney.setPoints(points);
+                                    ajourney.setDate(currentDate);
                                     reff.push().setValue(ajourney);
                                 }
                             });

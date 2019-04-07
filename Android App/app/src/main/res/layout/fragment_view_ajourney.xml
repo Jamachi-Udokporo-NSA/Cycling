@@ -13,7 +13,6 @@
         android:paddingHorizontal="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="@string/hello_blank_fragment"
         android:textSize="20sp" />
 
     <FrameLayout
@@ -21,7 +20,7 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="60dp"></FrameLayout>
+        android:layout_marginTop="60dp" />
 
     <TextView
         android:id="@+id/distance_and_duration_text"
@@ -29,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
         android:paddingHorizontal="10dp"
-        android:text="Distance and Duration"
         android:textSize="20sp" />
 
 
@@ -39,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
         android:paddingHorizontal="10dp"
-        android:text="Emissions"
         android:textSize="20sp"
 
         />
