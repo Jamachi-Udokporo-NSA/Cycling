@@ -128,7 +128,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 }
             }
             journeyDistance = mData.get(position).getDistance() * 1.609;
-            goalMax = listOfGoals.get(position).getGoal_miles() * 1.609;
+            goalMax = listOfGoals.get(0).getGoal_miles() * 1.609;
             journeyProgress = (int) (journeyDistance * goalMax);
             journeyProgress = journeyProgress / 100;
         }

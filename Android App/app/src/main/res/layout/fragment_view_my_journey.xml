@@ -25,9 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         style="?android:progressBarStyleHorizontal"
-        android:progress="75"
+        android:progress="100"
         android:padding="2pt"
-        android:progressDrawable="@drawable/circle"/>
+        android:background="@drawable/circle"
+        android:progressDrawable="@drawable/circle_progress_bar"/>
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/milestone"
         android:textColor="@android:color/black"
