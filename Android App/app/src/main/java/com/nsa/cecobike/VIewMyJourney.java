@@ -57,15 +57,15 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             @Override
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
-                final List<Goal> goals = gdb.goalDao().getAllGoals();
+                List<Goal> goals = gdb.goalDao().getAllGoals();
+                listOfGoals = goals;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
                         listOfJourneys = journeys;
-                        listOfGoals = goals;
                         Log.d(listOfJourneys.toString(), "All journeys");
-                        if (goals.size() == 0){
+                        if (listOfGoals.size() == 0){
                             Log.d(TAG, "Goals Must be added");
                         }
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
@@ -123,14 +123,15 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             for (Goal goal: listOfGoals){
                 goalMax = goal.getGoal_miles() * 1.609;
                 for (Journey journey: listOfJourneys){
-                    android.text.format.DateFormat.format("MM-yyyy" , journey.getDate());
-                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM-yyyy" , journey.getDate()))) {
+                    android.text.format.DateFormat.format("MM/yyyy" , journey.getDate());
+
+                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy" , journey.getDate()))) {
                         journeyDistance = journey.getDistance();
-                        journeyProgress = (int) (journeyDistance * goalMax);
-                        journeyProgress = journeyProgress / 100;
 
                     }
                 }
+                journeyProgress = (int) (journeyDistance * goalMax);
+                journeyProgress = journeyProgress / 100;
             }
         }
 
