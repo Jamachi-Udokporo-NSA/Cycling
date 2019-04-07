@@ -9,7 +9,7 @@
     android:background="@color/common_google_signin_btn_text_dark_pressed">
 
     <ScrollView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent">
         <RelativeLayout
             android:layout_width="match_parent"
