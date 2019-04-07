@@ -117,17 +117,18 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             return cHolder;
         }
 
-        public void CalculateProgress(){
+        public void CalculateProgress(int position){
             for (Goal goal: listOfGoals){
                 goalMax = goal.getGoal_miles() * 1.609;
                 for (Journey journey: listOfJourneys){
                     android.text.format.DateFormat.format("MM/yyyy" , journey.getDate());
 
-                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy" , journey.getDate()))) {
-                        journeyDistance = journey.getDistance();
-
-                    }
+//                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy" , journey.getDate()))) {
+//                        journeyDistance = journey.getDistance();
+//
+//                    }
                 }
+                journeyDistance = listOfJourneys.get(position).getDistance();
                 journeyProgress = (int) (journeyDistance * goalMax);
                 journeyProgress = journeyProgress / 100;
             }
@@ -136,7 +137,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
             customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
-            CalculateProgress();
+            CalculateProgress(position);
             customViewHolder.journeyText.setText("Journey " + (position + 1));
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
             customViewHolder.milestoneText.setText(journeyProgress + "%");
