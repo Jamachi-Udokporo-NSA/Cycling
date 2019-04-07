@@ -124,6 +124,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 for (Journey journey: listOfJourneys){
                     android.text.format.DateFormat.format("MM-yyyy" , journey.getDate());
 
+
                 }
             }
             journeyDistance = mData.get(position).getDistance() * 1.609;
