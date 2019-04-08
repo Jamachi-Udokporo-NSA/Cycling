@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
@@ -35,7 +36,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
     private GoalDatabase gdb;
     private Double goalMax;
     private Double journeyDistance;
-    private int journeyProgress;
 
     private static final int COLUMN_COUNT = 1;
 
@@ -58,6 +58,7 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
                 listOfGoals = gdb.goalDao().getAllGoals();
+                checkGoalInstance();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -76,6 +77,20 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             }
         });
         return v;
+    }
+
+    public void checkGoalInstance() {
+        Date currentDate = new Date();
+        for (int i = 0; i < listOfGoals.size(); i++) {
+            if (!listOfGoals.get(i).getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy", currentDate))) {
+                break;
+            }
+        }
+
+        if (listOfGoals.size() == 0) {
+            Goal newGoal = new Goal(80.0, (String) android.text.format.DateFormat.format("MM/yyyy",currentDate));
+            gdb.goalDao().insertGoals(newGoal);
+        }
     }
 
     @Override
@@ -117,31 +132,45 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             return cHolder;
         }
 
-        public void CalculateProgress(int position){
-            for (Goal goal: listOfGoals){
+        public int CalculateProgress(int position){
+            int journeyProgress = 0;
+            Double totalDistance = 0.0;
+            for (Goal goal: listOfGoals) {
                 goalMax = goal.getGoal_miles() * 1.609;
-                for (Journey journey: listOfJourneys){
-                    android.text.format.DateFormat.format("MM/yyyy" , journey.getDate());
 
-//                    if (goal.getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy" , journey.getDate()))) {
-//                        goalMax = goal.getGoal_miles() * 1.609;
-//
-//                    }
+                for (Journey journey : listOfJourneys) {
+//                    android.text.format.DateFormat.format("MM/yyyy" , journey.getDate());
+                    totalDistance = totalDistance + journey.getDistance();
+                    Log.d("Goal Distance =", String.valueOf(goalMax));
+                    Log.d("Journey Distance =", String.valueOf(journey.getDistance()));
+                    if (listOfJourneys.get(position).getJid() == journey.getJid()){
+                       break;
+                    }
                 }
-                journeyDistance = listOfJourneys.get(position).getDistance();
-                journeyProgress = (int) (journeyDistance * goalMax);
-                journeyProgress = journeyProgress / 100;
             }
-        }
+//                journeyDistance = listOfJourneys.get(position).getDistance();
+                Log.d("Total distance", totalDistance.toString());
+                journeyDistance = totalDistance;
+//                if (goalMax == null){
+//                    goalMax = 10.0;
+//                }
+                journeyProgress = (int) Math.round((journeyDistance * goalMax) / 100);
+
+                Log.d("Journey Progress is (0)", String.valueOf(journeyProgress));
+//                        goalMax = goal.getGoal_miles() * 1.609;
+//                    }
+//                journeyProgress = (int) (journeyDistance * goalMax);
+//                journeyProgress = journeyProgress / 100;
+                return journeyProgress;
+            }
 
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
+            int progress = CalculateProgress(position);
             customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
-            CalculateProgress(position);
-            customViewHolder.journeyText.setText("Journey " + (position + 1));
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
-            customViewHolder.milestoneText.setText(journeyProgress + "%");
-            customViewHolder.progressBar.setProgress(journeyProgress);
+            customViewHolder.milestoneText.setText(progress + "%");
+            customViewHolder.progressBar.setProgress(progress);
 
         }
 
