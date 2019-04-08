@@ -21,17 +21,22 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickListener {
     //    View Creation
     private View v;
     private List<Journey> listOfJourneys;
+    private List<Goal> listOfGoals;
     private int numberOfJourneys;
     private JourneyDatabase db;
-
+    private GoalDatabase gdb;
+    private Double goalMax;
+    private Double journeyDistance;
     private static final int COLUMN_COUNT = 1;
-
     private RecyclerView recyclerView;
     private CustomRecyclerViewAdapter customAdapter;
 
@@ -40,22 +45,26 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_view_journey_recycler, container, false);
         setHasOptionsMenu(false);
-//        ArrayAdapter();
+
         listOfJourneys = new ArrayList<Journey>();
-        db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+        db = Room.databaseBuilder(v.getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
+        gdb = Room.databaseBuilder(v.getContext(), GoalDatabase.class, "MyGoalDatabase").build();
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 final List<Journey> journeys = db.journeyDao().getAllJourneys();
+                listOfGoals = gdb.goalDao().getAllGoals();
+                checkGoalInstance();
+                listOfGoals = gdb.goalDao().getAllGoals();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         numberOfJourneys = journeys.size();
-                                listOfJourneys = journeys;
-                                Log.d(listOfJourneys.toString(), "All journeys");
-//                            }
-//                        }
+                        listOfJourneys = journeys;
+
+                        Log.d(listOfJourneys.toString(), "All journeys");
+
                         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
                         CustomRecyclerViewAdapter recyclerViewAdapter = new CustomRecyclerViewAdapter(getContext(), listOfJourneys);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,6 +75,20 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             }
         });
         return v;
+    }
+
+    public void checkGoalInstance() {
+        Date currentDate = new Date();
+        for (int i = 0; i < listOfGoals.size(); i++) {
+            if (!listOfGoals.get(i).getMilestone_date().equals(android.text.format.DateFormat.format("MM/yyyy", currentDate))) {
+                break;
+            }
+        }
+
+        if (listOfGoals.size() == 0) {
+            Goal newGoal = new Goal(20.0, (String) android.text.format.DateFormat.format("MM/yyyy",currentDate));
+            gdb.goalDao().insertGoals(newGoal);
+        }
     }
 
     @Override
@@ -97,7 +120,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
         public CustomRecyclerViewAdapter(Context mContext, List<Journey> mData) {
             this.mContext = mContext;
             this.mData = mData;
-
             Log.d("TEST", String.valueOf(mData.size()));
         }
 
@@ -108,10 +130,34 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             return cHolder;
         }
 
+        public int CalculateProgress(int position){
+            int journeyProgress = 0;
+            Double totalDistance = 0.0;
+            for (Goal goal: listOfGoals) {
+                goalMax = goal.getGoal_miles() * 1.609;
+                for (Journey journey : listOfJourneys) {
+                    totalDistance = totalDistance + journey.getDistance();
+                    Log.d("Goal Distance =", String.valueOf(goalMax));
+                    Log.d("Journey Distance =", String.valueOf(journey.getDistance()));
+                    if (listOfJourneys.get(position).getJid() == journey.getJid()){
+                       break;
+                    }
+                }
+            }
+                journeyDistance = totalDistance;
+                journeyProgress = (int) Math.round(((journeyDistance * 271 * 1.609) / (goalMax * 271 * 1.609)) * 100);
+                return journeyProgress;
+            }
+
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
+            int progress = CalculateProgress(position);
             customViewHolder.journeyText.setText(mData.get(position).getJourneyname());
             customViewHolder.dateAndTimeText.setText(android.text.format.DateFormat.format("dd-MM-yyyy  HH:mm:ss a" , (mData.get(position).getDate())));
+            customViewHolder.milestoneText.setText(progress + "%");
+            customViewHolder.progressBar.setProgress(progress);
+
+
         }
 
         @Override
@@ -123,6 +169,8 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
             private AppCompatTextView journeyText;
             private AppCompatTextView dateAndTimeText;
             private AppCompatTextView milestoneText;
+            private AppCompatTextView emSavedText;
+            private AppCompatTextView emNeededText;
             private ProgressBar progressBar;
 
             CustomViewHolder(View itemView) {
@@ -131,20 +179,12 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 dateAndTimeText = (AppCompatTextView) itemView.findViewById(R.id.dateAndTime_text);
                 progressBar = (ProgressBar) itemView.findViewById(R.id.determ_circular_progress);
                 milestoneText = (AppCompatTextView) itemView.findViewById(R.id.milestone);
-                milestoneText.setText("Abc");
                 itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-
-
                 int i = this.getAdapterPosition();
-//                Toast.makeText(getContext(),
-//                        String.format(getString(R.string.item_on_tapped_toast_test),
-//                                String.valueOf(i),
-//                                this.journeyText.getText()),
-//                        Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 Log.d(String.valueOf(listOfJourneys.get(0).getJid()), " Parse id ");
                 bundle.putInt("Journey id", i);
@@ -159,7 +199,6 @@ public class VIewMyJourney extends Fragment implements AdapterView.OnItemClickLi
                 transaction.addToBackStack(null).commit();
             }
         }
-
     }
 
 }

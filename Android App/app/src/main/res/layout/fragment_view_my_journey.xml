@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:background="@color/common_google_signin_btn_text_dark_disabled"
     >
+
  <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,14 +17,20 @@
     android:layout_marginTop="5dp"
     android:background="@color/common_google_signin_btn_text_dark_pressed"
     >
+     <android.support.v7.widget.LinearLayoutCompat
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
     <ProgressBar
         android:id="@+id/determ_circular_progress"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         style="?android:progressBarStyleHorizontal"
-        android:progress="75"
+        android:progress="100"
         android:padding="2pt"
-        android:progressDrawable="@drawable/circle"/>
+        android:background="@drawable/circle"
+        android:progressDrawable="@drawable/circle_progress_bar"
+        android:max="100"/>
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/milestone"
         android:textColor="@android:color/black"
@@ -51,7 +58,6 @@
             android:textStyle="bold"
             android:textSize="19sp"
             android:text="Journeys "/>
-
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dateAndTime_text"
             android:textColor="@android:color/tertiary_text_light"
@@ -60,7 +66,8 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:text="Date and Time"/>
-
     </android.support.v7.widget.LinearLayoutCompat>
+ </android.support.v7.widget.LinearLayoutCompat>
+
  </android.support.v7.widget.LinearLayoutCompat>
 </RelativeLayout>

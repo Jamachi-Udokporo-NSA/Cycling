@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class SetGoal extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
+        final View v = inflater.inflate(R.layout.fragment_set_goal, container, false);
 
         //Getting IDs
         seekBar = v.findViewById(R.id.seek_bar);
@@ -73,6 +75,7 @@ public class SetGoal extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Logs the set value, Goal should match this
                 Log.d(TAG, "onStopTrackingTouch: " + goal_Miles);
+
             }
         });
 //        Insert Button Task
@@ -85,40 +88,56 @@ public class SetGoal extends Fragment {
                     @Override
                     public void run() {
                         List<Goal> goals = db.goalDao().getAllGoals();
-
                         //Init DTF formatter for date
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/yyyy");
+                        DateTimeFormatter mtf = DateTimeFormatter.ofPattern("MM");
+                        DateTimeFormatter ytf = DateTimeFormatter.ofPattern("yyyy");
                         LocalDateTime now = LocalDateTime.now();
                         String dateNow = String.valueOf(dtf.format(now));
-
-                        Log.d(TAG, "Button Pressed");
+                        String monthNow = String.valueOf(mtf.format(now));
+                        String yearNow = String.valueOf(ytf.format(now));
+                        
                         Log.d("Goals: ",String.valueOf(goals.size()));
 
                         if (goals.size() == 0) {
                             Goal newGoal = new Goal(goal_Miles, String.valueOf(dateNow));
-//                            goals.add(newGoal);
                             db.goalDao().insertGoals(newGoal);
-                            Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
-
-                            for (Goal goal : goals) {
-                                //while count is less than the size of the list will check to see if
-                                for (int j = 0; j < goals.size(); j++) {
-                                    String currentMonth = goals.get(j).getMilestone_date();
-                                    List<String> milestone_dates = Arrays.asList(currentMonth.split("/"));
-                                    Log.d("date", milestone_dates.get(0));
-                                    Log.d("Milestone Dates", String.valueOf(milestone_dates.size()));
-
-                                    if (!milestone_dates.get(0).equals(currentMonth)) {
-//                                        Goal e = goals.get(goals.size() - 1);
-//                                        goals.remove(e);
-                                        Log.i("New GOAL", newGoal.getGoal_miles().toString() + " - " + newGoal.getMilestone_date());
-                                    } else {
-                                        Log.i("Update GOAL", goal.getGoal_miles().toString() + " - " + goal.getMilestone_date());
-                                    }
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "Goal Set", Toast.LENGTH_SHORT).show();
                                 }
+                            });
+                        }
+
+                        Log.d("Test", "Im here now " + dateNow);
+                        for (int j = 0; j < goals.size(); j++) {
+                            String currentMonth = goals.get(j).getMilestone_date();
+                            List<String> milestone_dates = Arrays.asList(currentMonth.split("/"));
+                            Log.d("date", milestone_dates.get(0));
+                            Log.d("date", currentMonth);
+                            Log.d("Milestone Dates", String.valueOf(milestone_dates.toString()));
+
+                            if (!milestone_dates.get(0).equals(monthNow) && (milestone_dates.get(1).equals(yearNow)) ||
+                                    milestone_dates.get(0).equals(monthNow) && (!milestone_dates.get(1).equals(yearNow))) {
+                                db.goalDao().insertGoals(
+                                        new Goal(goal_Miles, String.valueOf(dateNow))
+                                );
+                                Log.i("New GOAL", goals.get(j).getGoal_miles().toString() + " - " + goals.get(j).getMilestone_date());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(), "Goal Set", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(), "You have already set a goal", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        }else {
-                            Log.i(TAG,"Existing GOAL");
                         }
                     }
                 });
@@ -127,7 +146,6 @@ public class SetGoal extends Fragment {
         });
 //      End Insert Task
 
-//        Remove Task Button
         removeGoalButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -139,11 +157,10 @@ public class SetGoal extends Fragment {
                         List<Goal> goals = db.goalDao().getAllGoals();
                         Log.d("Goals to be removed", String.valueOf(goals.size()));
                         db.goalDao().clearGoals();
-                        Log.d("Goals left over", String.valueOf(goals.size()));
                     }
                 });
                 db.close();
-//            End Remove Task
+                Toast.makeText(getContext(), "Removed Goal", Toast.LENGTH_SHORT).show();
             }
         });
         setHasOptionsMenu(false);
