@@ -372,25 +372,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void getcaldistance(Double latitude, Double longitude, Double lat1, Double lat2){
-        int Radius = 6371;
-        double a = Math.sin(latitude / 2) * Math.sin(latitude / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(longitude / 2)
-                * Math.sin(longitude / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Log.d("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec);
-        Log.d("Radius" , String.valueOf(Radius * c));
-        TotalDistance = TotalDistance + valueResult;
-    }
-
     LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
