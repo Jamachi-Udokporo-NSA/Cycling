@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.start_fragment, new VIewMyJourney()).commit();
                 navigationView.setCheckedItem(R.id.nav_view_my_journeys);
-        } else if (id == R.id.nav_goal_contribution) {
-            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_set_goal) {
             Toast.makeText(this, "Set Goal Fragment is in Development", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction()

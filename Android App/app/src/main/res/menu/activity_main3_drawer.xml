@@ -12,10 +12,6 @@
             android:id="@+id/nav_view_my_journeys"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="View my Journeys" />
-        <item
-            android:id="@+id/nav_goal_contribution"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Goal Contribution" />
 
         <item
             android:id="@+id/nav_set_goal"
