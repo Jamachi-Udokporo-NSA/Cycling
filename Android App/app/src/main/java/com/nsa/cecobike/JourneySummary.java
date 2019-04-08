@@ -23,18 +23,8 @@ public class JourneySummary extends Fragment {
 
     private List<Journey> listOfJourneys;
     private JourneyDatabase db;
-    Button close_button;
-
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-
+    Button closebutton;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,15 +39,21 @@ public class JourneySummary extends Fragment {
         View v = inflater.inflate(R.layout.fragment_jouney_summary, container, false);
         // Inflate the layout for this fragment
         getJourneyInfo(v);
-//        close_button = (Button) v.findViewById(R.id.close_button);
-//        close_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        closebutton = (Button) v.findViewById(R.id.close_button);
+        closebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.replace(R.id.start_fragment, new Map());
+                transaction.commit();
+            }
+        });
+        setHasOptionsMenu(false);
         return v;
     }
+
 
     private View getJourneyInfo(final View v){
         db = Room.databaseBuilder(getContext(), JourneyDatabase.class, "MyJourneyDatabase").build();
@@ -73,7 +69,11 @@ public class JourneySummary extends Fragment {
                         listOfJourneys = journeys;
                         Log.d("test journey id", String.valueOf(listOfJourneys.get(0).getJid()));
                         TextView JourneyText = (TextView) v.findViewById(R.id.journey_summary_text);
-                        JourneyText.setText(String.format("Date and Time : %s%s%sDistance: %s Miles%s%sDuration: %ss", listOfJourneys.get(journeys.size() - 1).getDateAndTime(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(journeys.size() - 1).getDistance(), System.lineSeparator(), System.lineSeparator(), listOfJourneys.get(journeys.size() - 1).getDuration()));
+                        JourneyText.setText("Date: " + android.text.format.DateFormat.format("yyyy-MM-dd", (listOfJourneys.get(listOfJourneys.size() - 1).getDate()))
+                                + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate())
+                                + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"
+                                + System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration()
+                                + System.lineSeparator() + System.lineSeparator() + "Car emissions saved " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() * 271+ "g");
 //                        JourneyText.setText("Date and Time: " + listOfJourneys.get(journeys.size()).getDateAndTime() );
 
                     }
