@@ -28,9 +28,11 @@ public class Dialogbox extends Fragment {
                 openDialog();
             }
         });
+        setHasOptionsMenu(false);
         return v;
     }
-//code implementation in maps
+
+    //code implementation in maps
     public void openDialog(){
 //        Dialogboxaction dialaog = new Dialogboxaction();
 //        dialaog.show(getActivity().getSupportFragmentManager(), "anything");

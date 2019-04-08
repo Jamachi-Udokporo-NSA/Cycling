@@ -26,7 +26,7 @@ public class LoginScreen extends Fragment {
     TextView title;
 
     public LoginScreen() {
-        // Required empty public constructor
+
     }
 
     @Override

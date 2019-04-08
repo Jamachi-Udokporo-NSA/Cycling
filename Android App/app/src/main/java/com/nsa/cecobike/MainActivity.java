@@ -51,29 +51,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main3, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            Toast.makeText(this, "you clicked on settings", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -96,12 +73,15 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.start_fragment, new VIewMyJourney()).commit();
                 navigationView.setCheckedItem(R.id.nav_view_my_journeys);
-        } else if (id == R.id.nav_goal_contribution) {
-            Toast.makeText(this, "slideshow fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "share fragment has not been created yet", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_send) {
-            Toast.makeText(this, "send fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_set_goal) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new SetGoal()).commit();
+            navigationView.setCheckedItem(R.id.nav_set_goal);
+        } else if (id == R.id.nav_about_us)
+        {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new AboutUs()).commit();
+            navigationView.setCheckedItem(R.id.nav_about_us);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

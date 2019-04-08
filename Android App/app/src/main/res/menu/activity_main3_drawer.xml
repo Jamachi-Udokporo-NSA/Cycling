@@ -6,30 +6,29 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_track_my_journey"
-            android:icon="@drawable/ic_navigation_black_24dp"
+            android:icon="@drawable/ic_start_a_journey"
             android:title="Start a Journey" />
         <item
             android:id="@+id/nav_view_my_journeys"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_history_black_24dp"
             android:title="View my Journeys" />
+
         <item
-            android:id="@+id/nav_goal_contribution"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Goal Contribution" />
+            android:id="@+id/nav_set_goal"
+            android:icon="@drawable/ic_goal_icon1"
+            android:title="Set Journey Goal" />
+
+        <item
+            android:id="@+id/nav_about_us"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="About Us" />
 
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+<!---->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

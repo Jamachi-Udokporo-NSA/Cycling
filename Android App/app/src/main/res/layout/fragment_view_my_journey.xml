@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:background="@color/common_google_signin_btn_text_dark_disabled"
+    >
+
+ <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
@@ -8,18 +15,33 @@
     android:padding="16dip"
     tools:context=".VIewMyJourney"
     android:layout_marginTop="5dp"
-    android:background="@color/common_google_signin_btn_text_dark_disabled"
+    android:background="@color/common_google_signin_btn_text_dark_pressed"
     >
+     <android.support.v7.widget.LinearLayoutCompat
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
+    <ProgressBar
+        android:id="@+id/determ_circular_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        style="?android:progressBarStyleHorizontal"
+        android:progress="100"
+        android:padding="2pt"
+        android:background="@drawable/circle"
+        android:progressDrawable="@drawable/circle_progress_bar"
+        android:max="100"/>
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/progress"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="@dimen/row_padding"
-        android:layout_marginRight="@dimen/row_padding"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_menu_camera"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/milestone"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="x"
+        android:padding="10dp"
+
         />
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -36,7 +58,6 @@
             android:textStyle="bold"
             android:textSize="19sp"
             android:text="Journeys "/>
-
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dateAndTime_text"
             android:textColor="@android:color/tertiary_text_light"
@@ -45,6 +66,8 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:text="Date and Time"/>
-
     </android.support.v7.widget.LinearLayoutCompat>
-</android.support.v7.widget.LinearLayoutCompat>
+ </android.support.v7.widget.LinearLayoutCompat>
+
+ </android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>
