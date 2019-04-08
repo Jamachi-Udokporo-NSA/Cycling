@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -91,6 +89,4 @@ public class MainActivity extends AppCompatActivity
         return true;
 
     }
-
->>>>>>> fdd0bd7ff60b2f68434916904492cffebe014ee1
 }
