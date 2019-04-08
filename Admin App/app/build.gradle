@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.nsa.adminapp"
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    implementation group: 'com.opencsv', name: 'opencsv', version: '4.5'
 
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.0.6'

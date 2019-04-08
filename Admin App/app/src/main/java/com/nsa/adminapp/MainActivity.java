@@ -1,6 +1,7 @@
 package com.nsa.adminapp;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +14,15 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
+import com.opencsv.CSVWriter;
+
+import java.io.FileWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,10 +77,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if (id == R.id.heat_map) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.start_fragment, new Maps()).commit();
+                    .replace(R.id.start_fragment, new Maps(), "heatMap").commit();
             navigationView.setCheckedItem(R.id.heat_map);
-        } else if (id != R.id.log_out) {
-            Toast.makeText(this, "this fragment has not been created yet", Toast.LENGTH_SHORT).show();
+        }if (id == R.id.section_1) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.start_fragment, new HomePage()).commit();
+            navigationView.setCheckedItem(R.id.section_1);
+
         }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -80,10 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setDrawerVisible(boolean drawerVisible) {
         isDrawerVisible = drawerVisible;
-    }
-
-    public boolean isDrawerVisible() {
-        return isDrawerVisible;
     }
 
 

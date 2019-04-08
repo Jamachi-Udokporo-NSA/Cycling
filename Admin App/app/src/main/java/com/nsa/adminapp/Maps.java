@@ -66,7 +66,7 @@ public class Maps extends Fragment implements OnMapReadyCallback {
                 data = "";
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     data += singleSnapshot.child("points").getValue().toString() + ";";
-                    Log.d("dataFire", singleSnapshot.child("points").getValue().toString());
+//                    Log.d("dataFire", singleSnapshot.child("points").getValue().toString());
                 }
                 p.setLocations(data);
                 Log.d("lTag", "" +p.getLocations());
@@ -102,5 +102,6 @@ public class Maps extends Fragment implements OnMapReadyCallback {
 
         return mMap;
     }
+
 
 }
