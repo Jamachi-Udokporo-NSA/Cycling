@@ -28,7 +28,8 @@
         android:progress="100"
         android:padding="2pt"
         android:background="@drawable/circle"
-        android:progressDrawable="@drawable/circle_progress_bar"/>
+        android:progressDrawable="@drawable/circle_progress_bar"
+        android:max="100"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/milestone"
@@ -67,10 +68,6 @@
             android:text="Date and Time"/>
     </android.support.v7.widget.LinearLayoutCompat>
  </android.support.v7.widget.LinearLayoutCompat>
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:id="@+id/goal_Text"/>
+
  </android.support.v7.widget.LinearLayoutCompat>
 </RelativeLayout>

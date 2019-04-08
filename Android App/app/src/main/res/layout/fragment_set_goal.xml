@@ -17,7 +17,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/seek_bar"
-                    android:max="600"
+                    android:max="300"
                     android:progress="0"
                     android:progressDrawable="@drawable/goal_track"
                     android:thumb="@drawable/goal_thumb"
