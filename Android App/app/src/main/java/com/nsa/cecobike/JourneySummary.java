@@ -73,7 +73,7 @@ public class JourneySummary extends Fragment {
                                 + System.lineSeparator() + System.lineSeparator() + "Time: " + android.text.format.DateFormat.format("HH:mm:ss a" ,listOfJourneys.get(listOfJourneys.size() - 1).getDate())
                                 + System.lineSeparator() + System.lineSeparator() + "Distance: " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() + " Km"
                                 + System.lineSeparator() + System.lineSeparator() + "Duration: " + listOfJourneys.get(listOfJourneys.size() - 1).getDuration()
-                                + System.lineSeparator() + System.lineSeparator() + "Car emissions saved " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance()+ "g");
+                                + System.lineSeparator() + System.lineSeparator() + "Car emissions saved " + listOfJourneys.get(listOfJourneys.size() - 1).getDistance() * 271+ "g");
 //                        JourneyText.setText("Date and Time: " + listOfJourneys.get(journeys.size()).getDateAndTime() );
 
                     }
