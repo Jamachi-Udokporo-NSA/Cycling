@@ -356,8 +356,8 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     public void getlatlon(){
         //Calculating the distance in meters
-        double latitude = 0;
-        double longitude = 0;
+        double latitude = 0.0;
+        double longitude = 0.0;
 
         for (int i = 0; i+1 < coordinates.size(); i++){
             double lat1 = coordinates.get(i).getpLat();
@@ -366,34 +366,10 @@ public class Map extends Fragment implements OnMapReadyCallback {
             double lon2 = coordinates.get(i+1).getpLon();
             latitude = Math.toRadians(lat2 - lat1);
             longitude = Math.toRadians(lon2 - lon1);
-            getcaldistance(latitude, longitude, lat1, lat2);
+            Distance d = new Distance(latitude, longitude, lat1, lat2);
+            TotalDistance = TotalDistance + d.getDistance();
+//            getcaldistance(latitude, longitude, lat1, lat2);
         }
-    }
-
-    public void getcaldistance(Double latitude, Double longitude, Double lat1, Double lat2){
-        int Radius = 6371;
-        double a = Math.sin(latitude / 2) * Math.sin(latitude / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(longitude / 2)
-                * Math.sin(longitude / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Log.d("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec);
-        Log.d("Radius" , String.valueOf(Radius * c));
-//        latitude = latitude * latitude;
-//        longitude = longitude * longitude;
-
-//        Double Distance = Math.sqrt(latitude + longitude);
-//        Log.d("TEST", TotalDistance.toString());
-        TotalDistance = TotalDistance + valueResult;
-//        String t = String.valueOf(TotalDistance);
-//        Log.d(t, "size");
     }
 
     LocationListener locationListenerGPS = new LocationListener() {
